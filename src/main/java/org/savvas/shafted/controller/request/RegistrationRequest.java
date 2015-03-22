@@ -8,7 +8,9 @@ public class RegistrationRequest {
     @NotEmpty
     @Email
     private String email;
+    @NotEmpty
     private String name;
+    @NotEmpty
     private String password;
 
     public RegistrationRequest() { }

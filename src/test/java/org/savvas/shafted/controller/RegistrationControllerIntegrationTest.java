@@ -1,5 +1,6 @@
 package org.savvas.shafted.controller;
 
+import org.hibernate.validator.constraints.Email;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.savvas.shafted.Application;
@@ -15,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.net.URI;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,14 +34,20 @@ public class RegistrationControllerIntegrationTest {
     @Test
     public void registeringANewUserReturnsACreatedResponseCode() {
         // Given
-        String registrationUrl = "http://localhost:" + port + "/registration";
-        RegistrationRequest request = new RegistrationRequest("yoseph.samuel@gmail.com", "yoseph", "password");
-
+        String baseUrl = "http://localhost:" + port;
+        String registrationUrl = baseUrl + "/registration";
+        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
         // When
-        ResponseEntity<User> response = rest.postForEntity(URI.create(registrationUrl), request, User.class);
-
+        ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
+        String userPath = registrationResponse.getHeaders().getFirst("Location");
+        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
         // Then
-        assertEquals("Unexpected response code.", 200, response.getStatusCode().value());
+        assertEquals("Unexpected response code.", 201, registrationResponse.getStatusCode().value());
+        assertEquals("Unexpected Location Header.", "/user/1", userPath);
+        User user = userResponse.getBody();
+        assertEquals("michaelsavvas@ymail.com", user.getEmail());
+        assertEquals("savvas", user.getName());
+        assertEquals("password", user.getPassword());
     }
 
     @Test
@@ -79,5 +87,65 @@ public class RegistrationControllerIntegrationTest {
         //then
         assertEquals("Unexpected response code.", 400, response.getStatusCode().value());
         assertEquals("Unexpected Error Message", "email", response.getBody().getErrors().get(0));
+    }
+
+    @Test
+    public void missingNameReturnsBadRequest() {
+        //given
+        String registrationUrl = "http://localhost:" + port + "/registration";
+        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", null, "password");
+        //when
+        ResponseEntity<ErrorResponse> response = rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
+        //then
+        assertEquals("Unexpected response code.", 400, response.getStatusCode().value());
+        assertEquals("Unexpected Error Message", "name", response.getBody().getErrors().get(0));
+    }
+
+    @Test
+    public void emptyNameReturnsBadRequest() {
+        //given
+        String registrationUrl = "http://localhost:" + port + "/registration";
+        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "", "password");
+        //when
+        ResponseEntity<ErrorResponse> response = rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
+        //then
+        assertEquals("Unexpected response code.", 400, response.getStatusCode().value());
+        assertEquals("Unexpected Error Message", "name", response.getBody().getErrors().get(0));
+    }
+
+    @Test
+    public void emptyPasswordReturnsBadRequest() {
+        //given
+        String registrationUrl = "http://localhost:" + port + "/registration";
+        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "Savvas", null);
+        //when
+        ResponseEntity<ErrorResponse> response = rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
+        //then
+        assertEquals("Unexpected response code.", 400, response.getStatusCode().value());
+        assertEquals("Unexpected Error Message", "password", response.getBody().getErrors().get(0));
+    }
+
+    @Test
+    public void missingPasswordReturnsBadRequest() {
+        //given
+        String registrationUrl = "http://localhost:" + port + "/registration";
+        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "Savvas", "");
+        //when
+        ResponseEntity<ErrorResponse> response = rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
+        //then
+        assertEquals("Unexpected response code.", 400, response.getStatusCode().value());
+        assertEquals("Unexpected Error Message", "password", response.getBody().getErrors().get(0));
+    }
+
+    @Test
+    public void registeringUserWithDuplicateEmailReturnsBadRequest() {
+        //given
+        String registrationUrl = "http://localhost:" + port + "/registration";
+        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "Savvas", "pass");
+        RegistrationRequest request1 = new RegistrationRequest("michaelsavvas@ymail.com", "Savvas", "pass");
+
+        //when
+
+        //then
     }
 }
