@@ -54,7 +54,7 @@ public class RegistrationControllerIntegrationTest {
     public void invalidEmailReturnsBadRequest() {
         // Given
         String registrationUrl = "http://localhost:" + port + "/registration";
-        RegistrationRequest request = new RegistrationRequest("yoseph.samuel", "yoseph", "password");
+        RegistrationRequest request = new RegistrationRequest("michaelsavvas", "savvas", "password");
 
         // When
         ResponseEntity<ErrorResponse> response =  rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
@@ -68,7 +68,7 @@ public class RegistrationControllerIntegrationTest {
     public void emptyEmailReturnsBadRequest(){
         //given
         String registrationUrl = "http://localhost:" + port + "/registration";
-        RegistrationRequest request = new RegistrationRequest("", "yoseph", "password");
+        RegistrationRequest request = new RegistrationRequest("", "savvas", "password");
         //when
         ResponseEntity<ErrorResponse> response =  rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
         //then
@@ -81,7 +81,7 @@ public class RegistrationControllerIntegrationTest {
     public void missingEmailReturnsBadRequest(){
         //given
         String registrationUrl = "http://localhost:" + port + "/registration";
-        RegistrationRequest request = new RegistrationRequest(null, "yoseph", "password");
+        RegistrationRequest request = new RegistrationRequest(null, "savvas", "password");
         //when
         ResponseEntity<ErrorResponse> response =  rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
         //then
