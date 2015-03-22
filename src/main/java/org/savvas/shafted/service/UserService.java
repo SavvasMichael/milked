@@ -1,14 +1,22 @@
 package org.savvas.shafted.service;
 
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.activation.*;
 import org.savvas.shafted.controller.request.RegistrationRequest;
 import org.savvas.shafted.domain.User;
 import org.savvas.shafted.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -16,7 +24,7 @@ public class UserService {
     private UserRepository repository;
 
     @Autowired
-    public UserService(UserRepository repository){
+    public UserService(UserRepository repository) {
         this.repository = repository;
     }
 
@@ -42,8 +50,8 @@ public class UserService {
             message.setFrom(fromAddress);
             message.setRecipient(Message.RecipientType.TO, toAddress);
 
-            message.setSubject("Testing JavaMail");
-            message.setText("Welcome to JavaMail");
+            message.setSubject("Helllllooooooooooooooo!");
+            message.setText("Welcome!:D");
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
             message.saveChanges();
@@ -56,12 +64,18 @@ public class UserService {
 
     public Long createUser(RegistrationRequest registrationRequest) {
         System.out.println("Registering User: " + registrationRequest);
-        User user = new User(registrationRequest.getEmail(),registrationRequest.getName(),registrationRequest.getPassword());
+        String uuid = UUID.randomUUID().toString();
+        User user = new User(registrationRequest.getEmail(), registrationRequest.getName(), registrationRequest.getPassword(), uuid);
         User savedUser = repository.save(user);
         return savedUser.getId();
     }
 
     public User getUser(Long id) {
         return repository.findOne(id);
+    }
+
+    public boolean userExists(String email) {
+        List<User> users = repository.findByEmail(email);
+        return !users.isEmpty();
     }
 }

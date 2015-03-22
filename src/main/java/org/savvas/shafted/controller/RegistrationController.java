@@ -3,8 +3,10 @@ package org.savvas.shafted.controller;
 import org.savvas.shafted.controller.error.ValidationException;
 import org.savvas.shafted.controller.request.RegistrationRequest;
 import org.savvas.shafted.domain.User;
+import org.savvas.shafted.domain.UserRepository;
 import org.savvas.shafted.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,7 @@ import java.net.URI;
 
 @RestController
 public class RegistrationController {
+
     private final UserService userService;
 
     @Autowired
@@ -29,6 +32,9 @@ public class RegistrationController {
     public ResponseEntity registerUser(@RequestBody @Valid RegistrationRequest registrationRequest, BindingResult validation) {
         if(validation.hasErrors()){
             throw new ValidationException(validation.getFieldErrors());
+        }
+        if (userService.userExists(registrationRequest.getEmail())) {
+            throw new ValidationException("This email has already been registered");
         }
         Long userId = userService.createUser(registrationRequest);
         URI userLocationUri = URI.create("/user/" + userId);

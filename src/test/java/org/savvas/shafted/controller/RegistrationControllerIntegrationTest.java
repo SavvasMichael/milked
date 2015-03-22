@@ -142,10 +142,14 @@ public class RegistrationControllerIntegrationTest {
         //given
         String registrationUrl = "http://localhost:" + port + "/registration";
         RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "Savvas", "pass");
-        RegistrationRequest request1 = new RegistrationRequest("michaelsavvas@ymail.com", "Savvas", "pass");
-
+        RegistrationRequest request2 = new RegistrationRequest("michaelsavvas@ymail.com", "Savvas", "pass");
         //when
+        ResponseEntity<ErrorResponse> response = rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
+        ResponseEntity<ErrorResponse> response2 = rest.postForEntity(URI.create(registrationUrl), request2, ErrorResponse.class);
 
         //then
+        assertEquals(201, response.getStatusCode().value());
+        assertEquals("This Email has already been used", 400, response2.getStatusCode().value());
+        assertEquals("Unexpected error message", "This email has already been registered", response2.getBody().getErrors().get(0));
     }
 }

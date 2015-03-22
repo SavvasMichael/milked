@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Entity
 public class User {
@@ -15,14 +16,15 @@ public class User {
     private String name;
     private String password;
     private boolean activated = false;
-    private Long uniqueActivationCode;
+    private String uuid;
 
     User(){}
 
-    public User(String email, String name, String password) {
+    public User(String email, String name, String password, String uuid) {
         this.email = email;
         this.name = name;
         this.password = password;
+        this.uuid = uuid;
     }
 
     public String getEmail() {
