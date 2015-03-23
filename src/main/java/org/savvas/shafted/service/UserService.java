@@ -27,7 +27,6 @@ public class UserService {
     public UserService(UserRepository repository) {
         this.repository = repository;
     }
-
     public void sendEmail() {
         try {
             String host = "smtp.gmail.com";

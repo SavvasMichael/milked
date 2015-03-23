@@ -18,7 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.net.URI;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -151,5 +151,26 @@ public class RegistrationControllerIntegrationTest {
         assertEquals(201, response.getStatusCode().value());
         assertEquals("This Email has already been used", 400, response2.getStatusCode().value());
         assertEquals("Unexpected error message", "This email has already been registered", response2.getBody().getErrors().get(0));
+    }
+
+    @Test
+    public void registeringUserCreatesUniqueUuid() {
+        //given
+        RegistrationRequest registrationRequest;
+        String baseUrl = "http://localhost:" + port;
+        String registrationUrl = "http://localhost:" + port + "/registration";
+        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "Savvas", "pass");
+        RegistrationRequest request2 = new RegistrationRequest("savvas.a.michael@gmail.com", "Savvas", "pass");
+        //when
+        ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
+        ResponseEntity<String> registrationResponse2 = rest.postForEntity(URI.create(registrationUrl), request2, String.class);
+        String userPath = registrationResponse.getHeaders().getFirst("Location");
+        String userPath2 = registrationResponse.getHeaders().getFirst("Location");
+        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
+        ResponseEntity<User> userResponse2 = rest.getForEntity(URI.create(baseUrl + userPath2), User.class);
+        //then
+        assert (!userResponse.getBody().getUuid().isEmpty());
+        assert (!userResponse2.getBody().getUuid().isEmpty());
+        assertNotSame("UUIDS are identical", userResponse.getBody().getUuid(), userResponse2.getBody().getUuid());
     }
 }

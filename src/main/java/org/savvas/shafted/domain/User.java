@@ -43,6 +43,10 @@ public class User {
         return id;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
     @Override
     public String toString() {
         return String.format(
