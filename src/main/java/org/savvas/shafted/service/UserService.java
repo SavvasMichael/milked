@@ -1,5 +1,4 @@
 package org.savvas.shafted.service;
-
 import org.savvas.shafted.controller.request.RegistrationRequest;
 import org.savvas.shafted.domain.User;
 import org.savvas.shafted.domain.UserRepository;
@@ -20,9 +19,7 @@ import java.util.UUID;
 
 @Service
 public class UserService {
-
     private UserRepository repository;
-
     @Autowired
     public UserService(UserRepository repository) {
         this.repository = repository;
@@ -45,18 +42,15 @@ public class UserService {
             MimeMessage message = new MimeMessage(session);
             Address fromAddress = new InternetAddress(from);
             Address toAddress = new InternetAddress("savvas.a.michael@gmail.com");
-
             message.setFrom(fromAddress);
             message.setRecipient(Message.RecipientType.TO, toAddress);
-
-            message.setSubject("Helllllooooooooooooooo!");
-            message.setText("Welcome!:D");
+            message.setSubject("Welcome to shafted!");
+            message.setText("Hello");
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
             message.saveChanges();
             Transport.send(message);
             transport.close();
-
         } catch (Exception ex) {
         }
     }
@@ -72,7 +66,6 @@ public class UserService {
     public User getUser(Long id) {
         return repository.findOne(id);
     }
-
     public boolean userExists(String email) {
         List<User> users = repository.findByEmail(email);
         return !users.isEmpty();

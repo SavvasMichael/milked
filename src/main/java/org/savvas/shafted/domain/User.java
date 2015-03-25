@@ -8,7 +8,6 @@ import java.util.UUID;
 
 @Entity
 public class User {
-
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
@@ -47,10 +46,18 @@ public class User {
         return uuid;
     }
 
+    public boolean isActivated() {
+        return activated;
+    }
+
     @Override
     public String toString() {
         return String.format(
                 "Customer[id=%d, Email='%s', Name='%s', Password='%s']",
                 id, email, name, password);
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 }

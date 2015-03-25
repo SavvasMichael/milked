@@ -7,6 +7,8 @@ import org.savvas.shafted.Application;
 import org.savvas.shafted.controller.error.ErrorResponse;
 import org.savvas.shafted.controller.request.RegistrationRequest;
 import org.savvas.shafted.domain.User;
+import org.savvas.shafted.domain.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -55,7 +57,6 @@ public class RegistrationControllerIntegrationTest {
         // Given
         String registrationUrl = "http://localhost:" + port + "/registration";
         RegistrationRequest request = new RegistrationRequest("michaelsavvas", "savvas", "password");
-
         // When
         ResponseEntity<ErrorResponse> response =  rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
 
@@ -165,12 +166,30 @@ public class RegistrationControllerIntegrationTest {
         ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
         ResponseEntity<String> registrationResponse2 = rest.postForEntity(URI.create(registrationUrl), request2, String.class);
         String userPath = registrationResponse.getHeaders().getFirst("Location");
-        String userPath2 = registrationResponse.getHeaders().getFirst("Location");
+        String userPath2 = registrationResponse2.getHeaders().getFirst("Location");
         ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
         ResponseEntity<User> userResponse2 = rest.getForEntity(URI.create(baseUrl + userPath2), User.class);
         //then
-        assert (!userResponse.getBody().getUuid().isEmpty());
-        assert (!userResponse2.getBody().getUuid().isEmpty());
-        assertNotSame("UUIDS are identical", userResponse.getBody().getUuid(), userResponse2.getBody().getUuid());
+        assertTrue(!userResponse.getBody().getUuid().isEmpty());
+        assertTrue(!userResponse2.getBody().getUuid().isEmpty());
+        assertNotEquals(userResponse.getBody().getUuid(), userResponse2.getBody().getUuid());
+    }
+
+    @Test
+    public void setsActivateTrueWhenValidUuid() {
+        //given
+        String baseUrl = "http://localhost:" + port;
+        String registrationUrl = baseUrl + "/registration";
+        String activationUrl = baseUrl + "/activation/";
+        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
+        //when
+        ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
+        String userPath = registrationResponse.getHeaders().getFirst("Location");
+        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
+        String uuid = userResponse.getBody().getUuid();
+        ResponseEntity<User> activationResponse = rest.postForEntity(URI.create(activationUrl + uuid), null, User.class);
+        ResponseEntity<User> userResponse2 = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
+        //then
+        assertEquals(true, userResponse2.getBody().isActivated());
     }
 }
