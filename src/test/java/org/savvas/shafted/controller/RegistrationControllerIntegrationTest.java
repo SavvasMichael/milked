@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.savvas.shafted.Application;
 import org.savvas.shafted.controller.error.ErrorResponse;
+import org.savvas.shafted.controller.request.GroupRequest;
 import org.savvas.shafted.controller.request.RegistrationRequest;
 import org.savvas.shafted.domain.User;
 import org.savvas.shafted.domain.UserRepository;
@@ -58,7 +59,7 @@ public class RegistrationControllerIntegrationTest {
         String registrationUrl = "http://localhost:" + port + "/registration";
         RegistrationRequest request = new RegistrationRequest("michaelsavvas", "savvas", "password");
         // When
-        ResponseEntity<ErrorResponse> response =  rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
+        ResponseEntity<ErrorResponse> response = rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
 
         // Then
         assertEquals("Unexpected response code.", 400, response.getStatusCode().value());
@@ -66,12 +67,12 @@ public class RegistrationControllerIntegrationTest {
     }
 
     @Test
-    public void emptyEmailReturnsBadRequest(){
+    public void emptyEmailReturnsBadRequest() {
         //given
         String registrationUrl = "http://localhost:" + port + "/registration";
         RegistrationRequest request = new RegistrationRequest("", "savvas", "password");
         //when
-        ResponseEntity<ErrorResponse> response =  rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
+        ResponseEntity<ErrorResponse> response = rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
         //then
         assertEquals("Unexpected response code.", 400, response.getStatusCode().value());
         assertEquals("Unexpected Error Message", "email", response.getBody().getErrors().get(0));
@@ -79,12 +80,12 @@ public class RegistrationControllerIntegrationTest {
     }
 
     @Test
-    public void missingEmailReturnsBadRequest(){
+    public void missingEmailReturnsBadRequest() {
         //given
         String registrationUrl = "http://localhost:" + port + "/registration";
         RegistrationRequest request = new RegistrationRequest(null, "savvas", "password");
         //when
-        ResponseEntity<ErrorResponse> response =  rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
+        ResponseEntity<ErrorResponse> response = rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
         //then
         assertEquals("Unexpected response code.", 400, response.getStatusCode().value());
         assertEquals("Unexpected Error Message", "email", response.getBody().getErrors().get(0));
@@ -157,7 +158,6 @@ public class RegistrationControllerIntegrationTest {
     @Test
     public void registeringUserCreatesUniqueUuid() {
         //given
-        RegistrationRequest registrationRequest;
         String baseUrl = "http://localhost:" + port;
         String registrationUrl = "http://localhost:" + port + "/registration";
         RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "Savvas", "pass");
@@ -190,6 +190,24 @@ public class RegistrationControllerIntegrationTest {
         ResponseEntity<User> activationResponse = rest.postForEntity(URI.create(activationUrl + uuid), null, User.class);
         ResponseEntity<User> userResponse2 = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
         //then
+        System.out.println("adss");
         assertEquals(true, userResponse2.getBody().isActivated());
+    }
+
+    @Test
+    public void setsActivateTrueWithInvalidUuidReturns400() {
+        //given
+        String baseUrl = "http://localhost:" + port;
+        String registrationUrl = baseUrl + "/registration";
+        String activationUrl = baseUrl + "/activation/";
+        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
+        //when
+        ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
+        String userPath = registrationResponse.getHeaders().getFirst("Location");
+        ResponseEntity<User> userResponse2 = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
+        String uuid = "D5G14q-afA3-dAgk2324";
+        ResponseEntity<ErrorResponse> activationResponse = rest.postForEntity(URI.create(activationUrl + uuid), null, ErrorResponse.class);
+        //then
+        assertEquals("Unexpected error message", "Invalid UUID", activationResponse.getBody().getErrors().get(0));
     }
 }

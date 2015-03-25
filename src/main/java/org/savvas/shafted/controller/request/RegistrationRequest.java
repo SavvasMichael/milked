@@ -18,7 +18,8 @@ public class RegistrationRequest {
     @NotEmpty
     private String password;
 
-    public RegistrationRequest() { }
+    public RegistrationRequest() {
+    }
     public RegistrationRequest(String email, String name, String password) {
 
         this.email = email;

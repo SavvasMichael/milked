@@ -1,5 +1,6 @@
 package org.savvas.shafted.controller;
 
+import org.savvas.shafted.controller.error.ValidationException;
 import org.savvas.shafted.domain.User;
 import org.savvas.shafted.domain.UserRepository;
 import org.savvas.shafted.service.UserService;
