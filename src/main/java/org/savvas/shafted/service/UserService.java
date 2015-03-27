@@ -20,10 +20,12 @@ import java.util.UUID;
 @Service
 public class UserService {
     private UserRepository repository;
+
     @Autowired
     public UserService(UserRepository repository) {
         this.repository = repository;
     }
+
     public void sendEmail() {
         try {
             String host = "smtp.gmail.com";
@@ -56,7 +58,6 @@ public class UserService {
     }
 
     public Long createUser(RegistrationRequest registrationRequest) {
-        System.out.println("Registering User: " + registrationRequest);
         String uuid = UUID.randomUUID().toString();
         User user = new User(registrationRequest.getEmail(), registrationRequest.getName(), registrationRequest.getPassword(), uuid);
         User savedUser = repository.save(user);

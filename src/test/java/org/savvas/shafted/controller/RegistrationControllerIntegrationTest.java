@@ -10,6 +10,7 @@ import org.savvas.shafted.controller.request.RegistrationRequest;
 import org.savvas.shafted.domain.Group;
 import org.savvas.shafted.domain.User;
 import org.savvas.shafted.domain.UserRepository;
+import org.savvas.shafted.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
@@ -191,75 +192,7 @@ public class RegistrationControllerIntegrationTest {
         ResponseEntity<User> activationResponse = rest.postForEntity(URI.create(activationUrl + uuid), null, User.class);
         ResponseEntity<User> userResponse2 = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
         //then
-        System.out.println("adss");
         assertEquals(true, userResponse2.getBody().isActivated());
     }
 
-    @Test
-    public void setsActivateTrueWithInvalidUuidReturns400() {
-        //given
-        String baseUrl = "http://localhost:" + port;
-        String registrationUrl = baseUrl + "/registration";
-        String activationUrl = baseUrl + "/activation/";
-        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
-        //when
-        ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
-        String userPath = registrationResponse.getHeaders().getFirst("Location");
-        ResponseEntity<User> userResponse2 = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
-        String uuid = "D5G14q-afA3-dAgk2324";
-        ResponseEntity<ErrorResponse> activationResponse = rest.postForEntity(URI.create(activationUrl + uuid), null, ErrorResponse.class);
-        //then
-        assertEquals("Unexpected error message", "Invalid UUID", activationResponse.getBody().getErrors().get(0));
-    }
-
-    @Test
-    public void createGroupReturnsCreatedResponseCode() {
-        //given
-        String baseUrl = "http://localhost:" + port;
-        String createGroupUrl = baseUrl + "/group";
-        String registrationUrl = baseUrl + "/registration";
-        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
-        //when
-        ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
-        String userPath = registrationResponse.getHeaders().getFirst("Location");
-        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
-        GroupRequest groupRequest = new GroupRequest(userResponse.getBody().getId(), "SavvasGroup");
-        ResponseEntity<String> createGroupResponse = rest.postForEntity(URI.create(createGroupUrl), groupRequest, String.class);
-        //then
-        assertEquals(201, createGroupResponse.getStatusCode().value());
-    }
-
-    @Test
-    public void createGroupWithNullNameReturnsBadRequestResponseCode() {
-        //given
-        String baseUrl = "http://localhost:" + port;
-        String createGroupUrl = baseUrl + "/group";
-        String registrationUrl = baseUrl + "/registration";
-        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
-        //when
-        ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
-        String userPath = registrationResponse.getHeaders().getFirst("Location");
-        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
-        GroupRequest groupRequest = new GroupRequest(userResponse.getBody().getId(), null);
-        ResponseEntity<ErrorResponse> createGroupResponse = rest.postForEntity(URI.create(createGroupUrl), groupRequest, ErrorResponse.class);
-        //then
-        assertEquals("Unexpected Error Message", 400, createGroupResponse.getStatusCode().value());
-    }
-
-    @Test
-    public void createGroupWithMissingNameReturnsBadRequestResponseCode() {
-        //given
-        String baseUrl = "http://localhost:" + port;
-        String createGroupUrl = baseUrl + "/group";
-        String registrationUrl = baseUrl + "/registration";
-        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
-        //when
-        ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
-        String userPath = registrationResponse.getHeaders().getFirst("Location");
-        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
-        GroupRequest groupRequest = new GroupRequest(userResponse.getBody().getId(), "");
-        ResponseEntity<ErrorResponse> createGroupResponse = rest.postForEntity(URI.create(createGroupUrl), groupRequest, ErrorResponse.class);
-        //then
-        assertEquals("Unexpected Error Message", 400, createGroupResponse.getStatusCode().value());
-    }
 }

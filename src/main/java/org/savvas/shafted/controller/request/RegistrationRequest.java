@@ -3,11 +3,6 @@ package org.savvas.shafted.controller.request;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Index;
-import javax.persistence.UniqueConstraint;
-import javax.validation.Constraint;
-
 public class RegistrationRequest {
 
     @NotEmpty
