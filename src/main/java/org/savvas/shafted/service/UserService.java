@@ -1,4 +1,5 @@
 package org.savvas.shafted.service;
+
 import org.savvas.shafted.controller.request.RegistrationRequest;
 import org.savvas.shafted.domain.ShaftUser;
 import org.savvas.shafted.domain.UserRepository;
@@ -65,6 +66,7 @@ public class UserService {
     public ShaftUser getUser(Long id) {
         return repository.findOne(id);
     }
+
     public boolean userExists(String email) {
         List<ShaftUser> shaftUsers = repository.findByEmail(email);
         return !shaftUsers.isEmpty();

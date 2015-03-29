@@ -1,5 +1,6 @@
 package org.savvas.shafted.service;
 
+import org.savvas.shafted.controller.error.NotFoundException;
 import org.savvas.shafted.controller.request.GroupUserRequest;
 import org.savvas.shafted.controller.request.GroupUserState;
 import org.savvas.shafted.domain.GroupRepository;
@@ -20,13 +21,29 @@ public class GroupUserService {
         this.groupUserRepository = groupUserRepository;
     }
 
+    public GroupUser getGroup(Long id) {
+        GroupUser groupUser = groupUserRepository.findOne(id);
+        if (groupUser == null) {
+            throw new NotFoundException("User is not a member of this group");
+        }
+        return groupUser;
+    }
+
     public Long createGroupUser(GroupUserRequest groupUserRequest) {
         GroupUser groupUser = new GroupUser(groupUserRequest.getUserId(), groupUserRequest.getGroupId());
         groupUser.setState(GroupUserState.INVITED);
         GroupUser savedGroupUser = groupUserRepository.save(groupUser);
         return savedGroupUser.getGroupId();
     }
-    public GroupUser getGroup(Long id) {
-        return groupUserRepository.findOne(id);
+
+    public Long activateGroupUser(Long id) {
+        GroupUser activatedUser = groupUserRepository.findOne(id);
+        activatedUser.setState(GroupUserState.MEMBER);
+        GroupUser activatedSavedUser = groupUserRepository.save(activatedUser);
+        return activatedSavedUser.getId();
+    }
+
+    public void deleteGroupUser(Long id) {
+        groupUserRepository.delete(id);
     }
 }

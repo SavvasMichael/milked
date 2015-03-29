@@ -15,6 +15,7 @@ public class RegistrationRequest {
 
     public RegistrationRequest() {
     }
+
     public RegistrationRequest(String email, String name, String password) {
 
         this.email = email;

@@ -13,6 +13,7 @@ public class GroupService {
 
     public GroupService() {
     }
+
     @Autowired
     public GroupService(GroupRepository groupRepository) {
         this.groupRepository = groupRepository;

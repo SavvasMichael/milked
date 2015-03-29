@@ -66,4 +66,37 @@ public class GroupUserControllerIntegrationTest {
         //then
         assertEquals("Unexpected Error Message", "groupId", createGroupUserResponse.getBody().getErrors().get(0));
     }
+
+    @Test
+    public void activateGroupUserChangesGroupUserStateToMember() {
+        //given
+        String baseUrl = "http://localhost:" + port;
+        String createGroupUserUrl = baseUrl + "/group-user";
+        String activateGroupUserUrl = "/activate";
+        //when
+        GroupUserRequest groupUserRequest = new GroupUserRequest(1L, 1L);
+        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupUserRequest, String.class);
+        String groupUserLocation = createGroupUserResponse.getHeaders().getFirst("Location");
+        ResponseEntity<String> activateUserResponse = rest.postForEntity(URI.create(baseUrl + groupUserLocation + activateGroupUserUrl), groupUserRequest, String.class);
+        ResponseEntity<GroupUser> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), GroupUser.class);
+        //then
+        assertEquals("/group-user/1/activate", activateUserResponse.getHeaders().getFirst("Location"));
+        assertEquals(GroupUserState.MEMBER, groupUserResponse.getBody().getState());
+    }
+
+    @Test
+    public void checkDeletesGroupUserRemovesUser() {
+        //given
+        String baseUrl = "http://localhost:" + port;
+        String createGroupUserUrl = baseUrl + "/group-user";
+        //when
+        GroupUserRequest groupUserRequest = new GroupUserRequest(1L, 1L);
+        ResponseEntity<ErrorResponse> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupUserRequest, ErrorResponse.class);
+        String groupUserLocation = createGroupUserResponse.getHeaders().getFirst("Location");
+        rest.delete(URI.create(baseUrl + groupUserLocation));
+        ResponseEntity<GroupUser> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), GroupUser.class);
+        //then
+        assertEquals(404, groupUserResponse.getStatusCode().value());
+        assertEquals("Unexpected error message", "User is not a member of this group", createGroupUserResponse.getBody().getErrors().get(0));
+    }
 }

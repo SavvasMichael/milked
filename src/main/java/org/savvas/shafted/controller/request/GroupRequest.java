@@ -1,4 +1,5 @@
 package org.savvas.shafted.controller.request;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;

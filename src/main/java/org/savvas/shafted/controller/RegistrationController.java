@@ -26,7 +26,7 @@ public class RegistrationController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ResponseEntity registerUser(@RequestBody @Valid RegistrationRequest registrationRequest, BindingResult validation) {
-        if(validation.hasErrors()){
+        if (validation.hasErrors()) {
             throw new ValidationException(validation.getFieldErrors());
         }
         if (userService.userExists(registrationRequest.getEmail())) {
