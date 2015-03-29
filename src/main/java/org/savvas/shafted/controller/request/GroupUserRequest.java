@@ -1,7 +1,9 @@
 package org.savvas.shafted.controller.request;
 
-public class GroupUserRequest {
+import javax.validation.constraints.NotNull;
 
+public class GroupUserRequest {
+    @NotNull
     private Long groupId;
     private Long userId;
 

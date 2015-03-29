@@ -24,9 +24,8 @@ public class GroupUserService {
         GroupUser groupUser = new GroupUser(groupUserRequest.getUserId(), groupUserRequest.getGroupId());
         groupUser.setState(GroupUserState.INVITED);
         GroupUser savedGroupUser = groupUserRepository.save(groupUser);
-        return savedGroupUser.getId();
+        return savedGroupUser.getGroupId();
     }
-
     public GroupUser getGroup(Long id) {
         return groupUserRepository.findOne(id);
     }
