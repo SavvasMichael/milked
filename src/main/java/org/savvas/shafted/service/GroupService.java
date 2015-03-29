@@ -2,14 +2,10 @@ package org.savvas.shafted.service;
 
 
 import org.savvas.shafted.controller.request.GroupRequest;
-import org.savvas.shafted.domain.Group;
+import org.savvas.shafted.domain.ShaftGroup;
 import org.savvas.shafted.domain.GroupRepository;
-import org.savvas.shafted.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class GroupService {
@@ -23,12 +19,12 @@ public class GroupService {
     }
 
     public Long createGroup(GroupRequest groupRequest) {
-        Group group = new Group(groupRequest.getName(), groupRequest.getUserId());
-        Group savedGroup = groupRepository.save(group);
-        return savedGroup.getId();
+        ShaftGroup shaftGroup = new ShaftGroup(groupRequest.getName(), groupRequest.getUserId());
+        ShaftGroup savedShaftGroup = groupRepository.save(shaftGroup);
+        return savedShaftGroup.getId();
     }
 
-    public Group getGroup(Long id) {
+    public ShaftGroup getGroup(Long id) {
         return groupRepository.findById(id);
     }
 }

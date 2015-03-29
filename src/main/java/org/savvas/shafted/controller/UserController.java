@@ -1,6 +1,6 @@
 package org.savvas.shafted.controller;
 
-import org.savvas.shafted.domain.User;
+import org.savvas.shafted.domain.ShaftUser;
 import org.savvas.shafted.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public User getUser(@PathVariable("id") Long id) {
+    public ShaftUser getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);
     }
 }

@@ -4,8 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GroupRepository extends CrudRepository<Group, Long> {
+public interface GroupRepository extends CrudRepository<ShaftGroup, Long> {
 
-    Group findById(Long id);
+    ShaftGroup findById(Long id);
 
 }

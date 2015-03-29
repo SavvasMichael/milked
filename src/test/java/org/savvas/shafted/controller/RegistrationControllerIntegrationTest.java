@@ -1,17 +1,11 @@
 package org.savvas.shafted.controller;
 
-import org.hibernate.validator.constraints.Email;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.savvas.shafted.Application;
 import org.savvas.shafted.controller.error.ErrorResponse;
-import org.savvas.shafted.controller.request.GroupRequest;
 import org.savvas.shafted.controller.request.RegistrationRequest;
-import org.savvas.shafted.domain.Group;
-import org.savvas.shafted.domain.User;
-import org.savvas.shafted.domain.UserRepository;
-import org.savvas.shafted.service.GroupService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.savvas.shafted.domain.ShaftUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -21,7 +15,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.net.URI;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -45,14 +38,14 @@ public class RegistrationControllerIntegrationTest {
         // When
         ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
         String userPath = registrationResponse.getHeaders().getFirst("Location");
-        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
+        ResponseEntity<ShaftUser> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), ShaftUser.class);
         // Then
         assertEquals("Unexpected response code.", 201, registrationResponse.getStatusCode().value());
         assertEquals("Unexpected Location Header.", "/user/1", userPath);
-        User user = userResponse.getBody();
-        assertEquals("michaelsavvas@ymail.com", user.getEmail());
-        assertEquals("savvas", user.getName());
-        assertEquals("password", user.getPassword());
+        ShaftUser shaftUser = userResponse.getBody();
+        assertEquals("michaelsavvas@ymail.com", shaftUser.getEmail());
+        assertEquals("savvas", shaftUser.getName());
+        assertEquals("password", shaftUser.getPassword());
     }
 
     @Test
@@ -169,8 +162,8 @@ public class RegistrationControllerIntegrationTest {
         ResponseEntity<String> registrationResponse2 = rest.postForEntity(URI.create(registrationUrl), request2, String.class);
         String userPath = registrationResponse.getHeaders().getFirst("Location");
         String userPath2 = registrationResponse2.getHeaders().getFirst("Location");
-        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
-        ResponseEntity<User> userResponse2 = rest.getForEntity(URI.create(baseUrl + userPath2), User.class);
+        ResponseEntity<ShaftUser> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), ShaftUser.class);
+        ResponseEntity<ShaftUser> userResponse2 = rest.getForEntity(URI.create(baseUrl + userPath2), ShaftUser.class);
         //then
         assertTrue(!userResponse.getBody().getUuid().isEmpty());
         assertTrue(!userResponse2.getBody().getUuid().isEmpty());
@@ -187,10 +180,10 @@ public class RegistrationControllerIntegrationTest {
         //when
         ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
         String userPath = registrationResponse.getHeaders().getFirst("Location");
-        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
+        ResponseEntity<ShaftUser> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), ShaftUser.class);
         String uuid = userResponse.getBody().getUuid();
-        ResponseEntity<User> activationResponse = rest.postForEntity(URI.create(activationUrl + uuid), null, User.class);
-        ResponseEntity<User> userResponse2 = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
+        ResponseEntity<ShaftUser> activationResponse = rest.postForEntity(URI.create(activationUrl + uuid), null, ShaftUser.class);
+        ResponseEntity<ShaftUser> userResponse2 = rest.getForEntity(URI.create(baseUrl + userPath), ShaftUser.class);
         //then
         assertEquals(true, userResponse2.getBody().isActivated());
     }

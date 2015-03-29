@@ -6,9 +6,8 @@ import org.savvas.shafted.Application;
 import org.savvas.shafted.controller.error.ErrorResponse;
 import org.savvas.shafted.controller.request.GroupRequest;
 import org.savvas.shafted.controller.request.RegistrationRequest;
-import org.savvas.shafted.domain.Group;
-import org.savvas.shafted.domain.User;
-import org.savvas.shafted.service.GroupService;
+import org.savvas.shafted.domain.ShaftGroup;
+import org.savvas.shafted.domain.ShaftUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -25,7 +24,7 @@ import static org.junit.Assert.*;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest("server.port=0")
-public class GroupControllerIntegrationTest {
+public class ShaftGroupControllerIntegrationTest {
 
 
     @Value("${local.server.port}")
@@ -43,11 +42,17 @@ public class GroupControllerIntegrationTest {
         //when
         ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
         String userPath = registrationResponse.getHeaders().getFirst("Location");
-        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
+        ResponseEntity<ShaftUser> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), ShaftUser.class);
         GroupRequest groupRequest = new GroupRequest(userResponse.getBody().getId(), "SavvasGroup");
         ResponseEntity<String> createGroupResponse = rest.postForEntity(URI.create(createGroupUrl), groupRequest, String.class);
+        String groupLocation = createGroupResponse.getHeaders().getFirst("Location");
+        String groupUrl = baseUrl + groupLocation;
+        ResponseEntity<ShaftGroup> groupResponse = rest.getForEntity((URI.create(groupUrl)), ShaftGroup.class);
         //then
         assertEquals(201, createGroupResponse.getStatusCode().value());
+        assertEquals("/group/1", groupLocation);
+        assertEquals("SavvasGroup", groupResponse.getBody().getName());
+        assertEquals(1L, (long) groupResponse.getBody().getUserId());
     }
 
     @Test
@@ -60,11 +65,12 @@ public class GroupControllerIntegrationTest {
         //when
         ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
         String userPath = registrationResponse.getHeaders().getFirst("Location");
-        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
+        ResponseEntity<ShaftUser> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), ShaftUser.class);
         GroupRequest groupRequest = new GroupRequest(userResponse.getBody().getId(), null);
         ResponseEntity<ErrorResponse> createGroupResponse = rest.postForEntity(URI.create(createGroupUrl), groupRequest, ErrorResponse.class);
         //then
         assertEquals("Unexpected Error Message", 400, createGroupResponse.getStatusCode().value());
+        assertEquals("Unexpected Error Message", "name", createGroupResponse.getBody().getErrors().get(0));
     }
 
     @Test
@@ -77,27 +83,12 @@ public class GroupControllerIntegrationTest {
         //when
         ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
         String userPath = registrationResponse.getHeaders().getFirst("Location");
-        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
+        ResponseEntity<ShaftUser> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), ShaftUser.class);
         GroupRequest groupRequest = new GroupRequest(userResponse.getBody().getId(), "");
         ResponseEntity<ErrorResponse> createGroupResponse = rest.postForEntity(URI.create(createGroupUrl), groupRequest, ErrorResponse.class);
         //then
         assertEquals("Unexpected Error Message", 400, createGroupResponse.getStatusCode().value());
-    }
+        assertEquals("Unexpected Error Message", "name", createGroupResponse.getBody().getErrors().get(0));
 
-    @Test
-    public void savesGroupWhenCreated() {
-        //given
-        String baseUrl = "http://localhost:" + port;
-        String createGroupUrl = baseUrl + "/group";
-        String registrationUrl = baseUrl + "/registration";
-        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
-        //when
-        ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
-        String userPath = registrationResponse.getHeaders().getFirst("Location");
-        ResponseEntity<User> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), User.class);
-        GroupRequest groupRequest = new GroupRequest(userResponse.getBody().getId(), userResponse.getBody().getName());
-        ResponseEntity<String> createGroupResponse = rest.postForEntity(URI.create(createGroupUrl), groupRequest, String.class);
-        //then
     }
-
 }

@@ -1,10 +1,8 @@
 package org.savvas.shafted.service;
 import org.savvas.shafted.controller.request.RegistrationRequest;
-import org.savvas.shafted.domain.User;
+import org.savvas.shafted.domain.ShaftUser;
 import org.savvas.shafted.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Address;
@@ -59,16 +57,16 @@ public class UserService {
 
     public Long createUser(RegistrationRequest registrationRequest) {
         String uuid = UUID.randomUUID().toString();
-        User user = new User(registrationRequest.getEmail(), registrationRequest.getName(), registrationRequest.getPassword(), uuid);
-        User savedUser = repository.save(user);
-        return savedUser.getId();
+        ShaftUser shaftUser = new ShaftUser(registrationRequest.getEmail(), registrationRequest.getName(), registrationRequest.getPassword(), uuid);
+        ShaftUser savedShaftUser = repository.save(shaftUser);
+        return savedShaftUser.getId();
     }
 
-    public User getUser(Long id) {
+    public ShaftUser getUser(Long id) {
         return repository.findOne(id);
     }
     public boolean userExists(String email) {
-        List<User> users = repository.findByEmail(email);
-        return !users.isEmpty();
+        List<ShaftUser> shaftUsers = repository.findByEmail(email);
+        return !shaftUsers.isEmpty();
     }
 }

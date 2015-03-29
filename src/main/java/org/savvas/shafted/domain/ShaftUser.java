@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.util.UUID;
 
 @Entity
-public class User {
+public class ShaftUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -17,9 +17,10 @@ public class User {
     private boolean activated = false;
     private String uuid;
 
-    User(){}
+    ShaftUser() {
+    }
 
-    public User(String email, String name, String password, String uuid) {
+    public ShaftUser(String email, String name, String password, String uuid) {
         this.email = email;
         this.name = name;
         this.password = password;

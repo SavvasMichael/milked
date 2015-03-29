@@ -1,9 +1,7 @@
 package org.savvas.shafted.controller;
 
-import org.savvas.shafted.controller.error.ValidationException;
-import org.savvas.shafted.domain.User;
+import org.savvas.shafted.domain.ShaftUser;
 import org.savvas.shafted.domain.UserRepository;
-import org.savvas.shafted.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +18,10 @@ public class ActivationController {
     }
 
     @RequestMapping(value = "/activation/{uuid}", method = RequestMethod.POST)
-    public User activateUser(@PathVariable("uuid") String uuid) {
-        User fetchedUser = repository.findByUuid(uuid);
-        fetchedUser.setActivated(true);
-        User savedUser = repository.save(fetchedUser);
-        return savedUser;
+    public ShaftUser activateUser(@PathVariable("uuid") String uuid) {
+        ShaftUser fetchedShaftUser = repository.findByUuid(uuid);
+        fetchedShaftUser.setActivated(true);
+        ShaftUser savedShaftUser = repository.save(fetchedShaftUser);
+        return savedShaftUser;
     }
 }

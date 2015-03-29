@@ -6,9 +6,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
-    List<User> findByEmail(String email);
-    User findByUuid(String uuid);
+public interface UserRepository extends CrudRepository<ShaftUser, Long> {
+    List<ShaftUser> findByEmail(String email);
 
-    Group findById(Long id);
+    ShaftUser findByUuid(String uuid);
+
+    ShaftGroup findById(Long id);
 }

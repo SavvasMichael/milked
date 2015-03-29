@@ -2,11 +2,8 @@ package org.savvas.shafted.controller;
 
 import org.savvas.shafted.controller.error.ValidationException;
 import org.savvas.shafted.controller.request.RegistrationRequest;
-import org.savvas.shafted.domain.User;
-import org.savvas.shafted.domain.UserRepository;
 import org.savvas.shafted.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 import java.net.URI;
 
 @RestController
