@@ -1,12 +1,12 @@
 package org.savvas.shafted.controller.request;
-
 import org.hibernate.validator.constraints.NotEmpty;
-import org.savvas.shafted.domain.UserRepository;
+
+import javax.validation.constraints.NotNull;
 
 public class GroupRequest {
-    UserRepository repository;
     @NotEmpty
     private String name;
+    @NotNull
     private Long userId;
 
     public GroupRequest() {

@@ -1,5 +1,7 @@
 package org.savvas.shafted.domain;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 
 @Entity
