@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Implementation-Version: 0.1.0
+Implementation-Vendor-Id: org.savvas.shafted
+Build-Jdk: 1.7.0_76
+Built-By: savvas
+Created-By: IntelliJ IDEA
+Main-Class: ${start-class}
+
