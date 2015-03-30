@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class GroupService {
     private GroupRepository groupRepository;
 
-    public GroupService() {
+    GroupService() {
     }
 
     @Autowired
