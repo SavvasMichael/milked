@@ -87,7 +87,7 @@ public class ShaftGroupControllerIntegrationTest {
         GroupRequest groupRequest = new GroupRequest(userResponse.getBody().getId(), "");
         ResponseEntity<ErrorResponse> createGroupResponse = rest.postForEntity(URI.create(createGroupUrl), groupRequest, ErrorResponse.class);
         //then
-        assertEquals("Unexpected Error Message", 400, createGroupResponse.getStatusCode().value());
+        assertEquals("Unexpected Error Messag        RegistrationRequest request = new RegistrationRequest(\"michaelsavvas@ymail.com\", \"savvas\", \"password\");\ne", 400, createGroupResponse.getStatusCode().value());
         assertEquals("Unexpected Error Message", "name", createGroupResponse.getBody().getErrors().get(0));
 
     }

@@ -84,19 +84,46 @@ public class GroupUserControllerIntegrationTest {
         assertEquals(GroupUserState.MEMBER, groupUserResponse.getBody().getState());
     }
 
+    //Null Pointer because of validation, had to change test, see below
+//    @Test
+//    public void checkDeletesGroupUserRemovesUser() {
+//        //given
+//        String baseUrl = "http://localhost:" + port;
+//        String createGroupUserUrl = baseUrl + "/group-user";
+//        //when
+//        GroupUserRequest groupUserRequest = new GroupUserRequest(1L, 1L);
+//        ResponseEntity<ErrorResponse> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupUserRequest, ErrorResponse.class);
+//        String groupUserLocation = createGroupUserResponse.getHeaders().getFirst("Location");
+//        rest.delete(URI.create(baseUrl + groupUserLocation));
+//        ResponseEntity<GroupUser> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), GroupUser.class);
+//        //then
+//        assertEquals(404, groupUserResponse.getStatusCode().value());
+//        assertEquals("Unexpected error message", "User is not a member of this group", createGroupUserResponse.getBody().getErrors().get(0));
+//    }
     @Test
-    public void checkDeletesGroupUserRemovesUser() {
+    public void checkDeleteUserRemovesUserWithValidData() {
         //given
         String baseUrl = "http://localhost:" + port;
         String createGroupUserUrl = baseUrl + "/group-user";
+        String registrationUrl = baseUrl + "/registration";
+        String createGroupUrl = baseUrl + "/group";
         //when
-        GroupUserRequest groupUserRequest = new GroupUserRequest(1L, 1L);
-        ResponseEntity<ErrorResponse> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupUserRequest, ErrorResponse.class);
+        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
+        ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
+        String userPath = registrationResponse.getHeaders().getFirst("Location");
+        ResponseEntity<ShaftUser> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), ShaftUser.class);
+        GroupRequest groupRequest = new GroupRequest(userResponse.getBody().getId(), "SavvasGroup");
+        ResponseEntity<String> createGroupResponse = rest.postForEntity(URI.create(createGroupUrl), groupRequest, String.class);
+        String groupLocation = createGroupResponse.getHeaders().getFirst("Location");
+        String groupUrl = baseUrl + groupLocation;
+        ResponseEntity<ShaftGroup> groupResponse = rest.getForEntity((URI.create(groupUrl)), ShaftGroup.class);
+        GroupUserRequest groupUserRequest = new GroupUserRequest(groupResponse.getBody().getId(), groupResponse.getBody().getUserId());
+        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupUserRequest, String.class);
         String groupUserLocation = createGroupUserResponse.getHeaders().getFirst("Location");
         rest.delete(URI.create(baseUrl + groupUserLocation));
-        ResponseEntity<GroupUser> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), GroupUser.class);
+        ResponseEntity<ErrorResponse> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), ErrorResponse.class);
         //then
         assertEquals(404, groupUserResponse.getStatusCode().value());
-        assertEquals("Unexpected error message", "User is not a member of this group", createGroupUserResponse.getBody().getErrors().get(0));
+        assertEquals("Unexpected error message", "User is not a member of this group", groupUserResponse.getBody().getErrors().get(0));
     }
 }
