@@ -87,7 +87,7 @@ public class ShaftGroupControllerIntegrationTest {
         GroupRequest groupRequest = new GroupRequest(userResponse.getBody().getId(), "");
         ResponseEntity<ErrorResponse> createGroupResponse = rest.postForEntity(URI.create(createGroupUrl), groupRequest, ErrorResponse.class);
         //then
-        assertEquals("Unexpected Error Messag        RegistrationRequest request = new RegistrationRequest(\"michaelsavvas@ymail.com\", \"savvas\", \"password\");\ne", 400, createGroupResponse.getStatusCode().value());
+        assertEquals("Unexpected Error Message", 400, createGroupResponse.getStatusCode().value());
         assertEquals("Unexpected Error Message", "name", createGroupResponse.getBody().getErrors().get(0));
 
     }
@@ -103,5 +103,28 @@ public class ShaftGroupControllerIntegrationTest {
         //then
         assertEquals("Unexpected Error Message", 400, createGroupResponse.getStatusCode().value());
         assertEquals("Unexpected Error Message", "userId", createGroupResponse.getBody().getErrors().get(0));
+    }
+    @Test
+    public void checkGetUserGroups(){
+        //given
+        String baseUrl = "http://localhost:" + port;
+        String getGroupUrl = baseUrl + "/user-groups/";
+        String createGroupUrl = baseUrl + "/group";
+        String registrationUrl = baseUrl + "/registration";
+        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
+        //when
+        ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
+        String userPath = registrationResponse.getHeaders().getFirst("Location");
+        GroupRequest groupRequest = new GroupRequest(1L, "savvasgroup");
+        ResponseEntity<String> createGroupResponse = rest.postForEntity(URI.create(createGroupUrl), groupRequest, String.class);
+        ResponseEntity<ShaftGroup> getGroupResponse = rest.getForEntity(URI.create(getGroupUrl + 1), ShaftGroup.class);
+        //then
+        String a = "test";
+        int x = 4, y = 2;
+        System.out.println(x+y+a);
+        System.out.println(a+x+y);
+        System.out.println(a+(x+y));
+        assertEquals(201, createGroupResponse.getStatusCode().value());
+
     }
 }

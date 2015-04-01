@@ -1,0 +1,60 @@
+html{
+	background: url(http://www.roncorso.com/data/photos/76_1blue_martini_couples.jpg);
+}
+.mainWrapper{
+
+}
+.container-fluid{
+	background-color: white;
+}
+.navbar-default{
+	background-color: white!important;
+	border-bottom-color: #B3A1A1!important;
+	}
+.navbar-logo h4{
+	margin-left: 3.5em;
+	margin-top: 0.9em;
+}
+.welcomeMessage{
+	margin-left: 18em;
+	margin-top: 2em;
+	color: white;
+}
+.welcomeMessage p{
+	font-size: 1.5em;
+	margin-top: 1em;
+	color: white;
+	}
+.loginForm{
+	margin-left: 5em;
+	margin-top: 3.5em;
+	background-color: white;
+	border-radius: 0.7em;
+}
+.loginFormInner{
+	padding-top: 0.8em;
+}
+.loginButton{
+	margin-left: 8.2em;
+	height: 2.5em;
+	margin-top: -0.8em;
+}
+.signupForm{
+	margin-left:54em;
+	margin-top: 1em;
+	background-color: white;
+	border-radius: 0.7em;
+}
+.formHeader{
+	border-bottom: 1px solid lightgrey;
+	margin-bottom: 1em;
+}
+.signupFormInner{
+	padding-top: 0.8em;
+}
+.signup{
+	height: 2.5em;
+	margin-left:10.6em;
+	margin-bottom:0.8em;
+	margin-top: -0.8em;
+}

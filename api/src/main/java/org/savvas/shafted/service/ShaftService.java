@@ -1,5 +1,6 @@
 package org.savvas.shafted.service;
 
+import org.hibernate.metamodel.binding.CascadeType;
 import org.savvas.shafted.controller.request.ShaftRequest;
 import org.savvas.shafted.domain.GroupUser;
 import org.savvas.shafted.domain.GroupUserRepository;
@@ -7,6 +8,11 @@ import org.savvas.shafted.domain.Shaft;
 import org.savvas.shafted.domain.ShaftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ShaftService {

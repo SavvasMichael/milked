@@ -32,16 +32,16 @@ public class GroupUserController {
         return ResponseEntity.created(groupUserLocationURI).build();
     }
 
-    @RequestMapping(value = "/group-user/{id}", method = RequestMethod.GET)
-    public GroupUser getGroupUser(@PathVariable("id") Long id) {
-        return groupUserService.getGroup(id);
-    }
-
     @RequestMapping(value = "/group-user/{id}/activate", method = RequestMethod.POST)
     public ResponseEntity activateGroupUser(@PathVariable("id") Long id) {
         Long activatedGroupUserId = groupUserService.activateGroupUser(id);
         URI activatedGroupUserLocationURI = URI.create("/group-user/" + activatedGroupUserId + "/activate");
         return ResponseEntity.created(activatedGroupUserLocationURI).build();
+    }
+
+    @RequestMapping(value = "/group-user/{id}", method = RequestMethod.GET)
+    public GroupUser getGroupUser(@PathVariable("id") Long id) {
+        return groupUserService.getGroup(id);
     }
 
     @RequestMapping(value = "/group-user/{id}", method = RequestMethod.DELETE)

@@ -126,4 +126,5 @@ public class GroupUserControllerIntegrationTest {
         assertEquals(404, groupUserResponse.getStatusCode().value());
         assertEquals("Unexpected error message", "User is not a member of this group", groupUserResponse.getBody().getErrors().get(0));
     }
+
 }

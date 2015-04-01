@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<title>Shafted</title>
+</head>
+<body>
+	<div class = "mainWrapper">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid nav-bar" >
+				<div class="navbar-header">
+					<a class="navbar-logo" href="#">
+						<img src = "shafted2.png"/>
+					</a>
+				</div>
+			</div>
+		</nav>
+		<div class = "col-md-4 welcomeMessage">
+			<h1><strong>Welcome to Shafted.</strong></h1>
+			<p>Shafted allows you to create or join groups with friends and family to keep track of money going around daily between group members</p>
+		</div>
+		<div class = "col-md-3 loginForm">
+			<form role="form" class = "loginFormInner">
+				<div class="form-group">
+				<div class="formHeader">
+				<h4>Already a member? <strong>Log in</strong></h4>
+			</div>
+					<input type="email" class="form-control" id="email" placeholder="email">
+				</div>
+				<div class="form-group">
+					<input type="password" class="form-control" id="pwd" placeholder="password">
+				</div>
+				<div class="checkbox">
+					<label><input type="checkbox"> Remember me</label>
+					<button type="submit" class="btn btn-primary loginButton">Log in</button>
+				</div>
+			</form>
+		</div>
+		<div class = "col-md-3 signupForm">
+			<form role="form" class = "signupFormInner">
+			<div class="formHeader">
+				<h4>New to Shafted? <strong>Sign up</strong></h4>
+			</div>
+				<div class ="form-group">
+					<input type = "name" class = "form-control" id="name" placeholder = "full name">
+				</div>
+				<div class="form-group">
+					<input type="email" class="form-control" id="email" placeholder="email">
+				</div>
+				<div class="form-group">
+					<input type="password" class="form-control" id="pwd" placeholder="password">
+				</div>
+				<div class="signup">
+					<button type="submit" class="btn btn-success signupButton">Sign Up for Shafted</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
