@@ -72,13 +72,14 @@
     color:grey;
     font-family: Sans serif;
 }
-.userGroups li {
-    display: block;
-    padding: 0.5em;
-}
 .glyphicon-user{
     color: #C3882C;
     margin-left:1.2em;
+}
+.userGroups li {
+    display: block;
+    padding: 0.5em;
+    color: #5E5B5B;
 }
 .userGroups h3{
     margin-left:1.8em;
@@ -87,11 +88,8 @@
 .userGroups li a{
     color: #5E5B5B;
 }
-.userGroups li{
-    color: #5E5B5B;
-}
 .createGroup{
-    margin-top: 20em;
+    margin-top: 19.5em;
     margin-left: 4em;
 }
 .createGroupButton{
@@ -104,4 +102,14 @@
     margin-top: 1em;
     margin-left: 3em;
 }
+.group{}
+.group li{
+    display: block;
+    padding: 0.5em;
+    color: #5E5B5B;
+}
+.shaft{
+    margin-left: 3em;
+}
+
 
