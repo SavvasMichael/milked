@@ -1,11 +1,13 @@
-html{
-	background: url(http://www.roncorso.com/data/photos/76_1blue_martini_couples.jpg);
-}
-.mainWrapper{
-
+.homeWrapper{
+	background-image: url(http://www.roncorso.com/data/photos/76_1blue_martini_couples.jpg);
+    background-repeat: no-repeat;
+    position: absolute;
+    padding-bottom: 7.5em;
+    background-size: cover;
 }
 .container-fluid{
 	background-color: white;
+	margin-top: 0.5em;
 }
 .navbar-default{
 	background-color: white!important;
@@ -24,7 +26,7 @@ html{
 	font-size: 1.5em;
 	margin-top: 1em;
 	color: white;
-	}
+}
 .loginForm{
 	margin-left: 5em;
 	margin-top: 3.5em;
@@ -58,3 +60,48 @@ html{
 	margin-bottom:0.8em;
 	margin-top: -0.8em;
 }
+.menuItems ul{
+    margin-right: 5em;
+}
+.menuItems li{
+    display:inline;
+    padding: 1em;
+    text-decoration: none;
+}
+.menuItems li a{
+    color:grey;
+    font-family: Sans serif;
+}
+.userGroups li {
+    display: block;
+    padding: 0.5em;
+}
+.glyphicon-user{
+    color: #C3882C;
+    margin-left:1.2em;
+}
+.userGroups h3{
+    margin-left:1.8em;
+    padding-bottom: 1em;
+}
+.userGroups li a{
+    color: #5E5B5B;
+}
+.userGroups li{
+    color: #5E5B5B;
+}
+.createGroup{
+    margin-top: 20em;
+    margin-left: 4em;
+}
+.createGroupButton{
+    margin-top: 1em;
+    width: 12em;
+    height: 3em;
+    border-radius: 0.7em !important;
+}
+.newGroup{
+    margin-top: 1em;
+    margin-left: 3em;
+}
+
