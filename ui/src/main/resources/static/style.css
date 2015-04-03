@@ -102,7 +102,6 @@
     margin-top: 1em;
     margin-left: 3em;
 }
-.group{}
 .group li{
     display: block;
     padding: 0.5em;
@@ -111,5 +110,42 @@
 .shaft{
     margin-left: 3em;
 }
+.header h2{
+    color:green;
+    text-align: center;
+    margin-top: 1.3em;
+}
+.headerContent h4{
+    color: green;
+    text-align: center;
+    margin-top: 2em;
+ }
+ .line{
+    border-bottom: 0.1em solid grey;
+    margin-top: 2em;
+ }
+ .mainContentWrapper{
+    margin-top: 4em;
+ }
+ .mainContent{
+    text-align: center;
+ }
+ .mainContent li{
+    display: inline-block;
+    padding: 0.7em;
+ }
+ .mainContent h3{
+    margin-left: 1.5em;
+    margin-bottom: 1.8em;
+ }
+ .mainContent h4{
+    margin-left: 2em;
+ }
+ .badge{
+    margin-left: 1em;
+ }
+ .headerWrapper{
+    margin-top: -1.4em;
+    }
 
 
