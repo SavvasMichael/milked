@@ -53,15 +53,6 @@ html .navbar-default{
     color:grey;
     font-family: Sans serif;
 }
-.groupColumn{
-    height:100%;
-    border-right:0.1em solid black;
-}
-.groupMenu li{
-    display:block;
-    text-decoration:none;
-    padding: 0.6em;
-}
 .header h2, .header h4, .header h3{
     text-align: center;
     margin-top: 1.3em;

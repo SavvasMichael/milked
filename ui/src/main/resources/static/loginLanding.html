@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <title>Shafted</title>
@@ -17,29 +17,102 @@
                 </a>
             </div>
         </div>
-        <div class="menuItems pull-right">
-            <ul>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Log out</a></li>
-            </ul>
-        </div>
     </nav>
-    <div class="col-md-2 groupColumn">
-        <ul class="groupMenu">
+    <div class="col-md-2 groupMenu" style="background-color: lightgrey">
+        <ul>
             <li>Cirrus</li>
-            <li>Work</li>
             <li>Home</li>
+            <li>Work</li>
             <li>Gym</li>
         </ul>
     </div>
-    <div class="row">
-        <div class="col-md-7 header">
-            <h3>CIRRUS</h3>
+    <div class="col-md-10 content">
+        <div class="row">
+            <h4>CIRRUS</h4>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-7 col-md-offset-2 headerContent">
-            <h3>You owe &pound52.30 </h3>
+        <div class="row">
+            <h3>You owe &pound52.30</h3>
+        </div>
+        <div class="col-md-5 leaderTableWrapper">
+            <table class="table table-bordered">
+                <thead>
+                <th>Top 3</th>
+                <tr>
+                    <th>Name</th>
+                    <th>Balance</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Joe</td>
+                    <td>&pound52.30</td>
+                </tr>
+                <tr>
+                    <td>Savvas</td>
+                    <td>&pound33.00</td>
+                </tr>
+                <tr>
+                    <td>Maria</td>
+                    <td>&pound24.12</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-5 looserTableWrapper">
+            <table class="table table-bordered">
+                <thead>
+                <th>Bottom 3</th>
+                <tr>
+                    <th>Name</th>
+                    <th>Balance</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Irini</td>
+                    <td>&pound12.32</td>
+                </tr>
+                <tr>
+                    <td>Helena</td>
+                    <td>&pound0</td>
+                </tr>
+                <tr>
+                    <td>Dud</td>
+                    <td>&pound-12</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <h4>Shafter</h4>
+            <input type="amount" class="form-control" id="amount" placeholder="Enter Amount">
+            <ul>
+                <li>
+                    <button type="submit" class="btn btn-primary shaftButton">Shaft</button>
+                    Joe
+                    <button type="submit" class="btn btn-danger shaftedMeButton">Shafted Me</button>
+                </li>
+                <li>
+                    <button type="submit" class="btn btn-primary shaftButton">Shaft</button>
+                    Savvas
+                    <button type="submit" class="btn btn-danger shaftedMeButton">Shafted Me</button>
+                </li>
+                <li>
+                    <button type="submit" class="btn btn-primary shaftButton">Shaft</button>
+                    Irini
+                    <button type="submit" class="btn btn-danger shaftedMeButton">Shafted Me</button>
+                </li>
+                <li>
+                    <button type="submit" class="btn btn-primary shaftButton">Shaft</button>
+                    Maria
+                    <button type="submit" class="btn btn-danger shaftedMeButton">Shafted Me</button>
+                </li>
+                <li>
+                    <button type="submit" class="btn btn-primary shaftButton">Shaft</button>
+                    Helena
+                    <button type="submit" class="btn btn-danger shaftedMeButton">Shafted Me</button>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
