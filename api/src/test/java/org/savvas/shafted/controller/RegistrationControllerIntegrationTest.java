@@ -52,7 +52,7 @@ public class RegistrationControllerIntegrationTest {
     public void invalidEmailReturnsBadRequest() {
         // Given
         String registrationUrl = "http://localhost:" + port + "/registration";
-        RegistrationRequest request = new RegistrationRequest("michaelsavvas", "savvas", "password");
+        RegistrationRequest request = new RegistrationRequest("savvasmichael", "savvas", "password");
         // When
         ResponseEntity<ErrorResponse> response = rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
 

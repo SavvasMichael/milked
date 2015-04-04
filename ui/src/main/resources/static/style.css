@@ -1,25 +1,16 @@
 .homeWrapper{
 	background-image: url(http://www.roncorso.com/data/photos/76_1blue_martini_couples.jpg);
     background-repeat: no-repeat;
-    position: absolute;
-    padding-bottom: 7.5em;
+    padding-bottom: 7.5em;      /*FIX THIS*/
     background-size: cover;
 }
-.container-fluid{
-	background-color: white;
-	margin-top: 0.5em;
+.signup{
+    margin-top:1em;
 }
-.navbar-default{
-	background-color: white!important;
-	border-bottom-color: #B3A1A1!important;
-	}
-.navbar-logo h4{
-	margin-left: 3.5em;
-	margin-top: 0.9em;
+html .navbar-default{
+	background-color:white;
 }
 .welcomeMessage{
-	margin-left: 18em;
-	margin-top: 2em;
 	color: white;
 }
 .welcomeMessage p{
@@ -28,7 +19,6 @@
 	color: white;
 }
 .loginForm{
-	margin-left: 5em;
 	margin-top: 3.5em;
 	background-color: white;
 	border-radius: 0.7em;
@@ -37,28 +27,19 @@
 	padding-top: 0.8em;
 }
 .loginButton{
-	margin-left: 8.2em;
+	margin-left: 7em;
 	height: 2.5em;
 	margin-top: -0.8em;
 }
 .signupForm{
-	margin-left:54em;
-	margin-top: 1em;
 	background-color: white;
 	border-radius: 0.7em;
 }
-.formHeader{
-	border-bottom: 1px solid lightgrey;
-	margin-bottom: 1em;
+.signupButton{
+    margin-bottom:0.5em;
 }
 .signupFormInner{
 	padding-top: 0.8em;
-}
-.signup{
-	height: 2.5em;
-	margin-left:10.6em;
-	margin-bottom:0.8em;
-	margin-top: -0.8em;
 }
 .menuItems ul{
     margin-right: 5em;
@@ -88,38 +69,17 @@
 .userGroups li a{
     color: #5E5B5B;
 }
-.createGroup{
-    margin-top: 19.5em;
-    margin-left: 4em;
-}
-.createGroupButton{
-    margin-top: 1em;
-    width: 12em;
-    height: 3em;
-    border-radius: 0.7em !important;
-}
 .newGroup{
     margin-top: 1em;
-    margin-left: 3em;
-}
-.group li{
-    display: block;
-    padding: 0.5em;
-    color: #5E5B5B;
 }
 .shaft{
     margin-left: 3em;
 }
-.header h2{
+.header h2, .header h4{
     color:green;
     text-align: center;
     margin-top: 1.3em;
 }
-.headerContent h4{
-    color: green;
-    text-align: center;
-    margin-top: 2em;
- }
  .line{
     border-bottom: 0.1em solid grey;
     margin-top: 2em;
@@ -134,18 +94,12 @@
     display: inline-block;
     padding: 0.7em;
  }
- .mainContent h3{
+ .mainContent h3, .mainContent h4{
     margin-left: 1.5em;
     margin-bottom: 1.8em;
- }
- .mainContent h4{
-    margin-left: 2em;
  }
  .badge{
     margin-left: 1em;
  }
- .headerWrapper{
-    margin-top: -1.4em;
-    }
 
 
