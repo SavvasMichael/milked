@@ -53,30 +53,16 @@ html .navbar-default{
     color:grey;
     font-family: Sans serif;
 }
-.glyphicon-user{
-    color: #C3882C;
-    margin-left:1.2em;
+.groupColumn{
+    height:100%;
+    border-right:0.1em solid black;
 }
-.userGroups li {
-    display: block;
-    padding: 0.5em;
-    color: #5E5B5B;
+.groupMenu li{
+    display:block;
+    text-decoration:none;
+    padding: 0.6em;
 }
-.userGroups h3{
-    margin-left:1.8em;
-    padding-bottom: 1em;
-}
-.userGroups li a{
-    color: #5E5B5B;
-}
-.newGroup{
-    margin-top: 1em;
-}
-.shaft{
-    margin-left: 3em;
-}
-.header h2, .header h4{
-    color:green;
+.header h2, .header h4, .header h3{
     text-align: center;
     margin-top: 1.3em;
 }
@@ -101,5 +87,3 @@ html .navbar-default{
  .badge{
     margin-left: 1em;
  }
-
-
