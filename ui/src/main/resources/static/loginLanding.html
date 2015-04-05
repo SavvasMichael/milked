@@ -16,6 +16,12 @@
                     <img src="shafted2.png"/>
                 </a>
             </div>
+            <div class="pull-right menuItems">
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Log out</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
     <div class="col-md-2 groupMenu" style="background-color: lightgrey">
@@ -33,59 +39,65 @@
         <div class="row">
             <h3>You owe &pound52.30</h3>
         </div>
-        <div class="col-md-5 leaderTableWrapper">
-            <table class="table table-bordered">
-                <thead>
-                <th>Top 3</th>
-                <tr>
-                    <th>Name</th>
-                    <th>Balance</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Joe</td>
-                    <td>&pound52.30</td>
-                </tr>
-                <tr>
-                    <td>Savvas</td>
-                    <td>&pound33.00</td>
-                </tr>
-                <tr>
-                    <td>Maria</td>
-                    <td>&pound24.12</td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="col-md-12 tableWrapper" style="border:0.1em solid lightgrey">
+            <h4>Leader Boards</h4>
+
+            <div class="col-md-5 leaderTableWrapper">
+                <table class="table table-bordered">
+                    <thead>
+                    <th>Top 3</th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Balance</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Joe</td>
+                        <td>&pound52.30</td>
+                    </tr>
+                    <tr>
+                        <td>Savvas</td>
+                        <td>&pound33.00</td>
+                    </tr>
+                    <tr>
+                        <td>Maria</td>
+                        <td>&pound24.12</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-5 looserTableWrapper">
+                <table class="table table-bordered">
+                    <thead>
+                    <th>Bottom 3</th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Balance</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Irini</td>
+                        <td>&pound12.32</td>
+                    </tr>
+                    <tr>
+                        <td>Helena</td>
+                        <td>&pound0</td>
+                    </tr>
+                    <tr>
+                        <td>Dud</td>
+                        <td>&pound-12</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="col-md-5 looserTableWrapper">
-            <table class="table table-bordered">
-                <thead>
-                <th>Bottom 3</th>
-                <tr>
-                    <th>Name</th>
-                    <th>Balance</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Irini</td>
-                    <td>&pound12.32</td>
-                </tr>
-                <tr>
-                    <td>Helena</td>
-                    <td>&pound0</td>
-                </tr>
-                <tr>
-                    <td>Dud</td>
-                    <td>&pound-12</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <h4>Shafter</h4>
-            <input type="amount" class="form-control" id="amount" placeholder="Enter Amount">
+            <input type="amount" class="form-control" id="amount" placeholder="Enter &pound Amount">
+            <input type="description" class="form-control" id="description"
+                   placeholder="Description: i.e: Pint of Beer">
             <ul>
                 <li>
                     <button type="submit" class="btn btn-primary shaftButton">Shaft</button>
@@ -113,6 +125,25 @@
                     <button type="submit" class="btn btn-danger shaftedMeButton">Shafted Me</button>
                 </li>
             </ul>
+        </div>
+        <div class="col-md-5">
+            <h4>History</h4>
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td>5 April 2015</td>
+                    <td>Joe shafted Savvas &pound5.25 for a pint of beer</td>
+                </tr>
+                <tr>
+                    <td>4 April 2015</td>
+                    <td>Savvas shafted Joe &pound3.30 for a sandwich</td>
+                </tr>
+                <tr>
+                    <td>3 April 2015</td>
+                    <td>Irini shafted Maria &pound1.20 for a juice</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
