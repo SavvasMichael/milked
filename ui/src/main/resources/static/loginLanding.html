@@ -8,12 +8,12 @@
     <title>Shafted</title>
 </head>
 <body>
-<div class="container-fluid">
+<div class="container-fluid wrapper">
     <nav class="navbar navbar-default">
         <div class="container-fluid nav-bar">
             <div class="navbar-header">
                 <a class="navbar-logo" href="#">
-                    <img src="shafted2.png"/>
+                    <img src="shafted.png"/>
                 </a>
             </div>
             <div class="pull-right menuItems">
@@ -24,26 +24,26 @@
             </div>
         </div>
     </nav>
-    <div class="col-md-2 groupMenu" style="background-color: lightgrey">
+    <div class="col-md-2 groupMenu">
         <ul>
-            <li>Cirrus</li>
-            <li>Home</li>
-            <li>Work</li>
-            <li>Gym</li>
+            <li><a href="#">Cirrus</a></li>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Work</a></li>
+            <li><a href="#">Gym</a></li>
         </ul>
     </div>
     <div class="col-md-10 content">
-        <div class="row">
-            <h4>CIRRUS</h4>
+        <div class="col-md-12 col-md-offset-4 headerContent">
+            <h3><u>CIRRUS</u></h3>
         </div>
-        <div class="row">
-            <h3>You owe &pound52.30</h3>
+        <div class="col-md-3 headerContent">
+            <h3>YOU OWE &pound52.30</h3>
         </div>
-        <div class="col-md-12 tableWrapper" style="border:0.1em solid lightgrey">
+        <div class="col-md-12 tableWrapper">
             <h4>Leader Boards</h4>
 
             <div class="col-md-5 leaderTableWrapper">
-                <table class="table table-bordered">
+                <table class="table ">
                     <thead>
                     <th>Top 3</th>
                     <tr>
@@ -67,8 +67,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-5 looserTableWrapper">
-                <table class="table table-bordered">
+            <div class="col-md-5 col-md-offset-1 looserTableWrapper">
+                <table class="table">
                     <thead>
                     <th>Bottom 3</th>
                     <tr>
@@ -93,57 +93,96 @@
                 </table>
             </div>
         </div>
-        <div class="col-md-5">
-            <h4>Shafter</h4>
-            <input type="amount" class="form-control" id="amount" placeholder="Enter &pound Amount">
-            <input type="description" class="form-control" id="description"
-                   placeholder="Description: i.e: Pint of Beer">
-            <ul>
-                <li>
-                    <button type="submit" class="btn btn-primary shaftButton">Shaft</button>
-                    Joe
-                    <button type="submit" class="btn btn-danger shaftedMeButton">Shafted Me</button>
-                </li>
-                <li>
-                    <button type="submit" class="btn btn-primary shaftButton">Shaft</button>
-                    Savvas
-                    <button type="submit" class="btn btn-danger shaftedMeButton">Shafted Me</button>
-                </li>
-                <li>
-                    <button type="submit" class="btn btn-primary shaftButton">Shaft</button>
-                    Irini
-                    <button type="submit" class="btn btn-danger shaftedMeButton">Shafted Me</button>
-                </li>
-                <li>
-                    <button type="submit" class="btn btn-primary shaftButton">Shaft</button>
-                    Maria
-                    <button type="submit" class="btn btn-danger shaftedMeButton">Shafted Me</button>
-                </li>
-                <li>
-                    <button type="submit" class="btn btn-primary shaftButton">Shaft</button>
-                    Helena
-                    <button type="submit" class="btn btn-danger shaftedMeButton">Shafted Me</button>
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-5">
-            <h4>History</h4>
-            <table class="table table-bordered">
-                <tbody>
-                <tr>
-                    <td>5 April 2015</td>
-                    <td>Joe shafted Savvas &pound5.25 for a pint of beer</td>
-                </tr>
-                <tr>
-                    <td>4 April 2015</td>
-                    <td>Savvas shafted Joe &pound3.30 for a sandwich</td>
-                </tr>
-                <tr>
-                    <td>3 April 2015</td>
-                    <td>Irini shafted Maria &pound1.20 for a juice</td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="col-md-12 tableWrapper">
+            <div class="col-md-12">
+                <div class="col-md-5 shaftWrapper">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>Shafter</h4>
+                        </div>
+                        <div class="panel-body">
+                            <input type="amount" class="form-control amountInput" placeholder="Enter Amount">
+                            <input type="description" class="form-control descriptionInput"
+                                   placeholder="Description: i.e - Pint of Beer">
+                            <ul class="shafterAction">
+                                <li class="shafterAction"><a href="#">Joe</a>
+
+                                    <div class="row">
+                                        <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
+                                        <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
+                                        </button>
+                                    </div>
+                                </li>
+                                <li class="shafterAction">
+                                    <a href="#">Savvas</a>
+
+                                    <div class="row">
+                                        <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
+                                        <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
+                                        </button>
+                                    </div>
+                                </li>
+                                <li class="shafterAction">
+                                    <a href="#">Irini</a>
+
+                                    <div class="row">
+                                        <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
+                                        <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
+                                        </button>
+                                    </div>
+                                </li>
+                                <li class="shafterAction">
+                                    <a href="#">Maria</a>
+
+                                    <div class="row">
+                                        <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
+                                        <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
+                                        </button>
+                                    </div>
+                                </li>
+                                <li class="shafterAction">
+                                    <a href="#">Helena</a>
+
+                                    <div class="row">
+                                        <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
+                                        <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-md-offset-1 historyWrapper">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>History</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td>5 April 2015</td>
+                                    <td>Joe shafted Savvas &pound5.25 for a really amazing cold pint of beer</td>
+                                </tr>
+                                <tr>
+                                    <td>4 April 2015</td>
+                                    <td>Savvas shafted Joe &pound3.30 for a sandwich</td>
+                                </tr>
+                                <tr>
+                                    <td>3 April 2015</td>
+                                    <td>Irini shafted Maria &pound1.20 for a juice</td>
+                                </tr>
+                                <tr>
+                                    <td>3 April 2015</td>
+                                    <td>Maria shafted Joe &pound2.20 for a chocolate</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -4,11 +4,21 @@
     padding-bottom: 7.5em;      /*FIX THIS*/
     background-size: cover;
 }
+body h3, body h4{
+    color: #711371;
+    padding: 0.2em;
+}
+.wrapper{
+    background-image: url("ZenBG.png")
+}
+.navbar-header{
+    margin-top: 0.3em;
+}
 .signup{
     margin-top:1em;
 }
 html .navbar-default{
-	background-color:white;
+	background-color:#22514E;
 }
 .welcomeMessage{
 	color: white;
@@ -46,7 +56,41 @@ html .navbar-default{
     padding: 1em;
     text-decoration: none;
 }
-.menuItems li a{
-    color:grey;
-    font-family: Sans serif;
+.menuItems a{
+    color: white;
+}
+.menuItems ul{
+    margin-top: 1em;
+}
+.groupMenu li{
+    border-bottom: 0.1em solid lightgrey;
+    border-right: 0.1em solid lightgrey;
+    display:block;
+    padding: 1em;
+}
+.groupMenu li a{
+    color:black;
+}
+.tableWrapper{
+    padding-top: 2em;
+    border: 0.1em solid lightgrey;
+}
+html .table thead tr th{
+    border-bottom: none;
+}
+.shaftWrapper, .historyWrapper{
+    padding: 2em;
+}
+.shafterAction{
+    padding: 0.5em;
+    display:block;
+}
+.shafterAction a{
+    color: black
+}
+.row button{
+    margin-left: 1em;
+}
+html body .amountInput, html body .descriptionInput{
+    width:60%;
 }
