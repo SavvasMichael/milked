@@ -16,7 +16,7 @@
                     <img src="shafted.png"/>
                 </a>
             </div>
-            <div class="pull-right menuItems">
+            <div class="navbar-right menuItems">
                 <ul>
                     <li><a href="#">About</a></li>
                     <li><a href="#">Log out</a></li>
@@ -31,19 +31,24 @@
             <li><a href="#">Work</a></li>
             <li><a href="#">Gym</a></li>
         </ul>
+        <div class="createGroupInput createGroup">
+            <input type="text" class="form-control" placeholder="New Group">
+        </div>
+        <div class="createGroup">
+            <button type="submit" class="btn btn-primary createGroupButton">Create group</button>
+        </div>
     </div>
     <div class="col-md-10 content">
-        <div class="col-md-12 col-md-offset-4 headerContent">
-            <h3><u>CIRRUS</u></h3>
+        <div class="col-md-12 col-md-offset-4">
+            <h3><strong>CIRRUS</strong></h3>
         </div>
-        <div class="col-md-3 headerContent">
-            <h3>YOU OWE &pound52.30</h3>
+        <div class="col-md-3 well text-center">
+            <h3><i>You owe &pound52.30</i></u></h3>
         </div>
         <div class="col-md-12 tableWrapper">
             <h4>Leader Boards</h4>
-
             <div class="col-md-5 leaderTableWrapper">
-                <table class="table ">
+                <table class="table table-hover">
                     <thead>
                     <th>Top 3</th>
                     <tr>
@@ -68,7 +73,7 @@
                 </table>
             </div>
             <div class="col-md-5 col-md-offset-1 looserTableWrapper">
-                <table class="table">
+                <table class="table table-hover">
                     <thead>
                     <th>Bottom 3</th>
                     <tr>
@@ -101,12 +106,20 @@
                             <h4>Shafter</h4>
                         </div>
                         <div class="panel-body">
-                            <input type="amount" class="form-control amountInput" placeholder="Enter Amount">
-                            <input type="description" class="form-control descriptionInput"
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label class="sr-only">Amount</label>
+
+                                    <div class="input-group">
+                                        <div class="input-group-addon">&pound</div>
+                                        <input type="text" class="form-control shaftInput" placeholder="Enter Amount">
+                                    </div>
+                                </div>
+                            </form>
+                            <input type="description" class="form-control shaftDescInput"
                                    placeholder="Description: i.e - Pint of Beer">
                             <ul class="shafterAction">
                                 <li class="shafterAction"><a href="#">Joe</a>
-
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
                                         <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
@@ -115,7 +128,6 @@
                                 </li>
                                 <li class="shafterAction">
                                     <a href="#">Savvas</a>
-
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
                                         <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
@@ -124,7 +136,6 @@
                                 </li>
                                 <li class="shafterAction">
                                     <a href="#">Irini</a>
-
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
                                         <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
@@ -133,7 +144,6 @@
                                 </li>
                                 <li class="shafterAction">
                                     <a href="#">Maria</a>
-
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
                                         <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
@@ -142,7 +152,6 @@
                                 </li>
                                 <li class="shafterAction">
                                     <a href="#">Helena</a>
-
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
                                         <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me

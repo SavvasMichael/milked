@@ -5,11 +5,11 @@
     background-size: cover;
 }
 body h3, body h4{
-    color: #711371;
     padding: 0.2em;
 }
 .wrapper{
-    background-image: url("ZenBG.png")
+    /*background-image: url("ZenBG.png")*/
+    background-color: #FAFBFF;
 }
 .navbar-header{
     margin-top: 0.3em;
@@ -71,12 +71,20 @@ html .navbar-default{
 .groupMenu li a{
     color:black;
 }
+.createGroup{
+    margin-left: 2.5em;
+    padding: 0.3em;
+}
 .tableWrapper{
     padding-top: 2em;
     border: 0.1em solid lightgrey;
+    margin-bottom:0.5em;
 }
 html .table thead tr th{
     border-bottom: none;
+}
+.panel-heading{
+    text-align: center;
 }
 .shaftWrapper, .historyWrapper{
     padding: 2em;
@@ -91,6 +99,7 @@ html .table thead tr th{
 .row button{
     margin-left: 1em;
 }
-html body .amountInput, html body .descriptionInput{
-    width:60%;
+html body .shaftDescInput{
+    width:63%;
+    margin-top:0.5em;
 }
