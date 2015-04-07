@@ -8,7 +8,7 @@ body h3, body h4{
     padding: 0.2em;
 }
 .wrapper{
-    background-image: url("ZenBG.png");
+    background-image: url("ZenBG2.png");
     background-size: cover;
 }
 .navbar-header{
@@ -47,6 +47,7 @@ html .navbar-default{
 }
 .signupButton{
     margin-bottom:0.5em;
+    margin-left: 5.1em;
 }
 .signupFormInner{
 	padding-top: 0.8em;
