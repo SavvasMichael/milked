@@ -1,24 +1,24 @@
 .homeWrapper{
 	background-image: url(http://www.roncorso.com/data/photos/76_1blue_martini_couples.jpg);
     background-repeat: no-repeat;
-    padding-bottom: 7.5em;      /*FIX THIS*/
+    padding-bottom: 8.7em;      /*FIX THIS*/
     background-size: cover;
 }
 body h3, body h4{
     padding: 0.2em;
 }
 .wrapper{
-    /*background-image: url("ZenBG.png")*/
-    background-color: #FAFBFF;
+    background-image: url("ZenBG.png");
+    background-size: cover;
 }
 .navbar-header{
-    margin-top: 0.3em;
+    margin-top: 0.4em;
 }
 .signup{
     margin-top:1em;
 }
 html .navbar-default{
-	background-color:#22514E;
+	background-color:#337AB7;
 }
 .welcomeMessage{
 	color: white;
@@ -75,13 +75,38 @@ html .navbar-default{
     margin-left: 2.5em;
     padding: 0.3em;
 }
+html .inviteInput{
+    height: 2em;
+    width: 50%;
+    display:inline;
+}
+.headerRow{
+    margin-bottom: 1em;
+}
+.inviteButton{
+  height: 2.3em;
+  margin-left: -0.2em;
+}
+.row shaftButton, .row shaftedButton{
+    margin-left: 1em;
+}
 .tableWrapper{
     padding-top: 2em;
-    border: 0.1em solid lightgrey;
     margin-bottom:0.5em;
+}
+.leaderboardGlyph{
+    margin-left: 0.5em;
+    color: green;
+}
+.looserboardGlyph{
+    margin-left: 0.5em;
+    color: red;
 }
 html .table thead tr th{
     border-bottom: none;
+}
+html .table tbody tr td{
+    border-top: none;
 }
 .panel-heading{
     text-align: center;
@@ -96,10 +121,9 @@ html .table thead tr th{
 .shafterAction a{
     color: black
 }
-.row button{
-    margin-left: 1em;
+.shaftButton{
+    margin-left:1em;
 }
 html body .shaftDescInput{
-    width:63%;
     margin-top:0.5em;
 }

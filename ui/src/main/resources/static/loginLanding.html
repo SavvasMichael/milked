@@ -39,16 +39,23 @@
         </div>
     </div>
     <div class="col-md-10 content">
-        <div class="col-md-12 col-md-offset-4">
-            <h3><strong>CIRRUS</strong></h3>
-        </div>
-        <div class="col-md-3 well text-center">
-            <h3><i>You owe &pound52.30</i></u></h3>
+        <div class="row headerRow">
+            <div class="col-md-4 col-md-offset-1">
+                <h3><strong>CIRRUS</strong>
+                    <small><strong>-You owe &pound52.30-</strong></small>
+                </h3>
+            </div>
+            <div class="col-md-5 col-md-offset-2 inviteWrapper">
+                <h5><strong>Invite someone to the group</strong></h5>
+                <input type="email" class="form-control inviteInput" placeholder="Enter Email">
+                <button type="submit" class="btn btn-primary btn-sm inviteButton">Invite</button>
+            </div>
         </div>
         <div class="col-md-12 tableWrapper">
             <h4>Leader Boards</h4>
+
             <div class="col-md-5 leaderTableWrapper">
-                <table class="table table-hover">
+                <table class="table">
                     <thead>
                     <th>Top 3</th>
                     <tr>
@@ -58,11 +65,12 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td>Joe</td>
+                        <td>Savvas<span class="glyphicon glyphicon-thumbs-up leaderboardGlyph"
+                                        aria-hidden="true"></span></td>
                         <td>&pound52.30</td>
                     </tr>
                     <tr>
-                        <td>Savvas</td>
+                        <td>Joe</td>
                         <td>&pound33.00</td>
                     </tr>
                     <tr>
@@ -73,7 +81,7 @@
                 </table>
             </div>
             <div class="col-md-5 col-md-offset-1 looserTableWrapper">
-                <table class="table table-hover">
+                <table class="table">
                     <thead>
                     <th>Bottom 3</th>
                     <tr>
@@ -91,7 +99,8 @@
                         <td>&pound0</td>
                     </tr>
                     <tr>
-                        <td>Dud</td>
+                        <td>Dud<span class="glyphicon glyphicon-thumbs-down looserboardGlyph" aria-hidden="true"></span>
+                        </td>
                         <td>&pound-12</td>
                     </tr>
                     </tbody>
@@ -100,7 +109,7 @@
         </div>
         <div class="col-md-12 tableWrapper">
             <div class="col-md-12">
-                <div class="col-md-5 shaftWrapper">
+                <div class="col-md-3 shaftWrapper">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h4>Shafter</h4>
@@ -117,9 +126,10 @@
                                 </div>
                             </form>
                             <input type="description" class="form-control shaftDescInput"
-                                   placeholder="Description: i.e - Pint of Beer">
+                                   placeholder="i.e: Pint of Beer">
                             <ul class="shafterAction">
                                 <li class="shafterAction"><a href="#">Joe</a>
+
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
                                         <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
@@ -128,6 +138,7 @@
                                 </li>
                                 <li class="shafterAction">
                                     <a href="#">Savvas</a>
+
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
                                         <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
@@ -136,6 +147,7 @@
                                 </li>
                                 <li class="shafterAction">
                                     <a href="#">Irini</a>
+
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
                                         <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
@@ -144,6 +156,7 @@
                                 </li>
                                 <li class="shafterAction">
                                     <a href="#">Maria</a>
+
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
                                         <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
@@ -152,6 +165,7 @@
                                 </li>
                                 <li class="shafterAction">
                                     <a href="#">Helena</a>
+
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm shaftButton">Shaft</button>
                                         <button type="submit" class="btn btn-danger btn-sm shaftedMeButton">Shafted Me
@@ -162,7 +176,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5 col-md-offset-1 historyWrapper">
+                <div class="col-md-8 historyWrapper">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h4>History</h4>
