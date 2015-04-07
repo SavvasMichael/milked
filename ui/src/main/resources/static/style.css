@@ -8,7 +8,7 @@ body h3, body h4{
     padding: 0.2em;
 }
 .wrapper{
-    background-image: url("ZenBG2.png");
+    background-image: url("ZenBG3.png");
     background-size: cover;
 }
 .navbar-header{
@@ -73,8 +73,11 @@ html .navbar-default{
     color:black;
 }
 .createGroup{
-    margin-left: 2.5em;
+    margin-left: 2.4em;
     padding: 0.3em;
+}
+.createGroupButton{
+    margin-left: 0.13em;
 }
 html .inviteInput{
     height: 2em;
@@ -115,6 +118,12 @@ html .table tbody tr td{
 .shaftWrapper, .historyWrapper{
     padding: 2em;
 }
+html body .shaftDescriptionInput{
+    margin-top:0.5em;
+}
+.shaftLocationInput{
+    margin-top: 0.5em;
+}
 .shafterAction{
     padding: 0.5em;
     display:block;
@@ -125,6 +134,4 @@ html .table tbody tr td{
 .shaftButton{
     margin-left:1em;
 }
-html body .shaftDescInput{
-    margin-top:0.5em;
-}
+
