@@ -91,7 +91,7 @@ html .inviteInput{
   height: 2.3em;
   margin-left: -0.2em;
 }
-.row shaftButton, .row shaftedButton{
+.row milkButton, .row milkedButton{
     margin-left: 1em;
 }
 .tableWrapper{
@@ -115,23 +115,23 @@ html .table tbody tr td{
 .panel-heading{
     text-align: center;
 }
-.shaftWrapper, .historyWrapper{
+.milkWrapper, .historyWrapper{
     padding: 2em;
 }
-html body .shaftDescriptionInput{
+html body .milkDescriptionInput{
     margin-top:0.5em;
 }
-.shaftLocationInput{
+.milkLocationInput{
     margin-top: 0.5em;
 }
-.shafterAction{
+.milkerAction{
     padding: 0.5em;
     display:block;
 }
-.shafterAction a{
+.milkerAction a{
     color: black
 }
-.shaftButton{
+.milkButton{
     margin-left:1em;
 }
 
