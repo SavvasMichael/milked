@@ -3,7 +3,6 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="script.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <title>Milked</title>
@@ -62,20 +61,25 @@
                     <input type="password" class="form-control" id="pwd" placeholder="password">
                 </div>
                 <div class="signupButton">
-                    <button type="submit" class="btn btn-primary signupButton" onClick="overlay()">
-                        Sign Up for Milked
+                    <button type="submit" class="btn btn-primary signupButton">
+                        <a href="#modal">Sign Up for Milked</a>
                     </button>
                 </div>
             </form>
         </div>
     </div>
-    <div id="overlay">
-        <div>
-            <p>An Email has been sent to the provided Email address</p>
-
-            <p>Click here to [<a href='#' onclick='overlay()'>close</a>]</p>
-        </div>
-    </div>
+    <aside id="modal">
+        <header>
+            <h2>Success!</h2>
+        </header>
+        <section>
+            An e-mail has been sent to the provided e-mail address. Please check your inbox(and your spam folder!)
+        </section>
+        <footer class="cf">
+            <a href="#" class="btn">Close</a>
+        </footer>
+    </aside>
+</div>
 </div>
 </body>
 </html>
