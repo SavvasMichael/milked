@@ -1,8 +1,7 @@
 .homeWrapper{
-	background-image: url(http://www.roncorso.com/data/photos/76_1blue_martini_couples.jpg);
-    background-repeat: no-repeat;
-    padding-bottom: 8.7em;      /*FIX THIS*/
+	background-image: url("http://www.roncorso.com/data/photos/76_1blue_martini_couples.jpg");
     background-size: cover;
+    padding-bottom: 11em;
 }
 body h3, body h4{
     padding: 0.2em;
@@ -10,12 +9,6 @@ body h3, body h4{
 .wrapper{
     background-image: url("img/ZenBG3.png");
     background-size: cover;
-}
-.navbar-header{
-    margin-top: 0.4em;
-}
-.signup{
-    margin-top:1em;
 }
 html .navbar-default{
 	background-color:#337AB7;
@@ -29,7 +22,6 @@ html .navbar-default{
 	color: white;
 }
 .loginForm{
-	margin-top: 3.5em;
 	background-color: white;
 	border-radius: 0.7em;
 }
@@ -185,7 +177,7 @@ html body .milkDescriptionInput{
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
 }
-	#modal:target {
+#modal:target {
 	top:50%;
 	transition: all 0.4s ease-in-out;
 	-moz-transition: all 0.4s ease-in-out;
@@ -214,6 +206,7 @@ html body .milkDescriptionInput{
 }
 #modal .btn {
 	float:right;
+	display:button;
 }
 
 
