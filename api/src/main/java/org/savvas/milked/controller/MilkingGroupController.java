@@ -38,8 +38,4 @@ public class MilkingGroupController {
         return groupService.getGroup(id);
     }
 
-    @RequestMapping(value = "/user-groups/{id}", method = RequestMethod.GET)
-    public List<MilkingGroup> getUserGroups(@PathVariable("id") Long id) {
-        return groupService.getUserGroups(id);
-    }
 }

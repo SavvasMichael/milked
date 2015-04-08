@@ -2,15 +2,15 @@ package org.savvas.milked.controller.request;
 
 import javax.validation.constraints.NotNull;
 
-public class GroupUserRequest {
+public class GroupInviteRequest {
     @NotNull
     private Long groupId;
     private Long userId;
 
-    GroupUserRequest() {
+    GroupInviteRequest() {
     }
 
-    public GroupUserRequest(Long groupId, Long userId) {
+    public GroupInviteRequest(Long groupId, Long userId) {
         this.groupId = groupId;
         this.userId = userId;
     }

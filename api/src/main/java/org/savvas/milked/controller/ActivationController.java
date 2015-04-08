@@ -1,5 +1,6 @@
 package org.savvas.milked.controller;
 
+import org.savvas.milked.controller.error.ValidationException;
 import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.domain.MilkedUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class ActivationController {
     @RequestMapping(value = "/activation/{uuid}", method = RequestMethod.POST)
     public MilkedUser activateUser(@PathVariable("uuid") String uuid) {
         MilkedUser fetchedMilkedUser = repository.findByUuid(uuid);
+        if ( fetchedMilkedUser == null ) {
+            throw new ValidationException("Invalid UUID");
+        }
         fetchedMilkedUser.setActivated(true);
         MilkedUser savedMilkedUser = repository.save(fetchedMilkedUser);
         return savedMilkedUser;

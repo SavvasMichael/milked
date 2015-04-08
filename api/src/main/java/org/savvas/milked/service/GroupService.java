@@ -34,14 +34,4 @@ public class GroupService {
     public MilkingGroup getGroup(Long id) {
         return milkingGroupRepository.findById(id);
     }
-
-    public List<MilkingGroup> getUserGroups(Long id) {
-        // TODO: fix this
-        return new ArrayList<>();
-//        List<MilkingGroup> userGroups;
-//        TypedQuery<MilkingGroup> query = em.createQuery("SELECT * FROM ShaftGroup WHERE userId = " + id, MilkingGroup.class);
-//        userGroups = query.getResultList();
-//        return userGroups;
-    }
-
 }

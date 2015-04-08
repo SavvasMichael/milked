@@ -1,7 +1,7 @@
 package org.savvas.milked.controller;
 
 import org.savvas.milked.controller.error.ValidationException;
-import org.savvas.milked.controller.request.GroupUserRequest;
+import org.savvas.milked.controller.request.GroupInviteRequest;
 import org.savvas.milked.domain.GroupInvite;
 import org.savvas.milked.service.GroupInviteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,11 @@ public class GroupInviteController {
     }
 
     @RequestMapping(value = "/group-user", method = RequestMethod.POST)
-    public ResponseEntity createGroupUser(@RequestBody @Valid GroupUserRequest groupUserRequest, BindingResult validation) {
+    public ResponseEntity createGroupUser(@RequestBody @Valid GroupInviteRequest groupInviteRequest, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new ValidationException("groupId");
         }
-        Long groupId = groupInviteService.createGroupUser(groupUserRequest);
+        Long groupId = groupInviteService.createGroupUser(groupInviteRequest);
         URI groupUserLocationURI = URI.create("/group-user/" + groupId);
         return ResponseEntity.created(groupUserLocationURI).build();
     }

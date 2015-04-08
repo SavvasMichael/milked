@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.savvas.milked.Application;
 import org.savvas.milked.controller.error.ErrorResponse;
 import org.savvas.milked.controller.request.GroupRequest;
-import org.savvas.milked.controller.request.GroupUserRequest;
+import org.savvas.milked.controller.request.GroupInviteRequest;
 import org.savvas.milked.controller.request.GroupUserState;
 import org.savvas.milked.controller.request.RegistrationRequest;
 import org.savvas.milked.domain.GroupInvite;
@@ -21,7 +21,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.net.URI;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.savvas.milked.controller.MilkedTestUtils.randomEmail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -36,21 +38,21 @@ public class GroupInviteControllerIntegrationTest {
     private final TestRestTemplate rest = new TestRestTemplate();
 
     @Test
-    public void createGroupUserReturnsCreatedResponseCode() {
+    public void createGroupUserInviteReturnsCreatedResponseCode() {
         //given
         String baseUrl = "http://localhost:" + port;
         String createGroupUserUrl = baseUrl + "/group-user";
         //when
-        GroupUserRequest groupUserRequest = new GroupUserRequest(1L, 1L);
-        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupUserRequest, String.class);
+        GroupInviteRequest groupInviteRequest = new GroupInviteRequest(1L, 1L);
+        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupInviteRequest, String.class);
         String groupUserLocation = createGroupUserResponse.getHeaders().getFirst("Location");
         ResponseEntity<GroupInvite> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), GroupInvite.class);
         GroupInvite groupInvite = groupUserResponse.getBody();
         //then
         assertEquals(201, createGroupUserResponse.getStatusCode().value());
-        assertEquals("/group-user/1", groupUserLocation);
-        assertEquals(1L, (long) groupInvite.getUserId());
-        assertEquals(1L, (long) groupInvite.getGroupId());
+        assertThat(groupUserLocation).matches("^/group-user/\\d+$");
+        assertEquals(1L, groupInvite.getUserId().longValue());
+        assertEquals(1L, groupInvite.getGroupId().longValue());
         assertEquals(GroupUserState.INVITED, groupInvite.getState());
     }
 
@@ -60,8 +62,8 @@ public class GroupInviteControllerIntegrationTest {
         String baseUrl = "http://localhost:" + port;
         String createGroupUserUrl = baseUrl + "/group-user";
         //when
-        GroupUserRequest groupUserRequest = new GroupUserRequest(null, 1L);
-        ResponseEntity<ErrorResponse> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupUserRequest, ErrorResponse.class);
+        GroupInviteRequest groupInviteRequest = new GroupInviteRequest(null, 1L);
+        ResponseEntity<ErrorResponse> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupInviteRequest, ErrorResponse.class);
         //then
         assertEquals("Unexpected Error Message", "groupId", createGroupUserResponse.getBody().getErrors().get(0));
     }
@@ -74,10 +76,10 @@ public class GroupInviteControllerIntegrationTest {
         String createGroupUserUrl = baseUrl + "/group-user";
         String activateGroupUserUrl = "/activate";
         //when
-        GroupUserRequest groupUserRequest = new GroupUserRequest(1L, 1L);
-        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupUserRequest, String.class);
+        GroupInviteRequest groupInviteRequest = new GroupInviteRequest(1L, 1L);
+        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupInviteRequest, String.class);
         String groupUserLocation = createGroupUserResponse.getHeaders().getFirst("Location");
-        ResponseEntity<String> activateUserResponse = rest.postForEntity(URI.create(baseUrl + groupUserLocation + activateGroupUserUrl), groupUserRequest, String.class);
+        ResponseEntity<String> activateUserResponse = rest.postForEntity(URI.create(baseUrl + groupUserLocation + activateGroupUserUrl), groupInviteRequest, String.class);
         ResponseEntity<GroupInvite> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), GroupInvite.class);
         //then
         assertEquals("/group-user/1/activate", activateUserResponse.getHeaders().getFirst("Location"));
@@ -108,7 +110,7 @@ public class GroupInviteControllerIntegrationTest {
         String registrationUrl = baseUrl + "/registration";
         String createGroupUrl = baseUrl + "/group";
         //when
-        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
+        RegistrationRequest request = new RegistrationRequest(randomEmail(), "savvas", "password");
         ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
         String userPath = registrationResponse.getHeaders().getFirst("Location");
         ResponseEntity<MilkedUser> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), MilkedUser.class);
@@ -119,8 +121,8 @@ public class GroupInviteControllerIntegrationTest {
         ResponseEntity<MilkingGroup> groupResponse = rest.getForEntity((URI.create(groupUrl)), MilkingGroup.class);
 
         MilkingGroup milkingGroup = groupResponse.getBody();
-        GroupUserRequest groupUserRequest = new GroupUserRequest(milkingGroup.getId(), milkingGroup.getOwner().getId());
-        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupUserRequest, String.class);
+        GroupInviteRequest groupInviteRequest = new GroupInviteRequest(milkingGroup.getId(), milkingGroup.getOwner().getId());
+        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupInviteRequest, String.class);
         String groupUserLocation = createGroupUserResponse.getHeaders().getFirst("Location");
         rest.delete(URI.create(baseUrl + groupUserLocation));
         ResponseEntity<ErrorResponse> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), ErrorResponse.class);

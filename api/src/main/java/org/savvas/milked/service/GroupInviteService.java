@@ -1,7 +1,7 @@
 package org.savvas.milked.service;
 
 import org.savvas.milked.controller.error.NotFoundException;
-import org.savvas.milked.controller.request.GroupUserRequest;
+import org.savvas.milked.controller.request.GroupInviteRequest;
 import org.savvas.milked.controller.request.GroupUserState;
 import org.savvas.milked.domain.GroupInvite;
 import org.savvas.milked.domain.GroupInviteRepository;
@@ -25,8 +25,8 @@ public class GroupInviteService {
         return groupInvite;
     }
 
-    public Long createGroupUser(GroupUserRequest groupUserRequest) {
-        GroupInvite groupInvite = new GroupInvite(groupUserRequest.getUserId(), groupUserRequest.getGroupId());
+    public Long createGroupUser(GroupInviteRequest groupInviteRequest) {
+        GroupInvite groupInvite = new GroupInvite(groupInviteRequest.getUserId(), groupInviteRequest.getGroupId());
         groupInvite.setState(GroupUserState.INVITED);
         GroupInvite savedGroupInvite = groupInviteRepository.save(groupInvite);
         return savedGroupInvite.getGroupId();

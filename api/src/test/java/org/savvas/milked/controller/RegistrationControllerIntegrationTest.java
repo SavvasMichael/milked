@@ -15,8 +15,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.net.URI;
+import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
+import static org.savvas.milked.controller.MilkedTestUtils.randomEmail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -34,16 +37,18 @@ public class RegistrationControllerIntegrationTest {
         // Given
         String baseUrl = "http://localhost:" + port;
         String registrationUrl = baseUrl + "/registration";
-        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
+        String expectedEmail = randomEmail();
+        RegistrationRequest request = new RegistrationRequest(expectedEmail, "savvas", "password");
         // When
         ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
         String userPath = registrationResponse.getHeaders().getFirst("Location");
         ResponseEntity<MilkedUser> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), MilkedUser.class);
         // Then
         assertEquals("Unexpected response code.", 201, registrationResponse.getStatusCode().value());
-        assertEquals("Unexpected Location Header.", "/user/1", userPath);
+        assertTrue("Unexpected Location Header.", userPath.startsWith("/user/"));
+        assertThat(userPath).matches("^/user/\\d+$");
         MilkedUser milkedUser = userResponse.getBody();
-        assertEquals("michaelsavvas@ymail.com", milkedUser.getEmail());
+        assertEquals(expectedEmail, milkedUser.getEmail());
         assertEquals("savvas", milkedUser.getName());
         assertEquals("password", milkedUser.getPassword());
     }
@@ -55,7 +60,6 @@ public class RegistrationControllerIntegrationTest {
         RegistrationRequest request = new RegistrationRequest("savvasmichael", "savvas", "password");
         // When
         ResponseEntity<ErrorResponse> response = rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
-
         // Then
         assertEquals("Unexpected response code.", 400, response.getStatusCode().value());
         assertEquals("Unexpected Error Message", "email", response.getBody().getErrors().get(0));
@@ -138,8 +142,9 @@ public class RegistrationControllerIntegrationTest {
     public void registeringUserWithDuplicateEmailReturnsBadRequest() {
         //given
         String registrationUrl = "http://localhost:" + port + "/registration";
-        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "Savvas", "pass");
-        RegistrationRequest request2 = new RegistrationRequest("michaelsavvas@ymail.com", "Savvas", "pass");
+        String email = randomEmail();
+        RegistrationRequest request = new RegistrationRequest(email, "Savvas", "pass");
+        RegistrationRequest request2 = new RegistrationRequest(email, "Savvas", "pass");
         //when
         ResponseEntity<ErrorResponse> response = rest.postForEntity(URI.create(registrationUrl), request, ErrorResponse.class);
         ResponseEntity<ErrorResponse> response2 = rest.postForEntity(URI.create(registrationUrl), request2, ErrorResponse.class);
@@ -155,8 +160,10 @@ public class RegistrationControllerIntegrationTest {
         //given
         String baseUrl = "http://localhost:" + port;
         String registrationUrl = "http://localhost:" + port + "/registration";
-        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "Savvas", "pass");
-        RegistrationRequest request2 = new RegistrationRequest("savvas.a.michael@gmail.com", "Savvas", "pass");
+        String expectedEmailOne = randomEmail();
+        String expectedEmailTwo = randomEmail();
+        RegistrationRequest request = new RegistrationRequest(expectedEmailOne, "Savvas", "pass");
+        RegistrationRequest request2 = new RegistrationRequest(expectedEmailTwo, "Savvas", "pass");
         //when
         ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
         ResponseEntity<String> registrationResponse2 = rest.postForEntity(URI.create(registrationUrl), request2, String.class);
@@ -178,7 +185,7 @@ public class RegistrationControllerIntegrationTest {
         String baseUrl = "http://localhost:" + port;
         String registrationUrl = baseUrl + "/registration";
         String activationUrl = baseUrl + "/activation/";
-        RegistrationRequest request = new RegistrationRequest("michaelsavvas@ymail.com", "savvas", "password");
+        RegistrationRequest request = new RegistrationRequest(randomEmail(), "savvas", "password");
         //when
         ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
         String userPath = registrationResponse.getHeaders().getFirst("Location");
