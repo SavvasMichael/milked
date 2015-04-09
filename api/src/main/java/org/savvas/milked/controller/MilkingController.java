@@ -1,6 +1,6 @@
 package org.savvas.milked.controller;
 
-import org.savvas.milked.controller.request.MilkingRequest;
+import org.savvas.milked.controller.request.MilkingTransactionRequest;
 import org.savvas.milked.domain.MilkingTransaction;
 import org.savvas.milked.service.MilkingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,8 @@ public class MilkingController {
     }
 
     @RequestMapping(value = "/shaft", method = RequestMethod.POST)
-    public ResponseEntity milkUser(@RequestBody MilkingRequest milkingRequest) {
-        Long transactionId = milkingService.createMilkingTransaction(milkingRequest);
+    public ResponseEntity milkUser(@RequestBody MilkingTransactionRequest milkingTransactionRequest) {
+        Long transactionId = milkingService.createMilkingTransaction(milkingTransactionRequest);
         URI transactionLocationURI = URI.create("/shaft/" + transactionId);
         return ResponseEntity.created(transactionLocationURI).build();
     }

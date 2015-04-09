@@ -1,0 +1,38 @@
+title Logged In Home Page
+
+alt Group and User Information
+FrontEnd->Server: GET /user/{id}/group
+Server->Database: fetchGroupsByUserId
+Server->FrontEnd: 200 Response \n List<Group>
+end
+alt Group Transaction History
+FrontEnd->Server: GET /group/{id}/tx
+Server->Database: fetchTransactionsByGroupId
+Server->FrontEnd: 200 Response \n List<Transcations>
+end
+alt Create Group
+FrontEnd->Server: POST /group \n (name, userId)
+Server->Database: create group
+Server->FrontEnd: 200Response
+end
+alt Invite User
+FrontEnd->Server: POST /invite \n (email, groupId, userId)
+Server->Database: fetchUserByEmail
+alt if user does not exist, or does not have a name/password 
+Server->Database: createUnactivatedUser
+Server->Database: storeInvitationWithUuid
+Server->Server: send invite email for unactivated user (with UUID)
+FrontEnd->Server: POST /join (UUID, name, password)
+Server->Database: fetchUserByInviteUuid
+Server->Database: activatesUser and update name and password
+Server->Database: addUserToGroup
+Server->FrontEnd: 200 Response
+else 
+Server->Server: send invite email for registered user
+FrontEnd->Server: POST /join (UUID)
+Server->Database: fetchUserByInviteUuid
+Server->Database: activatesUser
+Server->Database: addUserToGroup
+Server->FrontEnd: 200 Response
+end
+end

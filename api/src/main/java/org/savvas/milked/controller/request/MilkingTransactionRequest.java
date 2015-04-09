@@ -1,16 +1,16 @@
 package org.savvas.milked.controller.request;
 
-public class MilkingRequest {
+public class MilkingTransactionRequest {
 
     private Long milkerId;
     private Long milkeeId;
     private Long groupId;
     private Integer amount;
 
-    MilkingRequest() {
+    MilkingTransactionRequest() {
     }
 
-    public MilkingRequest(Long milkerId, Long milkeeId, Long groupId, Integer amount) {
+    public MilkingTransactionRequest(Long milkerId, Long milkeeId, Long groupId, Integer amount) {
         this.milkerId = milkerId;
         this.milkeeId = milkeeId;
         this.groupId = groupId;

@@ -1,0 +1,21 @@
+title Registration/Activation Flow
+
+alt Registration
+FrontEnd->Server: POST /register \n(name, email, password)
+Server->Server: validate request
+Server->Database: fetchUserByEmail
+Server->Server: already registered?
+Server->Database: createUser \n (with activation UUID)
+Server->Server: send activation email \n(with activation UUID link)
+Server->FrontEnd: 201 Response \n(User Location Header)
+Server-->FrontEnd: 400 Response \n(Error Message)
+end
+alt Activation
+FrontEnd->Server: POST /activate \n(activation UUID)
+Server->Database: fetchUserByUuid
+Server->Server: validate UUID
+Server->Database: activateUser
+Server->FrontEnd: 200 Response
+Server-->FrontEnd: 400 Response \n (Error Message)
+end
+

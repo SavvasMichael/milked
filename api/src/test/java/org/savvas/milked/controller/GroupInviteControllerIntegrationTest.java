@@ -23,7 +23,7 @@ import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.savvas.milked.controller.MilkedTestUtils.randomEmail;
+import static org.savvas.milked.controller.MilkedTestUtils.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -42,8 +42,11 @@ public class GroupInviteControllerIntegrationTest {
         //given
         String baseUrl = "http://localhost:" + port;
         String createGroupUserUrl = baseUrl + "/group-user";
+        MilkedUser milkedUser = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
+        MilkingGroup milkedGroup = givenTheMilkingGroup(rest, baseUrl, milkedUser.getId(), "savvasgroup");
+
         //when
-        GroupInviteRequest groupInviteRequest = new GroupInviteRequest(1L, 1L);
+        GroupInviteRequest groupInviteRequest = new GroupInviteRequest(milkedGroup.getId(), milkedUser.getId());
         ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupInviteRequest, String.class);
         String groupUserLocation = createGroupUserResponse.getHeaders().getFirst("Location");
         ResponseEntity<GroupInvite> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), GroupInvite.class);
@@ -51,8 +54,8 @@ public class GroupInviteControllerIntegrationTest {
         //then
         assertEquals(201, createGroupUserResponse.getStatusCode().value());
         assertThat(groupUserLocation).matches("^/group-user/\\d+$");
-        assertEquals(1L, groupInvite.getUserId().longValue());
-        assertEquals(1L, groupInvite.getGroupId().longValue());
+        assertEquals(milkedUser.getId(), groupInvite.getUserId());
+        assertEquals(milkedGroup.getId(), groupInvite.getGroupId());
         assertEquals(GroupUserState.INVITED, groupInvite.getState());
     }
 
@@ -68,21 +71,23 @@ public class GroupInviteControllerIntegrationTest {
         assertEquals("Unexpected Error Message", "groupId", createGroupUserResponse.getBody().getErrors().get(0));
     }
 
-    // TODO: change this to actually add the user to the group
+    // TODO: change this to actually add the user to the group and not keep state in the invite
     @Test
-    public void activateGroupUserChangesGroupUserStateToMember() {
+    public void acceptingGroupUserInviteChangesGroupUserStateToMember() {
         //given
         String baseUrl = "http://localhost:" + port;
-        String createGroupUserUrl = baseUrl + "/group-user";
-        String activateGroupUserUrl = "/activate";
+        MilkedUser owner = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
+        MilkedUser guest = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvassfriend", "password");
+        MilkingGroup milkingGroup = givenTheMilkingGroup(rest, baseUrl, owner.getId(), "savvasgroup");
+        String groupInviteLocation = givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, guest.getId(), milkingGroup.getId());
+
         //when
-        GroupInviteRequest groupInviteRequest = new GroupInviteRequest(1L, 1L);
-        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupInviteRequest, String.class);
-        String groupUserLocation = createGroupUserResponse.getHeaders().getFirst("Location");
-        ResponseEntity<String> activateUserResponse = rest.postForEntity(URI.create(baseUrl + groupUserLocation + activateGroupUserUrl), groupInviteRequest, String.class);
-        ResponseEntity<GroupInvite> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), GroupInvite.class);
+        ResponseEntity<String> activateUserResponse = rest.postForEntity(URI.create(baseUrl + groupInviteLocation + "/activate"), null, String.class);
+
         //then
-        assertEquals("/group-user/1/activate", activateUserResponse.getHeaders().getFirst("Location"));
+        ResponseEntity<GroupInvite> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupInviteLocation), GroupInvite.class);
+        String activationLocationHeader = activateUserResponse.getHeaders().getFirst("Location");
+        assertThat(activationLocationHeader).matches("^/group-user/\\d+/activate$");
         assertEquals(GroupUserState.MEMBER, groupUserResponse.getBody().getState());
     }
 

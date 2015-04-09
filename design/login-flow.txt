@@ -1,0 +1,7 @@
+title Login Flow
+
+FrontEnd->Server: POST /login \n (email, password)
+Server->Database: fetchUserByEmail
+Server->Server: validate: \n user exists? \n valid password?
+Server->FrontEnd: 200 Response \n(User)
+Server-->FrontEnd: 401 Response

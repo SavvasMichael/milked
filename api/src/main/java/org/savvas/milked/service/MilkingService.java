@@ -1,6 +1,6 @@
 package org.savvas.milked.service;
 
-import org.savvas.milked.controller.request.MilkingRequest;
+import org.savvas.milked.controller.request.MilkingTransactionRequest;
 import org.savvas.milked.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class MilkingService {
         this.milkingGroupRepository = milkingGroupRepository;
     }
 
-    public Long createMilkingTransaction(MilkingRequest request) {
+    public Long createMilkingTransaction(MilkingTransactionRequest request) {
         MilkedUser milker = milkedUserRepository.findOne(request.getMilkerId());
         MilkedUser milkee = milkedUserRepository.findOne(request.getMilkeeId());
         MilkingGroup group = milkingGroupRepository.findById(request.getGroupId());
