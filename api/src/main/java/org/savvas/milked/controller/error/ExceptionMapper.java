@@ -23,4 +23,11 @@ public class ExceptionMapper {
     ErrorResponse handleNotFound(HttpServletRequest req, NotFoundException ex) {
         return new ErrorResponse(ex.getError());
     }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseBody
+    ErrorResponse handleUnauthorized(HttpServletRequest req, UnauthorizedException ex) {
+        return new ErrorResponse(ex.getError());
+    }
 }

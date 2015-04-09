@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MilkingGroupRepository extends CrudRepository<MilkingGroup, Long> {
     MilkingGroup findById(Long id);
-
-    MilkingGroup findByOwnerId(Long id);
 }

@@ -3,6 +3,7 @@ package org.savvas.milked.service;
 import org.savvas.milked.controller.request.RegistrationRequest;
 import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.domain.MilkedUserRepository;
+import org.savvas.milked.domain.MilkingGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,17 +13,18 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
 @Service
 public class UserService {
-    private MilkedUserRepository repository;
+    private MilkedUserRepository milkedUserRepository;
 
     @Autowired
     public UserService(MilkedUserRepository repository) {
-        this.repository = repository;
+        this.milkedUserRepository = repository;
     }
 
     public void sendEmail() {
@@ -59,16 +61,18 @@ public class UserService {
     public Long createUser(RegistrationRequest registrationRequest) {
         String uuid = UUID.randomUUID().toString();
         MilkedUser milkedUser = new MilkedUser(registrationRequest.getEmail(), registrationRequest.getName(), registrationRequest.getPassword(), uuid);
-        MilkedUser savedMilkedUser = repository.save(milkedUser);
+        MilkedUser savedMilkedUser = milkedUserRepository.save(milkedUser);
         return savedMilkedUser.getId();
     }
-
     public MilkedUser getUser(Long id) {
-        return repository.findOne(id);
+        return milkedUserRepository.findOne(id);
     }
 
     public boolean userExists(String email) {
-        List<MilkedUser> milkedUsers = repository.findByEmail(email);
-        return !milkedUsers.isEmpty();
+        return milkedUserRepository.findByEmail(email) != null;
+    }
+
+    public List<MilkingGroup> getUserGroups(Long id) {
+        return new ArrayList<>();
     }
 }

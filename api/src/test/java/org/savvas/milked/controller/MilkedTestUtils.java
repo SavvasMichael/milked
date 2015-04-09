@@ -22,7 +22,9 @@ public class MilkedTestUtils {
         ResponseEntity<String> milkerRegistrationResponse = rest.postForEntity(URI.create(baseUrl + "/registration"), milkerRegistrationRequest, String.class);
         String milkerPath = milkerRegistrationResponse.getHeaders().getFirst("Location");
         ResponseEntity<MilkedUser> milkerResponse = rest.getForEntity(URI.create(baseUrl + milkerPath), MilkedUser.class);
-        return milkerResponse.getBody();
+        MilkedUser milkedUser = milkerResponse.getBody();
+        rest.postForEntity(URI.create(baseUrl + "/activation/" + milkedUser.getUuid()), null, String.class);
+        return milkedUser;
     }
 
     public static MilkingGroup givenTheMilkingGroup(RestTemplate rest, String baseUrl, Long milkedUserId, String groupName) {
