@@ -8,6 +8,5 @@ import java.util.List;
 @Repository
 public interface MilkedUserRepository extends CrudRepository<MilkedUser, Long> {
     List<MilkedUser> findByEmail(String email);
-
     MilkedUser findByUuid(String uuid);
 }

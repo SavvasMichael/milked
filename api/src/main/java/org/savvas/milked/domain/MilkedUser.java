@@ -15,11 +15,9 @@ public class MilkedUser {
     private String password;
     private boolean activated = false;
     private String uuid;
-
-
     private Long defaultGroupId;
 
-    MilkedUser() {
+    public MilkedUser() {
     }
 
     public MilkedUser(String email, String name, String password, String uuid) {

@@ -1,0 +1,34 @@
+package org.savvas.milked.controller;
+
+import com.sun.xml.internal.ws.developer.MemberSubmissionAddressing;
+import org.savvas.milked.controller.error.ValidationException;
+import org.savvas.milked.controller.request.LoginRequest;
+import org.savvas.milked.domain.MilkedUser;
+import org.savvas.milked.service.LoginService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+
+@RestController
+public class LoginController {
+
+    private final LoginService loginService;
+
+    @Autowired
+    public LoginController(LoginService loginService){
+        this.loginService = loginService;
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public MilkedUser login(@RequestBody @Valid LoginRequest loginRequest, BindingResult validation){
+        if(validation.hasErrors()){
+            throw new ValidationException(validation.getFieldErrors());
+        }
+        return loginService.login(loginRequest);
+    }
+}
