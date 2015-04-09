@@ -19,14 +19,14 @@ public class MilkingController {
         this.milkingService = milkingService;
     }
 
-    @RequestMapping(value = "/shaft", method = RequestMethod.POST)
-    public ResponseEntity milkUser(@RequestBody MilkingTransactionRequest milkingTransactionRequest) {
+    @RequestMapping(value = "/milk", method = RequestMethod.POST)
+    public ResponseEntity milkTheUser(@RequestBody MilkingTransactionRequest milkingTransactionRequest) {
         Long transactionId = milkingService.createMilkingTransaction(milkingTransactionRequest);
-        URI transactionLocationURI = URI.create("/shaft/" + transactionId);
+        URI transactionLocationURI = URI.create("/milk/" + transactionId);
         return ResponseEntity.created(transactionLocationURI).build();
     }
 
-    @RequestMapping(value = "/shaft/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/milk/{id}", method = RequestMethod.GET)
     public MilkingTransaction getMilkingTransaction(@PathVariable("id") Long id) {
         return milkingService.getMilkingTransaction(id);
     }

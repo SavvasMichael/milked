@@ -39,21 +39,21 @@ public class MilkingTransactionControllerIntegrationTest {
     public void createShaftReturns201ResponseCode() {
         //given
         String baseUrl = "http://localhost:" + port;
-        String shaftUrl = baseUrl + "/shaft";
+        String milkUrl = baseUrl + "/milk";
         //when
         MilkingTransactionRequest milkingTransactionRequest = new MilkingTransactionRequest(1L, 2L, 5L, 1);
-        ResponseEntity<String> shaftResponse = rest.postForEntity(URI.create(shaftUrl), milkingTransactionRequest, String.class);
-        String shaftLocation = shaftResponse.getHeaders().getFirst("Location");
+        ResponseEntity<String> milkResponse = rest.postForEntity(URI.create(milkUrl), milkingTransactionRequest, String.class);
+        String milkLocation = milkResponse.getHeaders().getFirst("Location");
         //then
-        assertEquals(201, shaftResponse.getStatusCode().value());
-        assertThat(shaftLocation).matches("^/shaft/\\d+$");
+        assertEquals(201, milkResponse.getStatusCode().value());
+        assertThat(milkLocation).matches("^/milk/\\d+$");
     }
 
     @Test
     public void createMilkingTransactionReturnsCorrectBodyFieldElements() {
         //given
         String baseUrl = "http://localhost:" + port;
-        String shaftUrl = baseUrl + "/shaft";
+        String milkUrl = baseUrl + "/milk";
 
         MilkedUser milker = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
         MilkedUser milkee = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "michael", "password");
@@ -62,12 +62,12 @@ public class MilkingTransactionControllerIntegrationTest {
 
         //when
         MilkingTransactionRequest milkingTransactionRequest = new MilkingTransactionRequest(milker.getId(), milkee.getId(), milkerGroup.getId(), 100);
-        ResponseEntity<String> milkingTransactionResponse = rest.postForEntity(URI.create(shaftUrl), milkingTransactionRequest, String.class);
+        ResponseEntity<String> milkingTransactionResponse = rest.postForEntity(URI.create(milkUrl), milkingTransactionRequest, String.class);
         String milkedTransactionLocation = milkingTransactionResponse.getHeaders().getFirst("Location");
         ResponseEntity<MilkingTransaction> milkedTransactionResponse = rest.getForEntity((URI.create(baseUrl + milkedTransactionLocation)), MilkingTransaction.class);
 
         //then
-        assertThat(milkedTransactionLocation).matches("^/shaft/\\d+$");
+        assertThat(milkedTransactionLocation).matches("^/milk/\\d+$");
         MilkingTransaction milkingTransaction = milkedTransactionResponse.getBody();
         assertEquals("Unexpected Group Id", milkerGroup.getId(), milkingTransaction.getGroup().getId());
         assertEquals("Unexpected Milker Id", milker.getId(), milkingTransaction.getMilker().getId());
