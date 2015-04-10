@@ -83,7 +83,7 @@ public class LoginControllerIntegrationTest {
         int userStatusCode = pendingUserLogin.getStatusCode().value();
         //then
         assertEquals(401, userStatusCode);
-        assertEquals("Email does not match our records", pendingUserLogin.getBody().getErrors().get(0));
+        assertEquals("UNRECOGNIZED_EMAIL", pendingUserLogin.getBody().getErrors().get(0));
     }
 
     @Test
@@ -96,21 +96,18 @@ public class LoginControllerIntegrationTest {
         ResponseEntity<ErrorResponse> pendingUserLogin = rest.exchange(URI.create(baseUrl + "/login"), HttpMethod.POST, new HttpEntity<LoginRequest>(loginRequest), ErrorResponse.class);
         //then
         int userStatusCode = pendingUserLogin.getStatusCode().value();
-        assertEquals("Password does not match", pendingUserLogin.getBody().getErrors().get(0));
+        assertEquals("INVALID_PASSWORD", pendingUserLogin.getBody().getErrors().get(0));
         assertEquals(401, userStatusCode);
     }
 
     @Test
     public void checkLoginReturns200WithMultipleRegistrations() {
         //given
-        RegistrationRequest user1RegistrationRequest = new RegistrationRequest("savvas123@ymail.com", "savvas", "password1");
-        RegistrationRequest user2RegistrationRequest = new RegistrationRequest("savvas1234@ymail.com", "savvas", "password2");
-        RegistrationRequest user3RegistrationRequest = new RegistrationRequest("savvas1235@ymail.com", "savvas", "password3");
-        LoginRequest loginRequest = new LoginRequest("savvas1234@ymail.com", "password2");
+        MilkedUser registeredAndActivatedUser = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
+        givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
+        givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
+        LoginRequest loginRequest = new LoginRequest(registeredAndActivatedUser.getEmail(), "password");
         //when
-        rest.postForEntity(URI.create(baseUrl + "/registration"), user1RegistrationRequest, String.class);
-        rest.postForEntity(URI.create(baseUrl + "/registration"), user2RegistrationRequest, String.class);
-        rest.postForEntity(URI.create(baseUrl + "/registration"), user3RegistrationRequest, String.class);
         ResponseEntity<String> pendingUserLogin = rest.postForEntity(URI.create(baseUrl + "/login"), loginRequest, String.class);
         int userStatusCode = pendingUserLogin.getStatusCode().value();
         //then
@@ -127,6 +124,6 @@ public class LoginControllerIntegrationTest {
         MilkedUser registeredUser = pendingUserLogin.getBody();
         //then
         assertEquals(200, pendingUserLogin.getStatusCode().value());
-        assertTrue("Only activated Users can Login", registeredUser.isActivated());
+        assertTrue("NOT_ACTIVATED", registeredUser.isActivated());
     }
 }
