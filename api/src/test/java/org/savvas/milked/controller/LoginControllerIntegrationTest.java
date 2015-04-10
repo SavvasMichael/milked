@@ -116,4 +116,17 @@ public class LoginControllerIntegrationTest {
         //then
         assertEquals(200, userStatusCode);
     }
+
+    @Test
+    public void checkThatOnlyAnActivatedUserCanLogin() {
+        //given
+        MilkedUser registeredAndActivatedUser = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password1");
+        LoginRequest loginRequest = new LoginRequest(registeredAndActivatedUser.getEmail(), "password1");
+        //when
+        ResponseEntity<MilkedUser> pendingUserLogin = rest.postForEntity(URI.create(baseUrl + "/login"), loginRequest, MilkedUser.class);
+        MilkedUser registeredUser = pendingUserLogin.getBody();
+        //then
+        assertEquals(200, pendingUserLogin.getStatusCode().value());
+        assertTrue("Only activated Users can Login", registeredUser.isActivated());
+    }
 }
