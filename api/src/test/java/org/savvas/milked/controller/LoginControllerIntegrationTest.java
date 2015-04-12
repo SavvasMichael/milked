@@ -59,8 +59,6 @@ public class LoginControllerIntegrationTest {
         assertEquals("Logged in user's email does not match login requested.", milkedUser.getEmail(), loggedInUser.getEmail());
    }
 
-    //TODO: add a test to check unactivated users cannot login
-
     @Test
     public void checkLoginReturnsErrorResponseCodeWhenInvalidEmail(){
         //given
@@ -115,7 +113,7 @@ public class LoginControllerIntegrationTest {
     }
 
     @Test
-    public void checkThatOnlyAnActivatedUserCanLogin() {
+    public void checkThatOnlyAnActivatedUsersCanLogin() {
         //given
         MilkedUser registeredAndActivatedUser = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password1");
         LoginRequest loginRequest = new LoginRequest(registeredAndActivatedUser.getEmail(), "password1");

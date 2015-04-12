@@ -1,6 +1,5 @@
 package org.savvas.milked.domain;
 
-import org.savvas.milked.controller.request.GroupUserState;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +13,6 @@ public class GroupInvite {
     private Long id;
     private Long groupId;
     private Long userId;
-    private GroupUserState state;
 
     GroupInvite() {
     }
@@ -36,11 +34,4 @@ public class GroupInvite {
         return userId;
     }
 
-    public GroupUserState getState() {
-        return state;
-    }
-
-    public void setState(GroupUserState state) {
-        this.state = state;
-    }
 }

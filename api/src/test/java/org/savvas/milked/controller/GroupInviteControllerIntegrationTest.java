@@ -6,7 +6,6 @@ import org.savvas.milked.Application;
 import org.savvas.milked.controller.error.ErrorResponse;
 import org.savvas.milked.controller.request.GroupRequest;
 import org.savvas.milked.controller.request.GroupInviteRequest;
-import org.savvas.milked.controller.request.GroupUserState;
 import org.savvas.milked.controller.request.RegistrationRequest;
 import org.savvas.milked.domain.GroupInvite;
 import org.savvas.milked.domain.MilkingGroup;
@@ -20,9 +19,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.net.URI;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.savvas.milked.controller.MilkedTestUtils.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -56,7 +58,6 @@ public class GroupInviteControllerIntegrationTest {
         assertThat(groupUserLocation).matches("^/group-user/\\d+$");
         assertEquals(milkedUser.getId(), groupInvite.getUserId());
         assertEquals(milkedGroup.getId(), groupInvite.getGroupId());
-        assertEquals(GroupUserState.INVITED, groupInvite.getState());
     }
 
     @Test
@@ -76,37 +77,20 @@ public class GroupInviteControllerIntegrationTest {
     public void acceptingGroupUserInviteChangesGroupUserStateToMember() {
         //given
         String baseUrl = "http://localhost:" + port;
+        String groupUserUrl = baseUrl + "/group-user/";
         MilkedUser owner = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
         MilkedUser guest = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvassfriend", "password");
         MilkingGroup milkingGroup = givenTheMilkingGroup(rest, baseUrl, owner.getId(), "savvasgroup");
         String groupInviteLocation = givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, guest.getId(), milkingGroup.getId());
-
         //when
-        ResponseEntity<String> activateUserResponse = rest.postForEntity(URI.create(baseUrl + groupInviteLocation + "/activate"), null, String.class);
-
+        ResponseEntity<String> activateUserResponse = rest.postForEntity(URI.create(groupUserUrl + guest.getUuid() + "/activate"), null, String.class);
         //then
-        ResponseEntity<GroupInvite> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupInviteLocation), GroupInvite.class);
-        String activationLocationHeader = activateUserResponse.getHeaders().getFirst("Location");
-        assertThat(activationLocationHeader).matches("^/group-user/\\d+/activate$");
-        assertEquals(GroupUserState.MEMBER, groupUserResponse.getBody().getState());
-    }
+        ResponseEntity<MilkingGroup> groupResponse = rest.getForEntity(URI.create(baseUrl + "/group/" + milkingGroup.getId()), MilkingGroup.class);
+        List<MilkedUser> fetchedMilkedUserGroup = groupResponse.getBody().getMilkedUsers();
+        assertThat(fetchedMilkedUserGroup).hasSize(1);
+        assertThat(fetchedMilkedUserGroup.get(0)).isEqualToComparingFieldByField(guest);
 
-    //Null Pointer because of validation, had to change test, see below
-//    @Test
-//    public void checkDeletesGroupUserRemovesUser() {
-//        //given
-//        String baseUrl = "http://localhost:" + port;
-//        String createGroupUserUrl = baseUrl + "/group-user";
-//        //when
-//        GroupUserRequest groupUserRequest = new GroupUserRequest(1L, 1L);
-//        ResponseEntity<ErrorResponse> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupUserRequest, ErrorResponse.class);
-//        String groupUserLocation = createGroupUserResponse.getHeaders().getFirst("Location");
-//        rest.delete(URI.create(baseUrl + groupUserLocation));
-//        ResponseEntity<GroupUser> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), GroupUser.class);
-//        //then
-//        assertEquals(404, groupUserResponse.getStatusCode().value());
-//        assertEquals("Unexpected error message", "User is not a member of this group", createGroupUserResponse.getBody().getErrors().get(0));
-//    }
+    }
     @Test
     public void checkDeleteUserRemovesUserWithValidData() {
         //given

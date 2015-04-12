@@ -1,6 +1,7 @@
 package org.savvas.milked.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,5 +40,9 @@ public class MilkingGroup {
 
     public List<MilkedUser> getMilkedUsers() {
         return milkedUsers;
+    }
+
+    public void addUserToGroup(MilkedUser user) {
+        milkedUsers.add(user);
     }
 }

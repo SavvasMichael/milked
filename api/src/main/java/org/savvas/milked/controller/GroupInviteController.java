@@ -23,18 +23,18 @@ public class GroupInviteController {
     }
 
     @RequestMapping(value = "/group-user", method = RequestMethod.POST)
-    public ResponseEntity createGroupUser(@RequestBody @Valid GroupInviteRequest groupInviteRequest, BindingResult validation) {
+    public ResponseEntity inviteUser(@RequestBody @Valid GroupInviteRequest groupInviteRequest, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new ValidationException("groupId");
         }
-        Long groupId = groupInviteService.createGroupUser(groupInviteRequest);
+        Long groupId = groupInviteService.inviteGroupUser(groupInviteRequest);
         URI groupUserLocationURI = URI.create("/group-user/" + groupId);
         return ResponseEntity.created(groupUserLocationURI).build();
     }
 
-    @RequestMapping(value = "/group-user/{id}/activate", method = RequestMethod.POST)
-    public ResponseEntity activateGroupUser(@PathVariable("id") Long id) {
-        Long activatedGroupUserId = groupInviteService.activateGroupUser(id);
+    @RequestMapping(value = "/group-user/{uuid}/activate", method = RequestMethod.POST)
+    public ResponseEntity activateGroupUser(@PathVariable("uuid") String uuid) {
+        Long activatedGroupUserId = groupInviteService.activateGroupUser(uuid);
         URI activatedGroupUserLocationURI = URI.create("/group-user/" + activatedGroupUserId + "/activate");
         return ResponseEntity.created(activatedGroupUserLocationURI).build();
     }
@@ -47,7 +47,6 @@ public class GroupInviteController {
     @RequestMapping(value = "/group-user/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteGroupUser(@PathVariable("id") Long id) {
         groupInviteService.deleteGroupUser(id);
-        System.out.println(groupInviteService.getGroupInvite(id));
         return ResponseEntity.ok().build();
     }
 }
