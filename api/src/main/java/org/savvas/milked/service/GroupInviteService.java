@@ -1,10 +1,11 @@
 package org.savvas.milked.service;
 
 import org.savvas.milked.controller.error.NotFoundException;
-import org.savvas.milked.controller.request.GroupInviteRequest;
 import org.savvas.milked.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class GroupInviteService {
@@ -18,32 +19,37 @@ public class GroupInviteService {
         this.milkedUserRepository = milkedUserRepository;
         this.milkingGroupRepository = milkingGroupRepository;
     }
-    public GroupInvite getGroupInvite(Long id) {
-        GroupInvite groupInvite = groupInviteRepository.findOne(id);
-        if (groupInvite == null) {
+
+    public List<GroupInvite> getGroupInvites(Long userId) {
+        List<GroupInvite> groupInvites = groupInviteRepository.findByUserId(userId);
+        if (groupInvites == null) {
             throw new NotFoundException("User is not a member of this group");
         }
-        return groupInvite;
+        return groupInvites;
     }
 
-    public Long inviteGroupUser(GroupInviteRequest groupInviteRequest) {
-        GroupInvite groupInvite = new GroupInvite(groupInviteRequest.getUserId(), groupInviteRequest.getGroupId());
+    public Long inviteGroupUser(Long groupId, Long userId) {
+        MilkingGroup fetchedGroup = milkingGroupRepository.findById(groupId);
+        MilkedUser fetchedUser = milkedUserRepository.findOne(userId);
+        GroupInvite groupInvite = new GroupInvite(fetchedGroup.getId(), fetchedUser.getId());
         GroupInvite savedGroupInvite = groupInviteRepository.save(groupInvite);
+        //TODO: Send Email
         return savedGroupInvite.getGroupId();
     }
 
-    public Long activateGroupUser(String uuid) {
-//        MilkedUser milkedUser = milkedUserRepository.findByUuid(uuid);
-//        GroupInvite activatedUser = groupInviteRepository.findOne(milkedUser.getId());
-//        activatedUser.setState(GroupUserState.MEMBER);
-//        MilkingGroup milkingGroup = milkingGroupRepository.findById(activatedUser.getGroupId());
-//        milkingGroup.addUserToGroup(milkedUser);
-//        GroupInvite activatedSavedUser = groupInviteRepository.save(activatedUser);
-//        return activatedSavedUser.getId();
-        return 1l;
+    public MilkingGroup acceptGroupInvite(Long userId, Long groupId) {
+        MilkingGroup group = milkingGroupRepository.findOne(groupId);
+        MilkedUser user = milkedUserRepository.findOne(userId);
+        group.addUserToGroup(user);
+        milkingGroupRepository.save(group);
+        GroupInvite invite = groupInviteRepository.findOneByGroupIdAndUserId(groupId, userId);
+        groupInviteRepository.delete(invite);
+        return group;
     }
-    public void deleteGroupUser(Long id) {
-        groupInviteRepository.delete(id);
+
+    public void declineInvitation(Long userId, Long groupId) {
+        GroupInvite invite = groupInviteRepository.findOneByGroupIdAndUserId(groupId, userId);
+        groupInviteRepository.delete(invite);
     }
 }
 

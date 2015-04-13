@@ -1,6 +1,5 @@
 package org.savvas.milked.controller;
 
-import org.savvas.milked.controller.request.GroupInviteRequest;
 import org.savvas.milked.controller.request.GroupRequest;
 import org.savvas.milked.controller.request.RegistrationRequest;
 import org.savvas.milked.domain.MilkedUser;
@@ -23,8 +22,7 @@ public class MilkedTestUtils {
         String milkerPath = milkerRegistrationResponse.getHeaders().getFirst("Location");
         ResponseEntity<MilkedUser> milkerResponse = rest.getForEntity(URI.create(baseUrl + milkerPath), MilkedUser.class);
         MilkedUser milkedUser = milkerResponse.getBody();
-        rest.postForEntity(URI.create(baseUrl + "/activation/" + milkedUser.getUuid()), null, String.class);
-        return milkedUser;
+        return rest.postForEntity(URI.create(baseUrl + "/activation/" + milkedUser.getUuid()), null, MilkedUser.class).getBody();
     }
 
     public static MilkingGroup givenTheMilkingGroup(RestTemplate rest, String baseUrl, Long milkedUserId, String groupName) {
@@ -41,12 +39,12 @@ public class MilkedTestUtils {
     }
 
     public static String givenTheUserHasBeenInvitedToTheGroup(RestTemplate rest, String baseUrl, Long milkedUserId, Long milkedGroupId) {
-        GroupInviteRequest groupInviteRequest = new GroupInviteRequest(milkedUserId, milkedGroupId);
-        ResponseEntity<String> inviteGroupUserResponse = rest.postForEntity(URI.create(baseUrl + "/group-user"), groupInviteRequest, String.class);
+        String inviteUserUrl = baseUrl + "/group/" + milkedGroupId + "/invite/" + milkedUserId;
+        ResponseEntity<String> inviteGroupUserResponse = rest.postForEntity(URI.create(inviteUserUrl), null, String.class);
         return inviteGroupUserResponse.getHeaders().getFirst("Location");
     }
 
     public static void givenTheUserHasAcceptedTheInvitationToTheGroup(RestTemplate rest, String baseUrl, String inviteGroupUserLocation) {
-        rest.postForEntity(URI.create(baseUrl + inviteGroupUserLocation + "/activate"), null, String.class);
+        rest.postForEntity(URI.create(baseUrl + inviteGroupUserLocation + "/accept"), null, String.class);
     }
 }

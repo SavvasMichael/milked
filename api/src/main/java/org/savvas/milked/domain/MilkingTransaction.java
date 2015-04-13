@@ -20,6 +20,7 @@ public class MilkingTransaction {
     @JoinColumn(name = "group_id")
     private MilkingGroup group;
     private Integer amount;
+    private String description;
 
     MilkingTransaction() {
     }

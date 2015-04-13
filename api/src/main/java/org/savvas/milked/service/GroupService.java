@@ -27,6 +27,7 @@ public class GroupService {
     public Long createGroup(GroupRequest groupRequest) {
         MilkedUser fetchedUser = milkedUserRepository.findOne(groupRequest.getUserId());
         MilkingGroup milkingGroup = new MilkingGroup(groupRequest.getName(), fetchedUser);
+        milkingGroup.addUserToGroup(fetchedUser);
         MilkingGroup savedMilkingGroup = milkingGroupRepository.save(milkingGroup);
         return savedMilkingGroup.getId();
     }

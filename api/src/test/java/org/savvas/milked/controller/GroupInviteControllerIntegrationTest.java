@@ -1,15 +1,13 @@
 package org.savvas.milked.controller;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.savvas.milked.Application;
 import org.savvas.milked.controller.error.ErrorResponse;
-import org.savvas.milked.controller.request.GroupRequest;
-import org.savvas.milked.controller.request.GroupInviteRequest;
-import org.savvas.milked.controller.request.RegistrationRequest;
 import org.savvas.milked.domain.GroupInvite;
-import org.savvas.milked.domain.MilkingGroup;
 import org.savvas.milked.domain.MilkedUser;
+import org.savvas.milked.domain.MilkingGroup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -23,9 +21,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.savvas.milked.controller.MilkedTestUtils.*;
+import static org.savvas.milked.controller.MilkedTestUtils.givenTheMilkingGroup;
+import static org.savvas.milked.controller.MilkedTestUtils.givenTheUserHasBeenInvitedToTheGroup;
+import static org.savvas.milked.controller.MilkedTestUtils.givenTheUserIsRegisteredAndActivated;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -38,86 +36,90 @@ public class GroupInviteControllerIntegrationTest {
     private int port;
 
     private final TestRestTemplate rest = new TestRestTemplate();
+    private String baseUrl;
+
+    @Before
+    public void setUp() throws Exception {
+        baseUrl = "http://localhost:" + port;
+    }
 
     @Test
-    public void createGroupUserInviteReturnsCreatedResponseCode() {
+    public void invitingAUserReturnsA201WithNoBody() {
         //given
-        String baseUrl = "http://localhost:" + port;
-        String createGroupUserUrl = baseUrl + "/group-user";
-        MilkedUser milkedUser = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
-        MilkingGroup milkedGroup = givenTheMilkingGroup(rest, baseUrl, milkedUser.getId(), "savvasgroup");
+        MilkedUser groupOwner = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
+        MilkedUser friend = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "friend", "password");
+        MilkingGroup milkedGroup = givenTheMilkingGroup(rest, baseUrl, groupOwner.getId(), "savvasgroup");
 
         //when
-        GroupInviteRequest groupInviteRequest = new GroupInviteRequest(milkedGroup.getId(), milkedUser.getId());
-        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupInviteRequest, String.class);
-        String groupUserLocation = createGroupUserResponse.getHeaders().getFirst("Location");
-        ResponseEntity<GroupInvite> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), GroupInvite.class);
-        GroupInvite groupInvite = groupUserResponse.getBody();
+        String createGroupUserUrl = baseUrl + "/group/" + milkedGroup.getId() + "/invite/" + friend.getId();
+        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), null, String.class);
+
         //then
+        String invitesUrl = baseUrl + "/user/" + friend.getId() + "/group/invite";
+        ResponseEntity<GroupInvite[]> getInvitesResponse = rest.getForEntity(URI.create(invitesUrl), GroupInvite[].class);
+
         assertEquals(201, createGroupUserResponse.getStatusCode().value());
-        assertThat(groupUserLocation).matches("^/group-user/\\d+$");
-        assertEquals(milkedUser.getId(), groupInvite.getUserId());
-        assertEquals(milkedGroup.getId(), groupInvite.getGroupId());
+        assertEquals(200, getInvitesResponse.getStatusCode().value());
+
+        GroupInvite[] friendInvites = getInvitesResponse.getBody();
+        assertThat(friendInvites).hasSize(1);
+        assertThat(friendInvites[0].getGroupId()).isEqualTo(milkedGroup.getId());
+        assertThat(friendInvites[0].getUserId()).isEqualTo(friend.getId());
     }
 
     @Test
-    public void createGroupUserWithNullGroupIdReturns400ResponseCode() {
+    public void invitingAUserWithNullGroupIdReturns400ResponseCode() {
         //given
-        String baseUrl = "http://localhost:" + port;
-        String createGroupUserUrl = baseUrl + "/group-user";
+        MilkedUser milkedUser = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
         //when
-        GroupInviteRequest groupInviteRequest = new GroupInviteRequest(null, 1L);
-        ResponseEntity<ErrorResponse> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupInviteRequest, ErrorResponse.class);
+        String createGroupUserUrl = baseUrl + "/group/" + null + "/invite/" + milkedUser.getId();
+        ResponseEntity<ErrorResponse> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), null, ErrorResponse.class);
         //then
-        assertEquals("Unexpected Error Message", "groupId", createGroupUserResponse.getBody().getErrors().get(0));
+        assertEquals("Unexpected Error", 400, createGroupUserResponse.getStatusCode().value());
     }
 
-    // TODO: change this to actually add the user to the group and not keep state in the invite
     @Test
-    public void acceptingGroupUserInviteChangesGroupUserStateToMember() {
+    public void acceptingGroupInviteAddsTheUserToTheGroup() {
         //given
-        String baseUrl = "http://localhost:" + port;
-        String groupUserUrl = baseUrl + "/group-user/";
         MilkedUser owner = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
-        MilkedUser guest = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvassfriend", "password");
+        MilkedUser friend = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvassfriend", "password");
         MilkingGroup milkingGroup = givenTheMilkingGroup(rest, baseUrl, owner.getId(), "savvasgroup");
-        String groupInviteLocation = givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, guest.getId(), milkingGroup.getId());
-        //when
-        ResponseEntity<String> activateUserResponse = rest.postForEntity(URI.create(groupUserUrl + guest.getUuid() + "/activate"), null, String.class);
-        //then
-        ResponseEntity<MilkingGroup> groupResponse = rest.getForEntity(URI.create(baseUrl + "/group/" + milkingGroup.getId()), MilkingGroup.class);
-        List<MilkedUser> fetchedMilkedUserGroup = groupResponse.getBody().getMilkedUsers();
-        assertThat(fetchedMilkedUserGroup).hasSize(1);
-        assertThat(fetchedMilkedUserGroup.get(0)).isEqualToComparingFieldByField(guest);
+        String invitationLocation = givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, friend.getId(), milkingGroup.getId());
 
+        //when
+        String acceptInvitationUrl = baseUrl + invitationLocation + "/accept";
+        ResponseEntity<MilkingGroup> acceptInvitationResponse = rest.postForEntity(URI.create(acceptInvitationUrl), null, MilkingGroup.class);
+
+        //then
+        GroupInvite[] invites = rest.getForEntity(baseUrl + "/user/" + friend.getId() + "/group/invite", GroupInvite[].class).getBody();
+        assertThat(acceptInvitationResponse.getStatusCode().value()).isEqualTo(200);
+        MilkingGroup group = acceptInvitationResponse.getBody();
+        List<MilkedUser> fetchedMilkingUsers = group.getMilkedUsers();
+        assertThat(fetchedMilkingUsers).hasSize(2);
+        assertThat(fetchedMilkingUsers.get(1)).isEqualToComparingFieldByField(friend);
+        assertThat(invites).isEmpty();
     }
-    @Test
-    public void checkDeleteUserRemovesUserWithValidData() {
-        //given
-        String baseUrl = "http://localhost:" + port;
-        String createGroupUserUrl = baseUrl + "/group-user";
-        String registrationUrl = baseUrl + "/registration";
-        String createGroupUrl = baseUrl + "/group";
-        //when
-        RegistrationRequest request = new RegistrationRequest(randomEmail(), "savvas", "password");
-        ResponseEntity<String> registrationResponse = rest.postForEntity(URI.create(registrationUrl), request, String.class);
-        String userPath = registrationResponse.getHeaders().getFirst("Location");
-        ResponseEntity<MilkedUser> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), MilkedUser.class);
-        GroupRequest groupRequest = new GroupRequest(userResponse.getBody().getId(), "SavvasGroup");
-        ResponseEntity<String> createGroupResponse = rest.postForEntity(URI.create(createGroupUrl), groupRequest, String.class);
-        String groupLocation = createGroupResponse.getHeaders().getFirst("Location");
-        String groupUrl = baseUrl + groupLocation;
-        ResponseEntity<MilkingGroup> groupResponse = rest.getForEntity((URI.create(groupUrl)), MilkingGroup.class);
 
-        MilkingGroup milkingGroup = groupResponse.getBody();
-        GroupInviteRequest groupInviteRequest = new GroupInviteRequest(milkingGroup.getId(), milkingGroup.getOwner().getId());
-        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), groupInviteRequest, String.class);
-        String groupUserLocation = createGroupUserResponse.getHeaders().getFirst("Location");
-        rest.delete(URI.create(baseUrl + groupUserLocation));
-        ResponseEntity<ErrorResponse> groupUserResponse = rest.getForEntity(URI.create(baseUrl + groupUserLocation), ErrorResponse.class);
+    @Test
+    public void decliningInvitationDeletesInvitation() {
+        //given
+        MilkedUser owner = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
+        MilkedUser friend = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvassfriend", "password");
+        MilkingGroup milkingGroup = givenTheMilkingGroup(rest, baseUrl, owner.getId(), "savvasgroup");
+        String invitationLocation = givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, friend.getId(), milkingGroup.getId());
+
+        //when
+        String acceptInvitationUrl = baseUrl + invitationLocation + "/decline";
+        rest.delete(URI.create(acceptInvitationUrl));
+
         //then
-        assertEquals(404, groupUserResponse.getStatusCode().value());
-        assertEquals("Unexpected error message", "User is not a member of this group", groupUserResponse.getBody().getErrors().get(0));
+        String getGroup = baseUrl + "/group/" + milkingGroup.getId();
+        MilkingGroup group = rest.getForEntity(URI.create(getGroup), MilkingGroup.class).getBody();
+        GroupInvite[] invites = rest.getForEntity(baseUrl + "/user/" + friend.getId() + "/group/invite", GroupInvite[].class).getBody();
+        List<MilkedUser> fetchedMilkingUsers = group.getMilkedUsers();
+        assertThat(fetchedMilkingUsers).hasSize(1);
+        assertThat(fetchedMilkingUsers.get(0)).isEqualToComparingFieldByField(owner);
+        assertThat(invites).isEmpty();
     }
 
 }

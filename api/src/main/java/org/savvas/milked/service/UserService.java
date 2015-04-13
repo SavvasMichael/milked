@@ -4,6 +4,7 @@ import org.savvas.milked.controller.request.RegistrationRequest;
 import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.domain.MilkedUserRepository;
 import org.savvas.milked.domain.MilkingGroup;
+import org.savvas.milked.domain.MilkingGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,12 @@ import java.util.UUID;
 @Service
 public class UserService {
     private MilkedUserRepository milkedUserRepository;
+    private MilkingGroupRepository milkingGroupRepository;
 
     @Autowired
-    public UserService(MilkedUserRepository repository) {
+    public UserService(MilkedUserRepository repository, MilkingGroupRepository milkingGroupRepository) {
         this.milkedUserRepository = repository;
+        this.milkingGroupRepository = milkingGroupRepository;
     }
 
     public void sendEmail() {
@@ -72,7 +75,9 @@ public class UserService {
         return milkedUserRepository.findByEmail(email) != null;
     }
 
-    public List<MilkingGroup> getUserGroups(Long id) {
-        return new ArrayList<>();
+    public List<MilkingGroup> getUserGroups(Long userId) {
+        MilkedUser user = milkedUserRepository.findOne(userId);
+        List<MilkingGroup> groupsContianingUserId = milkingGroupRepository.findGroupsContianingUserId(user);
+        return groupsContianingUserId;
     }
 }

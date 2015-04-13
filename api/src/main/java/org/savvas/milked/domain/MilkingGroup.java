@@ -24,6 +24,7 @@ public class MilkingGroup {
     public MilkingGroup(String name, MilkedUser owner) {
         this.name = name;
         this.owner = owner;
+        this.milkedUsers = new ArrayList<>();
     }
 
     public Long getId() {

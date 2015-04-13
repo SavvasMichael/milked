@@ -1,16 +1,14 @@
 package org.savvas.milked.controller;
 
-import org.savvas.milked.controller.error.ValidationException;
-import org.savvas.milked.controller.request.GroupInviteRequest;
 import org.savvas.milked.domain.GroupInvite;
+import org.savvas.milked.domain.MilkingGroup;
 import org.savvas.milked.service.GroupInviteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 public class GroupInviteController {
@@ -22,31 +20,28 @@ public class GroupInviteController {
         this.groupInviteService = groupInviteService;
     }
 
-    @RequestMapping(value = "/group-user", method = RequestMethod.POST)
-    public ResponseEntity inviteUser(@RequestBody @Valid GroupInviteRequest groupInviteRequest, BindingResult validation) {
-        if (validation.hasErrors()) {
-            throw new ValidationException("groupId");
-        }
-        Long groupId = groupInviteService.inviteGroupUser(groupInviteRequest);
-        URI groupUserLocationURI = URI.create("/group-user/" + groupId);
+    @RequestMapping(value = "/group/{groupId}/invite/{userId}", method = RequestMethod.POST)
+    public ResponseEntity inviteUser(@PathVariable("groupId") Long groupId, @PathVariable("userId") Long userId) {
+        groupInviteService.inviteGroupUser(groupId, userId);
+        String createdUrl = "/user/" + userId + "/group/" + groupId;
+        URI groupUserLocationURI = URI.create(createdUrl);
         return ResponseEntity.created(groupUserLocationURI).build();
     }
 
-    @RequestMapping(value = "/group-user/{uuid}/activate", method = RequestMethod.POST)
-    public ResponseEntity activateGroupUser(@PathVariable("uuid") String uuid) {
-        Long activatedGroupUserId = groupInviteService.activateGroupUser(uuid);
-        URI activatedGroupUserLocationURI = URI.create("/group-user/" + activatedGroupUserId + "/activate");
-        return ResponseEntity.created(activatedGroupUserLocationURI).build();
+    @RequestMapping(value = "/user/{userId}/group/{groupId}/accept", method = RequestMethod.POST)
+    public ResponseEntity acceptGroupInvite(@PathVariable("userId") Long userId, @PathVariable("groupId") Long groupId) {
+        MilkingGroup group = groupInviteService.acceptGroupInvite(userId, groupId);
+        return ResponseEntity.ok(group);
     }
 
-    @RequestMapping(value = "/group-user/{id}", method = RequestMethod.GET)
-    public GroupInvite getGroupInvite(@PathVariable("id") Long id) {
-        return groupInviteService.getGroupInvite(id);
+    @RequestMapping(value = "/user/{userId}/group/invite", method = RequestMethod.GET)
+    public List<GroupInvite> getGroupInvite(@PathVariable("userId") Long userId) {
+        return groupInviteService.getGroupInvites(userId);
     }
 
-    @RequestMapping(value = "/group-user/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteGroupUser(@PathVariable("id") Long id) {
-        groupInviteService.deleteGroupUser(id);
+    @RequestMapping(value = "/user/{userId}/group/{groupId}/decline", method = RequestMethod.DELETE)
+    public ResponseEntity declineInvitation(@PathVariable("userId") Long userId, @PathVariable("groupId") Long groupId) {
+        groupInviteService.declineInvitation(userId, groupId);
         return ResponseEntity.ok().build();
     }
 }

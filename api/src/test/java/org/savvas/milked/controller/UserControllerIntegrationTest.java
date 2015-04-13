@@ -37,14 +37,27 @@ public class UserControllerIntegrationTest {
     public void checkGetUserGroup(){
         //given
         String baseUrl = "http://localhost:" + port;
-        MilkedUser user = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas","password");
-        givenTheMilkingGroup(rest, baseUrl, user.getId(),"savvasGroup");
-        givenTheMilkingGroup(rest, baseUrl, user.getId(),"savvasGroup2");
+        MilkedUser joe = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
+        givenTheMilkingGroup(rest, baseUrl, joe.getId(), "joeGroup");
+        givenTheMilkingGroup(rest, baseUrl, joe.getId(), "joeGroup2");
+
+        MilkedUser savvas = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
+        givenTheMilkingGroup(rest, baseUrl, savvas.getId(), "savvasGroup");
+        givenTheMilkingGroup(rest, baseUrl, savvas.getId(), "savvasGroup2");
+
         //when
-        String getUserGroupUrl = baseUrl + "/user/"+ user.getId() + "/group";
-        ResponseEntity<MilkingGroup[]> groupsResponse = rest.getForEntity(URI.create(getUserGroupUrl), MilkingGroup[].class);
-        MilkingGroup[] milkingGroups = groupsResponse.getBody();
+        String savvasGroupsUrl = baseUrl + "/user/" + savvas.getId() + "/group";
+        ResponseEntity<MilkingGroup[]> savvasGroupsResponse = rest.getForEntity(URI.create(savvasGroupsUrl), MilkingGroup[].class);
+        MilkingGroup[] savvasGroups = savvasGroupsResponse.getBody();
         //then
-        assertThat(milkingGroups).hasSize(2);
+        assertThat(savvasGroups).hasSize(2);
+
+        String joeGroupsUrl = baseUrl + "/user/" + joe.getId() + "/group";
+        ResponseEntity<MilkingGroup[]> joeGroupsResponse = rest.getForEntity(URI.create(savvasGroupsUrl), MilkingGroup[].class);
+        MilkingGroup[] joeGroups = joeGroupsResponse.getBody();
+        //then
+        assertThat(joeGroups).hasSize(2);
+
+
     }
 }
