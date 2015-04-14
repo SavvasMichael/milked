@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 public class MilkingController {
@@ -19,15 +20,15 @@ public class MilkingController {
         this.milkingService = milkingService;
     }
 
-    @RequestMapping(value = "/milk", method = RequestMethod.POST)
-    public ResponseEntity milkTheUser(@RequestBody MilkingTransactionRequest milkingTransactionRequest) {
-        Long transactionId = milkingService.createMilkingTransaction(milkingTransactionRequest);
-        URI transactionLocationURI = URI.create("/milk/" + transactionId);
+    @RequestMapping(value = "/group/{groupId}/milk", method = RequestMethod.POST)
+    public ResponseEntity milkTheUser(@PathVariable("groupId") @RequestBody Long groupId, @RequestBody MilkingTransactionRequest milkingTransactionRequest) {
+        Long transactionId = milkingService.createMilkingTransaction(milkingTransactionRequest, groupId);
+        URI transactionLocationURI = URI.create("/milk/" + groupId + "/" + transactionId);
         return ResponseEntity.created(transactionLocationURI).build();
     }
 
-    @RequestMapping(value = "/milk/{id}", method = RequestMethod.GET)
-    public MilkingTransaction getMilkingTransaction(@PathVariable("id") Long id) {
-        return milkingService.getMilkingTransaction(id);
+    @RequestMapping(value = "/group/{groupId}/milk", method = RequestMethod.GET)
+    public List<MilkingTransaction> getMilkingTransaction(@PathVariable("groupId") Long groupId) {
+        return milkingService.getMilkingTransactions(groupId);
     }
 }

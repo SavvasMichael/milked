@@ -2,9 +2,7 @@ package org.savvas.milked.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.savvas.milked.controller.MilkedTestUtils.givenTheMilkingGroup;
-import static org.savvas.milked.controller.MilkedTestUtils.givenTheUserHasJoinedTheGroup;
-import static org.savvas.milked.controller.MilkedTestUtils.givenTheUserIsRegisteredAndActivated;
+import static org.savvas.milked.controller.MilkedTestUtils.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,42 +34,33 @@ public class MilkingTransactionControllerIntegrationTest {
     private final TestRestTemplate rest = new TestRestTemplate();
 
     @Test
-    public void createShaftReturns201ResponseCode() {
+    public void milkingTransactionSavesCorrectFieldsAndReturs201() {
         //given
         String baseUrl = "http://localhost:" + port;
-        String milkUrl = baseUrl + "/milk";
+        MilkedUser savvas = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "pass");
+        MilkedUser savvasFriend = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvasfriend", "pass");
+        MilkingGroup group = givenTheMilkingGroup(rest, baseUrl, savvas.getId(), "savvasgroup");
+        givenTheUserHasJoinedTheGroup(rest, baseUrl, savvasFriend.getId(), group.getId());
+        String milkUrl = baseUrl + "/group/" + group.getId() + "/milk";
+        MilkingTransactionRequest milkSavvasFriend = new MilkingTransactionRequest(group.getId(), savvas.getId(), savvasFriend.getId(), 5, "Beer");
+        MilkingTransactionRequest milkSavvas = new MilkingTransactionRequest(group.getId(), savvasFriend.getId(), savvas.getId(), 1, "Water");
         //when
-        MilkingTransactionRequest milkingTransactionRequest = new MilkingTransactionRequest(1L, 2L, 5L, 1);
-        ResponseEntity<String> milkResponse = rest.postForEntity(URI.create(milkUrl), milkingTransactionRequest, String.class);
-        String milkLocation = milkResponse.getHeaders().getFirst("Location");
+        ResponseEntity<MilkingTransaction> milkSavvasFriendResponse = rest.postForEntity(URI.create(milkUrl), milkSavvasFriend, MilkingTransaction.class);
+        ResponseEntity<String> milkSavvasResponse = rest.postForEntity(URI.create(milkUrl), milkSavvas, String.class);
+        MilkingTransaction[] fetchedMilkedTransactions = rest.getForEntity((URI.create(milkUrl)), MilkingTransaction[].class).getBody();
         //then
-        assertEquals(201, milkResponse.getStatusCode().value());
-        assertThat(milkLocation).matches("^/milk/\\d+$");
-    }
-
-    @Test
-    public void createMilkingTransactionReturnsCorrectBodyFieldElements() {
-        //given
-        String baseUrl = "http://localhost:" + port;
-        String milkUrl = baseUrl + "/milk";
-
-        MilkedUser milker = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
-        MilkedUser milkee = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "michael", "password");
-        MilkingGroup milkerGroup = givenTheMilkingGroup(rest, baseUrl, milker.getId(), "SavvasGroup");
-        givenTheUserHasJoinedTheGroup(rest, baseUrl, milkee.getId(), milkerGroup.getId());
-
-        //when
-        MilkingTransactionRequest milkingTransactionRequest = new MilkingTransactionRequest(milker.getId(), milkee.getId(), milkerGroup.getId(), 100);
-        ResponseEntity<String> milkingTransactionResponse = rest.postForEntity(URI.create(milkUrl), milkingTransactionRequest, String.class);
-        String milkedTransactionLocation = milkingTransactionResponse.getHeaders().getFirst("Location");
-        ResponseEntity<MilkingTransaction> milkedTransactionResponse = rest.getForEntity((URI.create(baseUrl + milkedTransactionLocation)), MilkingTransaction.class);
-
-        //then
-        assertThat(milkedTransactionLocation).matches("^/milk/\\d+$");
-        MilkingTransaction milkingTransaction = milkedTransactionResponse.getBody();
-        assertEquals("Unexpected Group Id", milkerGroup.getId(), milkingTransaction.getGroup().getId());
-        assertEquals("Unexpected Milker Id", milker.getId(), milkingTransaction.getMilker().getId());
-        assertEquals("Unexpected Milkee Id", milkee.getId(), milkingTransaction.getMilkee().getId());
-        assertEquals("Unexpected Transaction Amount", 100, milkingTransaction.getAmount().intValue());
+        assertEquals(201, milkSavvasFriendResponse.getStatusCode().value());
+        assertEquals(201, milkSavvasResponse.getStatusCode().value());
+        assertThat(fetchedMilkedTransactions).hasSize(2);
+        assertEquals("Unexpected Description", milkSavvas.getDescription(), fetchedMilkedTransactions[1].getDescription());
+        assertEquals("Unexpected Description", milkSavvasFriend.getDescription(), fetchedMilkedTransactions[0].getDescription());
+        assertEquals("Unexpected Milker id", milkSavvas.getMilkerId(), fetchedMilkedTransactions[1].getMilker().getId());
+        assertEquals("Unexpected Milker id", milkSavvasFriend.getMilkerId(), fetchedMilkedTransactions[0].getMilker().getId());
+        assertEquals("Unexpected Milkee id", milkSavvas.getMilkeeId(), fetchedMilkedTransactions[1].getMilkee().getId());
+        assertEquals("Unexpected Milkee id", milkSavvasFriend.getMilkeeId(), fetchedMilkedTransactions[0].getMilkee().getId());
+        assertEquals("Unexpected Amount", milkSavvas.getAmount(), fetchedMilkedTransactions[1].getAmount());
+        assertEquals("Unexpected Amount", milkSavvasFriend.getAmount(), fetchedMilkedTransactions[0].getAmount());
+        assertEquals("Unexpected Group id", milkSavvas.getGroupId(), fetchedMilkedTransactions[1].getMilkingGroupId());
+        assertEquals("Unexpected Group id", milkSavvasFriend.getGroupId(), fetchedMilkedTransactions[0].getMilkingGroupId());
     }
 }

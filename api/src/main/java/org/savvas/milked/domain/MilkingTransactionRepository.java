@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface MilkingTransactionRepository extends CrudRepository<MilkingTransaction, Long> {
-    List<MilkingTransaction> findByGroupId(Long id);
+    List<MilkingTransaction> findByMilkingGroupId(Long id);
 }

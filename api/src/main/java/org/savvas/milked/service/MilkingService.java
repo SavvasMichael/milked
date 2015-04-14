@@ -1,9 +1,12 @@
 package org.savvas.milked.service;
 
+import org.savvas.milked.controller.error.NotFoundException;
 import org.savvas.milked.controller.request.MilkingTransactionRequest;
 import org.savvas.milked.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MilkingService {
@@ -19,17 +22,21 @@ public class MilkingService {
         this.milkingGroupRepository = milkingGroupRepository;
     }
 
-    public Long createMilkingTransaction(MilkingTransactionRequest request) {
+    public Long createMilkingTransaction(MilkingTransactionRequest request, Long groupId) {
+        MilkingGroup group = milkingGroupRepository.findById(groupId);
         MilkedUser milker = milkedUserRepository.findOne(request.getMilkerId());
         MilkedUser milkee = milkedUserRepository.findOne(request.getMilkeeId());
-        MilkingGroup group = milkingGroupRepository.findById(request.getGroupId());
 
-        MilkingTransaction milkingTransaction = new MilkingTransaction(milker, milkee, group, request.getAmount());
+        MilkingTransaction milkingTransaction = new MilkingTransaction(group.getId(), milker, milkee, request.getAmount(), request.getDescription());
         MilkingTransaction savedMilkingTransaction = milkingTransactionRepository.save(milkingTransaction);
         return savedMilkingTransaction.getId();
     }
 
-    public MilkingTransaction getMilkingTransaction(Long id) {
-        return milkingTransactionRepository.findOne(id);
+    public List<MilkingTransaction> getMilkingTransactions(Long groupId) {
+        List<MilkingTransaction> transactionsList = milkingTransactionRepository.findByMilkingGroupId(groupId);
+        if (transactionsList == null) {
+            throw new NotFoundException("Transaction not found");
+        }
+        return transactionsList;
     }
 }

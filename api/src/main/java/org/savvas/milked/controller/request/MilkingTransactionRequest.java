@@ -6,15 +6,17 @@ public class MilkingTransactionRequest {
     private Long milkeeId;
     private Long groupId;
     private Integer amount;
+    private String description;
 
     MilkingTransactionRequest() {
     }
 
-    public MilkingTransactionRequest(Long milkerId, Long milkeeId, Long groupId, Integer amount) {
+    public MilkingTransactionRequest(Long groupId, Long milkerId, Long milkeeId, Integer amount, String description) {
         this.milkerId = milkerId;
         this.milkeeId = milkeeId;
         this.groupId = groupId;
         this.amount = amount;
+        this.description = description;
     }
 
     public Long getMilkerId() {
@@ -31,5 +33,9 @@ public class MilkingTransactionRequest {
 
     public Integer getAmount() {
         return amount;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

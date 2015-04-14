@@ -1,6 +1,7 @@
 package org.savvas.milked.domain;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class MilkingTransaction {
@@ -16,20 +17,21 @@ public class MilkingTransaction {
     @JoinColumn(name = "milkee_id")
     private MilkedUser milkee;
 
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private MilkingGroup group;
+    private Long milkingGroupId;
     private Integer amount;
     private String description;
+    private Date createDate;
 
     MilkingTransaction() {
     }
 
-    public MilkingTransaction(MilkedUser milker, MilkedUser milkee, MilkingGroup group, Integer amount) {
+    public MilkingTransaction(Long milkingGroupId, MilkedUser milker, MilkedUser milkee, Integer amount, String description) {
+        this.milkingGroupId = milkingGroupId;
         this.milker = milker;
         this.milkee = milkee;
-        this.group = group;
         this.amount = amount;
+        this.description = description;
+        this.createDate = new Date();
     }
 
     public Long getId() {
@@ -44,11 +46,19 @@ public class MilkingTransaction {
         return milkee;
     }
 
-    public MilkingGroup getGroup() {
-        return group;
+    public Long getMilkingGroupId() {
+        return milkingGroupId;
     }
 
     public Integer getAmount() {
         return amount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
     }
 }
