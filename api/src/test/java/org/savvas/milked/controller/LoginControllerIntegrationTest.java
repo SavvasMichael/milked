@@ -3,10 +3,9 @@ package org.savvas.milked.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.savvas.milked.Application;
+import org.savvas.milked.MilkedApiApplication;
 import org.savvas.milked.controller.error.ErrorResponse;
 import org.savvas.milked.controller.request.LoginRequest;
-import org.savvas.milked.controller.request.RegistrationRequest;
 import org.savvas.milked.domain.MilkedUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
@@ -26,7 +25,7 @@ import static org.savvas.milked.controller.MilkedTestUtils.givenTheUserIsRegiste
 import static org.savvas.milked.controller.MilkedTestUtils.randomEmail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = MilkedApiApplication.class)
 @WebAppConfiguration
 @IntegrationTest("server.port=0")
 

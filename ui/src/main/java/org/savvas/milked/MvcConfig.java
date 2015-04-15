@@ -1,4 +1,4 @@
-package org.savvas.milked.web.login;
+package org.savvas.milked;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

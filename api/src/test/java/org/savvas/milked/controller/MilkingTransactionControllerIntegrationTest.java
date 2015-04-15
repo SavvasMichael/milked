@@ -6,7 +6,7 @@ import static org.savvas.milked.controller.MilkedTestUtils.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.savvas.milked.Application;
+import org.savvas.milked.MilkedApiApplication;
 import org.savvas.milked.controller.request.MilkingTransactionRequest;
 import org.savvas.milked.domain.MilkingTransaction;
 import org.savvas.milked.domain.MilkingGroup;
@@ -22,7 +22,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.net.URI;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = MilkedApiApplication.class)
 @WebAppConfiguration
 @IntegrationTest("server.port=0")
 
