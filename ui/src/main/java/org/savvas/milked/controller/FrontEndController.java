@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.Map;
 
@@ -21,6 +22,15 @@ public class FrontEndController {
     public ResponseEntity registerUser(@RequestBody Map body) {
         try {
             return restTemplate.postForEntity(URI.create(BASE_URL + "/registration"), body, Map.class);
+        } catch (HttpClientErrorException e) {
+            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+        }
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity login(@RequestBody Map body) {
+        try {
+            return restTemplate.postForEntity(URI.create(BASE_URL + "/login"), body, Map.class);
         } catch (HttpClientErrorException e) {
             return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
         }

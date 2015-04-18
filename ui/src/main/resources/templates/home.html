@@ -30,26 +30,33 @@
                 daily between group members</p>
         </div>
         <div class="col-md-3 col-md-offset-1 loginForm">
-            <form role="form" class="loginFormInner">
+            <form role="form" class="loginFormInner" ng-controller="LoginController">
                 <div class="form-group">
                     <div class="formHeader">
                         <h4>Already a member? <strong>Log in</strong></h4>
                     </div>
-                    <input type="email" class="form-control" id="email" placeholder="email"/>
+                    <input ng-model="loginRequest.email" type="email" class="form-control" placeholder="email"/>
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" id="pwd" placeholder="password"/>
+                    <input ng-model="loginRequest.password" type="password" class="form-control"
+                           placeholder="password"/>
+                </div>
+                <div ng-show="hasLoginErrors" class="loginErrorMessage">
+                    <small><strong>Unrecognized email/password</strong></small>
                 </div>
                 <div class="checkbox">
                     <label><input type="checkbox"/> Remember me</label>
-                    <button type="submit" class="btn btn-primary loginButton">Log in</button>
+                    <button type="submit" class="btn btn-primary loginButton" ng-click="login()">Log in</button>
                 </div>
             </form>
         </div>
     </div>
     <div class="row signup">
         <div class="col-md-3 col-md-offset-7 signupForm" ng-controller="RegistrationController">
-            <div ng-show="hasRegistered"> Thank you for registering</div>
+            <div ng-show="hasRegistered" class="registeredMessage">
+                <h3 class="registerMessageHead">Thank you for registering!</h3>
+                <h4 class="registerMessageBody">An activation email has been sent to the provided email address.</h4>
+            </div>
             <form ng-show="!hasRegistered" role="form" class="signupFormInner">
                 <div class="formHeader">
                     <h4>New to Milked? <strong>Sign up</strong></h4>
@@ -72,13 +79,6 @@
                     </button>
                 </div>
             </form>
-        </div>
-    </div>
-    <div id="overlay">
-        <div>
-            <p>An Email has been sent to the provided Email address</p>
-
-            <p>Click here to [<a href='#' onclick='overlay()'>close</a>]</p>
         </div>
     </div>
 </div>
