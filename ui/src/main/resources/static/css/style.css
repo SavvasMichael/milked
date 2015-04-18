@@ -7,7 +7,7 @@ body h3, body h4{
     padding: 0.2em;
 }
 .wrapper{
-    background-image: url("img/ZenBG3.png");
+    background-image: url("/img/ZenBG3.png");
     background-size: cover;
 }
 html .navbar-default{
@@ -32,6 +32,9 @@ html .navbar-default{
 	margin-left: 7em;
 	height: 2.5em;
 	margin-top: -0.8em;
+}
+.signup{
+    padding-top: 1em;
 }
 .signupForm{
 	background-color: white;

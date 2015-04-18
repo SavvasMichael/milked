@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 //@Configuration
 //@EnableWebMvcSecurity
 public class WebSecurityConfig {
-//        extends WebSecurityConfigurerAdapter {
+//      extends WebSecurityConfigurerAdapter {
 //    @Override
 //    protected void configure(HttpSecurity http) throws Exception {
 //        http
