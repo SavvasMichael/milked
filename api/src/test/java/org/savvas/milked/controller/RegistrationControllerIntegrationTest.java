@@ -18,6 +18,7 @@ import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
+import static org.savvas.milked.controller.MilkedTestUtils.givenTheUserIsRegisteredAndActivated;
 import static org.savvas.milked.controller.MilkedTestUtils.randomEmail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -136,6 +137,7 @@ public class RegistrationControllerIntegrationTest {
         assertEquals("Unexpected response code.", 400, response.getStatusCode().value());
         assertEquals("Unexpected Error Message", "password", response.getBody().getErrors().get(0));
     }
+
 
     @Test
     public void registeringUserWithDuplicateEmailReturnsBadRequest() {

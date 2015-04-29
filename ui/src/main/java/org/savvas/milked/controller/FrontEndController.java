@@ -26,14 +26,14 @@ public class FrontEndController {
         }
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity login(@RequestBody Map body) {
-        try {
-            return restTemplate.postForEntity(URI.create(BASE_URL + "/login"), body, Map.class);
-        } catch (HttpClientErrorException e) {
-            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
-        }
-    }
+//    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    public ResponseEntity login(@RequestBody Map body) {
+//        try {
+//            return restTemplate.postForEntity(URI.create(BASE_URL + "/login"), body, Map.class);
+//        } catch (HttpClientErrorException e) {
+//            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+//        }
+//    }
 
     @RequestMapping(value = "/group", method = RequestMethod.POST)
     public ResponseEntity createGroup(@RequestBody Map body) {

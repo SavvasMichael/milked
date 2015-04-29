@@ -57,6 +57,8 @@ html .navbar-default{
 .registerMessageHead{
     background-color: #337AB7;
     color: white;
+    border-radius: 0.5em;
+    text-align: center;
 }
 .registerMessageBody{
     line-height: 1.5em;

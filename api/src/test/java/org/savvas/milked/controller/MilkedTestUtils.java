@@ -17,7 +17,7 @@ public class MilkedTestUtils {
     }
 
     public static MilkedUser givenTheUserIsRegisteredAndActivated(RestTemplate rest, String baseUrl, String name, String password) {
-        RegistrationRequest milkerRegistrationRequest = new RegistrationRequest(randomEmail(), name, password);
+        RegistrationRequest milkerRegistrationRequest = new RegistrationRequest("michaelsavvas@ymail.com", name, password);
         ResponseEntity<String> milkerRegistrationResponse = rest.postForEntity(URI.create(baseUrl + "/registration"), milkerRegistrationRequest, String.class);
         String milkerPath = milkerRegistrationResponse.getHeaders().getFirst("Location");
         ResponseEntity<MilkedUser> milkerResponse = rest.getForEntity(URI.create(baseUrl + milkerPath), MilkedUser.class);

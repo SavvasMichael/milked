@@ -61,11 +61,11 @@ public class UserService {
         }
     }
 
-    public Long createUser(RegistrationRequest registrationRequest) {
+    public MilkedUser createUser(RegistrationRequest registrationRequest) {
         String uuid = UUID.randomUUID().toString();
         MilkedUser milkedUser = new MilkedUser(registrationRequest.getEmail(), registrationRequest.getName(), registrationRequest.getPassword(), uuid);
         MilkedUser savedMilkedUser = milkedUserRepository.save(milkedUser);
-        return savedMilkedUser.getId();
+        return savedMilkedUser;
     }
     public MilkedUser getUser(Long id) {
         return milkedUserRepository.findOne(id);

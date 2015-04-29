@@ -2,7 +2,10 @@ package org.savvas.milked.controller;
 
 import org.savvas.milked.controller.error.ValidationException;
 import org.savvas.milked.controller.request.RegistrationRequest;
+import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -16,6 +19,8 @@ import java.net.URI;
 
 @RestController
 public class RegistrationController {
+    private static final Logger LOG = LoggerFactory.getLogger(RegistrationController.class);
+
 
     private final UserService userService;
 
@@ -32,9 +37,11 @@ public class RegistrationController {
         if (userService.userExists(registrationRequest.getEmail())) {
             throw new ValidationException("This email has already been registered");
         }
-        Long userId = userService.createUser(registrationRequest);
-        URI userLocationUri = URI.create("/user/" + userId);
+        MilkedUser user = userService.createUser(registrationRequest);
+        URI userLocationUri = URI.create("/user/" + user.getId());
         //userService.sendEmail();
+        LOG.info("send email containing following url - {}", "http://milked.io/activation/" + user.getUuid());
+
         return ResponseEntity.created(userLocationUri).build();
     }
 }

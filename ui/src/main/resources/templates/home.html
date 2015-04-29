@@ -41,12 +41,15 @@
                     <input ng-model="loginRequest.password" type="password" class="form-control"
                            placeholder="password"/>
                 </div>
-                <div ng-show="hasLoginErrors" class="loginErrorMessage">
+                <div ng-show="hasLoginErrors" class="errorMessage">
                     <small><strong>Unrecognized email/password</strong></small>
                 </div>
                 <div class="checkbox">
                     <label><input type="checkbox"/> Remember me</label>
                     <button type="submit" class="btn btn-primary loginButton" ng-click="login()">Log in</button>
+                    <span ng-if="successfulLogin">
+                        <a href="/registerLanding.html">Here</a>
+                    </span>
                 </div>
             </form>
         </div>
@@ -54,7 +57,7 @@
     <div class="row signup">
         <div class="col-md-3 col-md-offset-7 signupForm" ng-controller="RegistrationController">
             <div ng-show="hasRegistered" class="registeredMessage">
-                <h3 class="registerMessageHead">Thank you for registering!</h3>
+                <h4 class="registerMessageHead">Thank you for registering!</h4>
                 <h4 class="registerMessageBody">An activation email has been sent to the provided email address.</h4>
             </div>
             <form ng-show="!hasRegistered" role="form" class="signupFormInner">
@@ -72,6 +75,9 @@
                 <div class="form-group">
                     <input ng-model="registrationRequest.password" type="password" class="form-control" id="pwd"
                            placeholder="password"/>
+                </div>
+                <div ng-show="hasRegisterErrors" class="errorMessage">
+                    <small><strong>Email has already been registered</strong></small>
                 </div>
                 <div class="signupButton">
                     <button type="submit" class="btn btn-primary signupButton" ng-click="registerUser()">
