@@ -34,7 +34,7 @@ public class ActivationControllerIntegrationTest {
         String activationUrl = baseUrl + "/activation/";
         //when
         String invalidUuid = "D5G14q-afA3-dAgk2324";
-        ResponseEntity<ErrorResponse> activationResponse = rest.postForEntity(URI.create(activationUrl + invalidUuid), null, ErrorResponse.class);
+        ResponseEntity<ErrorResponse> activationResponse = rest.getForEntity(URI.create(activationUrl + invalidUuid), ErrorResponse.class);
         //then
         ErrorResponse body = activationResponse.getBody();
         assertEquals("Unexpected error message", "Invalid UUID", body.getErrors().get(0));

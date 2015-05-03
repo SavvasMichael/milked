@@ -18,7 +18,7 @@ public class ActivationController {
         this.repository = repository;
     }
 
-    @RequestMapping(value = "/activation/{uuid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/activation/{uuid}", method = RequestMethod.GET)
     public MilkedUser activateUser(@PathVariable("uuid") String uuid) {
         MilkedUser fetchedMilkedUser = repository.findByUuid(uuid);
         if ( fetchedMilkedUser == null ) {

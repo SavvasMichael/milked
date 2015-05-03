@@ -192,7 +192,7 @@ public class RegistrationControllerIntegrationTest {
         String userPath = registrationResponse.getHeaders().getFirst("Location");
         ResponseEntity<MilkedUser> userResponse = rest.getForEntity(URI.create(baseUrl + userPath), MilkedUser.class);
         String uuid = userResponse.getBody().getUuid();
-        ResponseEntity<MilkedUser> activationResponse = rest.postForEntity(URI.create(activationUrl + uuid), null, MilkedUser.class);
+        ResponseEntity<MilkedUser> activationResponse = rest.getForEntity(URI.create(activationUrl + uuid), MilkedUser.class);
         ResponseEntity<MilkedUser> userResponse2 = rest.getForEntity(URI.create(baseUrl + userPath), MilkedUser.class);
         //then
         assertEquals(true, userResponse2.getBody().isActivated());

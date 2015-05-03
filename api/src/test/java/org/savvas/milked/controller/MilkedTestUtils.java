@@ -21,7 +21,7 @@ public class MilkedTestUtils {
         String milkerPath = milkerRegistrationResponse.getHeaders().getFirst("Location");
         ResponseEntity<MilkedUser> milkerResponse = rest.getForEntity(URI.create(baseUrl + milkerPath), MilkedUser.class);
         MilkedUser milkedUser = milkerResponse.getBody();
-        return rest.postForEntity(URI.create(baseUrl + "/activation/" + milkedUser.getUuid()), null, MilkedUser.class).getBody();
+        return rest.getForEntity(URI.create(baseUrl + "/activation/" + milkedUser.getUuid()), MilkedUser.class).getBody();
     }
 
     public static MilkedUser givenTheUserIsRegistered(RestTemplate rest, String baseUrl, String name, String password) {
