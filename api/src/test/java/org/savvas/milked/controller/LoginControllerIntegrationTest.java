@@ -21,6 +21,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.net.URI;
 
 import static org.junit.Assert.*;
+import static org.savvas.milked.controller.MilkedTestUtils.givenTheUserIsRegistered;
 import static org.savvas.milked.controller.MilkedTestUtils.givenTheUserIsRegisteredAndActivated;
 import static org.savvas.milked.controller.MilkedTestUtils.randomEmail;
 
@@ -114,13 +115,13 @@ public class LoginControllerIntegrationTest {
     @Test
     public void checkThatOnlyAnActivatedUsersCanLogin() {
         //given
-        MilkedUser registeredAndActivatedUser = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password1");
-        LoginRequest loginRequest = new LoginRequest(registeredAndActivatedUser.getEmail(), "password1");
+        MilkedUser registeredUser = givenTheUserIsRegistered(rest, baseUrl, "savvas", "pass");
+        LoginRequest loginRequest = new LoginRequest(registeredUser.getEmail(), "password1");
         //when
         ResponseEntity<MilkedUser> pendingUserLogin = rest.postForEntity(URI.create(baseUrl + "/login"), loginRequest, MilkedUser.class);
-        MilkedUser registeredUser = pendingUserLogin.getBody();
+        MilkedUser registeredUserBody = pendingUserLogin.getBody();
         //then
-        assertEquals(200, pendingUserLogin.getStatusCode().value());
-        assertTrue("NOT_ACTIVATED", registeredUser.isActivated());
+        assertEquals(401, pendingUserLogin.getStatusCode().value());
+        assertFalse("NOT_ACTIVATED", registeredUserBody.isActivated());
     }
 }

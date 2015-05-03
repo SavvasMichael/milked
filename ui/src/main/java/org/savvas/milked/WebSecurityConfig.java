@@ -2,6 +2,8 @@ package org.savvas.milked;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.rcp.RemoteAuthenticationException;
 import org.springframework.security.authentication.rcp.RemoteAuthenticationManager;
@@ -13,6 +15,8 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -28,9 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/css/*", "/js/*", "/img/*", "/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -38,6 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
+                .logoutUrl("/logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .permitAll();
     }
 
@@ -48,11 +54,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public Collection<GrantedAuthority> attemptAuthentication(String email, String password) throws RemoteAuthenticationException {
                 ArrayList grants = new ArrayList();
-                String baseUrl = "http://localhost:8080";
-                String userUrl = "/user/1";
-
-                User user = rest.getForEntity(URI.create(baseUrl + userUrl), User.class).getBody();
-                if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+                String loginUrl = "http://localhost:8080/login";
+                Map loginRequest = new HashMap();
+                loginRequest.put("email", email);
+                loginRequest.put("password", password);
+                ResponseEntity<User> user = rest.postForEntity(URI.create(loginUrl), loginRequest, User.class);
+                User fetchedUser = user.getBody();
+                HttpStatus status = user.getStatusCode();
+                if (status.is2xxSuccessful()) {
                     grants.add(new SimpleGrantedAuthority("USER"));
                     return grants;
                 }
@@ -61,28 +70,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         });
         auth
                 .authenticationProvider(authenticationProvider);
-//                .inMemoryAuthentication()
-//                .withUser("user").password("password").roles("USER");
     }
 
     private static class User {
+        private Long id;
         private String email;
         private String password;
 
         public User() {
         }
-
         public User(String email, String password) {
             this.email = email;
             this.password = password;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public String getPassword() {
-            return password;
         }
     }
 }

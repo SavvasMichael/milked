@@ -47,11 +47,11 @@ public class UserService {
             Session session = Session.getInstance(props, new GMailAuthenticator("savvas.a.michael@gmail.com", "cstrike54321"));
             MimeMessage message = new MimeMessage(session);
             Address fromAddress = new InternetAddress(from);
-            Address toAddress = new InternetAddress("savvas.a.michael@gmail.com");
+            Address toAddress = new InternetAddress(getUser(1l).getEmail());
             message.setFrom(fromAddress);
             message.setRecipient(Message.RecipientType.TO, toAddress);
             message.setSubject("Welcome to milked!");
-            message.setText("Hello");
+            message.setText("In order to activate your account please follow localhost:8080/activation/" + getUser(1l).getUuid());
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
             message.saveChanges();

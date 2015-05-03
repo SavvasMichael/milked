@@ -10,8 +10,8 @@
       $scope.successfulLogin = false;
 
       $scope.registerUser = function() {
-          $http.post(BASE_URL + "/registration", $scope.registrationRequest).
-              success(function (data, status, headers, config) {
+          $http.post(BASE_URL + "/registration", $scope.registrationRequest)
+              .success(function (data, status, headers, config) {
                 $log.info("Success: " + headers('Location'));
                 $scope.hasRegistered = true;
               }).error(function(data, status, headers, config) {
@@ -24,7 +24,6 @@
 
     milked.controller("LoginController", function ($http, $scope, $log) {
       $scope.loginRequest = {};
-
       $scope.login = function() {
           $http.post(BASE_URL + "/login", $scope.loginRequest).
               success(function (data, status, headers, config) {
