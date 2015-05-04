@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.client.RestTemplate;
@@ -62,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 User fetchedUser = user.getBody();
                 HttpStatus status = user.getStatusCode();
                 if (status.is2xxSuccessful()) {
-                    grants.add(new SimpleGrantedAuthority("USER"));
+                    grants.add(new SimpleGrantedAuthority(fetchedUser.getId() + ""));
                     return grants;
                 }
                 throw new BadCredentialsException("failed to authenticate user.");
@@ -82,6 +83,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         public User(String email, String password) {
             this.email = email;
             this.password = password;
+        }
+
+        public Long getId() {
+            return id;
         }
     }
 }

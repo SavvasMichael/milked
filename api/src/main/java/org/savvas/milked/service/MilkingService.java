@@ -14,8 +14,8 @@ public class MilkingService {
     private final MilkingTransactionRepository milkingTransactionRepository;
     private final MilkedUserRepository milkedUserRepository;
     private final MilkingGroupRepository milkingGroupRepository;
-
     @Autowired
+
     public MilkingService(MilkingTransactionRepository milkingTransactionRepository, MilkedUserRepository milkedUserRepository, MilkingGroupRepository milkingGroupRepository) {
         this.milkingTransactionRepository = milkingTransactionRepository;
         this.milkedUserRepository = milkedUserRepository;
