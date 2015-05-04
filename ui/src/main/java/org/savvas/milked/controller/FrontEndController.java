@@ -23,7 +23,7 @@ public class FrontEndController {
     public String activateUser(@PathVariable("uuid") String uuid) {
         try {
             restTemplate.getForEntity(URI.create(BASE_URL + "/activation/" + uuid), String.class);
-            return "login";
+            return "index";
         } catch (HttpClientErrorException e) {
             LOG.warn("Error when trying to activate user", e);
             return "errorLanding";

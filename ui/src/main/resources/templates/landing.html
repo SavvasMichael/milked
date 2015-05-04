@@ -53,11 +53,12 @@
                 <small><a href=" ">Leave group</a></small>
             </li>
         </ul>
-        <div class="createGroupInput createGroup">
-            <input type="text" class="form-control" placeholder="New Group"/>
+        <div class="createGroupInput createGroup" ng-controller="GroupController">
+            <input ng-model="groupRequest.name" type="text" class="form-control" placeholder="New Group"/>
         </div>
         <div class="createGroup">
-            <button type="submit" class="btn btn-primary createGroupButton">Create group</button>
+            <button type="submit" class="btn btn-primary createGroupButton" ng-click="createGroup()">Create group
+            </button>
         </div>
 
     </div>

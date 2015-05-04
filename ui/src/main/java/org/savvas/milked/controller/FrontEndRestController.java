@@ -27,13 +27,13 @@ public class FrontEndRestController {
         }
     }
 
-//    @RequestMapping(value = "/group", method = RequestMethod.POST)
-//    public ResponseEntity createGroup(@RequestBody Map body) {
-//        try {
-//            return restTemplate.postForEntity(URI.create(BASE_URL + "/group"), body, Map.class);
-//        } catch (HttpClientErrorException e) {
-//            LOG.warn("Error when trying to fetch groups", e);
-//            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
-//        }
-//    }
+    @RequestMapping(value = "/group", method = RequestMethod.POST)
+    public ResponseEntity createGroup(@RequestBody Map body) {
+        try {
+            return restTemplate.postForEntity(URI.create(BASE_URL + "/group"), body, Map.class);
+        } catch (HttpClientErrorException e) {
+            LOG.warn("Error when trying to fetch groups", e);
+            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+        }
+    }
 }

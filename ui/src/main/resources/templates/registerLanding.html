@@ -15,7 +15,7 @@
         <div class="container-fluid nav-bar">
             <div class="navbar-header">
                 <a class="navbar-logo" href="#">
-                    <img src="img/milked.png"/>
+                    <img src="/img/milked.png"/>
                 </a>
             </div>
             <div class="navbar-right menuItems">
@@ -30,11 +30,12 @@
 
         </ul>
         <div class="createGroupInput createGroup" ng-controller="GroupController">
-            <input ng-model="groupRequest.name" type="text" class="form-control" placeholder="New Group">
-        <div class="createGroup">
-            <button type="submit" class="btn btn-primary createGroupButton" ng-click="createGroup()">Create group
-            </button>
-        </div>
+            <input ng-model="groupRequest.name" type="text" class="form-control" placeholder="New Group"/>
+
+            <div class="createGroup">
+                <button type="submit" class="btn btn-primary createGroupButton" ng-click="createGroup()">Create group
+                </button>
+            </div>
         </div>
     </div>
     <div class="col-md-10 content">
@@ -84,9 +85,8 @@
                     <tr>
                         <th>Name</th>
                         <th>Balance</th>
-                        <tr>
+                    <tr>
                         <td>No members yet</td>
-                        </tr>
                     </tr>
                     </thead>
                     <tbody>
@@ -120,18 +120,18 @@
                                     <label class="sr-only">Amount</label>
 
                                     <div class="input-group">
-                                        <div class="input-group-addon">&pound</div>
-                                        <input type="text" class="form-control milkInput" placeholder="Enter Amount">
+                                        <div class="input-group-addon"></div>
+                                        <input type="text" class="form-control milkInput" placeholder="Enter Amount"/>
                                     </div>
                                 </div>
                             </form>
                             <div class="milkDescriptionInput">
                                 <input type="description" class="form-control"
-                                       placeholder="i.e: Pint of Beer">
+                                       placeholder="i.e: Pint of Beer"/>
                             </div>
                             <div class="milkLocationInput">
                                 <input type="place" class="form-control"
-                                       placeholder="Where? i.e: Pub">
+                                       placeholder="Where? i.e: Pub"/>
                             </div>
                             <ul class="milkerAction">
                                 <li class="milkerAction"><a href="#">No members yet</a>
