@@ -8,13 +8,9 @@ import org.savvas.milked.domain.MilkingGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -50,8 +46,8 @@ public class UserService {
             Address toAddress = new InternetAddress(getUser(1l).getEmail());
             message.setFrom(fromAddress);
             message.setRecipient(Message.RecipientType.TO, toAddress);
-            message.setSubject("Welcome to milked!");
-            message.setText("In order to activate your account please follow localhost:8080/activation/" + getUser(1l).getUuid());
+            message.setSubject("Welcome to milked, " + getUser(1l).getName() + " !");
+            message.setText("Activation link: http://localhost:7070/activation/" + getUser(1l).getUuid());
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
             message.saveChanges();
@@ -77,7 +73,7 @@ public class UserService {
 
     public List<MilkingGroup> getUserGroups(Long userId) {
         MilkedUser user = milkedUserRepository.findOne(userId);
-        List<MilkingGroup> groupsContianingUserId = milkingGroupRepository.findGroupsContianingUserId(user);
-        return groupsContianingUserId;
+        List<MilkingGroup> groupsContainingUserId = milkingGroupRepository.findGroupsContianingUserId(user);
+        return groupsContainingUserId;
     }
 }

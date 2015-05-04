@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
 @RestController
@@ -39,7 +40,7 @@ public class RegistrationController {
         }
         MilkedUser user = userService.createUser(registrationRequest);
         URI userLocationUri = URI.create("/user/" + user.getId());
-//        userService.sendEmail();
+        userService.sendEmail();
         LOG.info("send email containing following url - {}", "http://milked.io/activation/" + user.getUuid());
 
         return ResponseEntity.created(userLocationUri).build();
