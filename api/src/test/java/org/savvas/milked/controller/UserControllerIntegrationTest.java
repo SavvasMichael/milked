@@ -3,6 +3,7 @@ package org.savvas.milked.controller;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.savvas.milked.MilkedApiApplication;
+import org.savvas.milked.controller.request.LeaveGroupRequest;
 import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.domain.MilkingGroup;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +16,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.net.URI;
+import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.savvas.milked.controller.MilkedTestUtils.*;
 
@@ -55,7 +58,30 @@ public class UserControllerIntegrationTest {
         MilkingGroup[] joeGroups = joeGroupsResponse.getBody();
         //then
         assertThat(joeGroups).hasSize(2);
+    }
 
+    @Test
+    public void checkLeaveGroupRemovesUserFromTheGroup() {
+        //given
+        String baseUrl = "http://localhost:" + port;
+        MilkedUser savvas = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Savvas", "pass");
+        MilkedUser joe = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Joe", "pass");
+        MilkingGroup group = givenTheMilkingGroup(rest, baseUrl, savvas.getId(), "savvasGroup");
+        givenTheUserHasJoinedTheGroup(rest, baseUrl, joe.getId(), group.getId());
+        
+        String leaveGroupUrl = baseUrl + "/user/" + joe.getId() + "/group/" + group.getId() + "/leave";
+        LeaveGroupRequest leaveGroupRequest = new LeaveGroupRequest(joe.getId(), group.getId());
+        String joeGroupUrl = baseUrl + "/user/" + joe.getId() + "/group";
 
+        //when
+        MilkingGroup[] joeGroupsResponse1 = rest.getForEntity(URI.create(joeGroupUrl), MilkingGroup[].class).getBody();
+        assertThat(joeGroupsResponse1).isNotEmpty();
+
+        ResponseEntity<MilkingGroup> leaveGroupResponse = rest.postForEntity(URI.create(leaveGroupUrl), leaveGroupRequest, MilkingGroup.class);
+        MilkingGroup[] joeGroupsResponse = rest.getForEntity(URI.create(joeGroupUrl), MilkingGroup[].class).getBody();
+
+        //then
+        assertEquals("Unexpected Response Code", 200, leaveGroupResponse.getStatusCode().value());
+        assertThat(joeGroupsResponse).isEmpty();
     }
 }

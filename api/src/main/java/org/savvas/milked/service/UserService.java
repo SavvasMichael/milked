@@ -5,6 +5,8 @@ import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.domain.MilkedUserRepository;
 import org.savvas.milked.domain.MilkingGroup;
 import org.savvas.milked.domain.MilkingGroupRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +75,13 @@ public class UserService {
 
     public List<MilkingGroup> getUserGroups(Long userId) {
         MilkedUser user = milkedUserRepository.findOne(userId);
-        List<MilkingGroup> groupsContainingUserId = milkingGroupRepository.findGroupsContianingUserId(user);
+        List<MilkingGroup> groupsContainingUserId = milkingGroupRepository.findGroupsContainingUserId(user);
         return groupsContainingUserId;
+    }
+
+    public void leaveGroup(Long userId, Long groupId) {
+        MilkingGroup group = milkingGroupRepository.findById(groupId);
+        group.deleteUserFromGroup(milkedUserRepository.findOne(userId));
+        milkingGroupRepository.save(group);
     }
 }

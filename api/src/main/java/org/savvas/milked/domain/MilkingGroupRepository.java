@@ -12,5 +12,5 @@ public interface MilkingGroupRepository extends CrudRepository<MilkingGroup, Lon
     MilkingGroup findById(Long id);
 
     @Query("select m from MilkingGroup m inner join m.milkedUsers u where u = :milkedUser")
-    List<MilkingGroup> findGroupsContianingUserId(@Param("milkedUser") MilkedUser milkedUser);
+    List<MilkingGroup> findGroupsContainingUserId(@Param("milkedUser") MilkedUser milkedUser);
 }

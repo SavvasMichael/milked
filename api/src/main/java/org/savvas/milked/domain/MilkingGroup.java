@@ -18,7 +18,7 @@ public class MilkingGroup {
     @ManyToMany
     private List<MilkedUser> milkedUsers;
 
-    MilkingGroup() {
+    public MilkingGroup() {
     }
 
     public MilkingGroup(String name, MilkedUser owner) {
@@ -45,5 +45,9 @@ public class MilkingGroup {
 
     public void addUserToGroup(MilkedUser user) {
         milkedUsers.add(user);
+    }
+
+    public void deleteUserFromGroup(MilkedUser user) {
+        milkedUsers.remove(user);
     }
 }
