@@ -68,7 +68,7 @@ public class UserControllerIntegrationTest {
         MilkedUser joe = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Joe", "pass");
         MilkingGroup group = givenTheMilkingGroup(rest, baseUrl, savvas.getId(), "savvasGroup");
         givenTheUserHasJoinedTheGroup(rest, baseUrl, joe.getId(), group.getId());
-        
+
         String leaveGroupUrl = baseUrl + "/user/" + joe.getId() + "/group/" + group.getId() + "/leave";
         LeaveGroupRequest leaveGroupRequest = new LeaveGroupRequest(joe.getId(), group.getId());
         String joeGroupUrl = baseUrl + "/user/" + joe.getId() + "/group";

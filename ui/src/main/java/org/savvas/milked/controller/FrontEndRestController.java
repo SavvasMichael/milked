@@ -57,4 +57,21 @@ public class FrontEndRestController {
             return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
         }
     }
+
+//    @RequestMapping(value = "user/{userId}/group/{groupId}/leave", method = RequestMethod.POST)
+//    public ResponseEntity leaveGroup(@RequestBody Map body, Principal principal) {
+//        Authentication authentication = (Authentication) principal;
+//        GrantedAuthority authority = authentication.getAuthorities().iterator().next();
+//        String userId = authority.getAuthority();
+//        body.put("userId", userId);
+//        body.put("groupId", 1);
+//
+//        try {
+//            return restTemplate.postForEntity(URI.create(BASE_URL + "user/{userId}/group/{groupId}/leave"), body, Map.class);
+//        } catch (HttpClientErrorException e) {
+//            LOG.warn("Error when deleting group", e);
+//            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+//        }
+//
+//    }
 }

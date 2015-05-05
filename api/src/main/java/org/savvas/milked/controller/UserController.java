@@ -1,10 +1,12 @@
 package org.savvas.milked.controller;
 
+import org.savvas.milked.controller.error.ValidationException;
 import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.domain.MilkingGroup;
 import org.savvas.milked.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
