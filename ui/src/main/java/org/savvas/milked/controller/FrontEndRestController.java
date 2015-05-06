@@ -2,6 +2,7 @@ package org.savvas.milked.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,12 @@ public class FrontEndRestController {
     private static final Logger LOG = LoggerFactory.getLogger(FrontEndRestController.class);
     private static final String BASE_URL = "http://localhost:8080";
     private final RestTemplate restTemplate = new RestTemplate();
+    private final BalanceCalculator balanceCalculator;
+
+    @Autowired
+    public FrontEndRestController(BalanceCalculator balanceCalculator) {
+        this.balanceCalculator = balanceCalculator;
+    }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ResponseEntity registerUser(@RequestBody Map body) {
@@ -31,7 +39,7 @@ public class FrontEndRestController {
         }
     }
 
-    @RequestMapping(value = "/group")
+    @RequestMapping(value = "/group", method = RequestMethod.GET)
     public ResponseEntity getGroups(Principal principal) {
         Authentication authentication = (Authentication) principal;
         GrantedAuthority authority = authentication.getAuthorities().iterator().next();
@@ -58,6 +66,22 @@ public class FrontEndRestController {
         }
     }
 
+    @RequestMapping(value = "/group/{groupId}/users", method = RequestMethod.GET)
+    public String getGroupMembers(@PathVariable("groupId") Long groupId, Principal principal) {
+        Authentication authentication = (Authentication) principal;
+        GrantedAuthority authority = authentication.getAuthorities().iterator().next();
+        String userId = authority.getAuthority();
+        try {
+            MilkedUser[] milkedUsers = restTemplate.getForEntity(URI.create(BASE_URL + "/group/" + groupId + "/users"), MilkedUser[].class).getBody();
+            MilkingTransaction[] milkingTransactions = restTemplate.getForEntity(URI.create(BASE_URL + "/group/" + groupId + "/milk"), MilkingTransaction[].class).getBody();
+            balanceCalculator.calculateBalances(milkedUsers, milkingTransactions);
+            return "";
+        } catch (HttpClientErrorException e) {
+            LOG.warn("Error when trying to fetch group members", e);
+            return "";
+//            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+        }
+    }
 //    @RequestMapping(value = "user/{userId}/group/{groupId}/leave", method = RequestMethod.POST)
 //    public ResponseEntity leaveGroup(@RequestBody Map body, Principal principal) {
 //        Authentication authentication = (Authentication) principal;

@@ -84,4 +84,9 @@ public class UserService {
         group.deleteUserFromGroup(milkedUserRepository.findOne(userId));
         milkingGroupRepository.save(group);
     }
+
+    public List<MilkedUser> getGroupUsers(Long groupId) {
+        MilkingGroup group = milkingGroupRepository.findById(groupId);
+        return group.getMilkedUsers();
+    }
 }

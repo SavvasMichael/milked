@@ -5,7 +5,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-    <script src="/js/app.js"></script>
+    <script src="/js/login/login.js"></script>
+    <script src="/js/register/register.js"></script>
+    <script src="/js/group/group.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta charset="utf-8"/>
     <title>Milked</title>
@@ -32,7 +34,7 @@
     </nav>
     <div class="col-md-2 groupMenu" ng-controller="GroupController">
         <ul>
-            <li ng-repeat="group in groups"><a href="#">
+            <li ng-click="loadGroup(group)" ng-repeat="group in groups"><a href="#">
                 <strong>{{ group.name }}</strong></a><br></br>
                 <small>Group members: {{ group.milkedUsers.length }}</small>
                 <br></br>
@@ -72,19 +74,11 @@
                         <th>Balance</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>Savvas<span class="glyphicon glyphicon-thumbs-up leaderboardGlyph"
+                    <tbody ng-controller="GroupController">
+                    <tr ng-repeat="groupMember in groupMembers">
+                        <td>{{ groupMember.name }}<span class="glyphicon glyphicon-thumbs-up leaderboardGlyph"
                                         aria-hidden="true"></span></td>
-                        <td>52.30</td>
-                    </tr>
-                    <tr>
-                        <td>Joe</td>
-                        <td>33.00</td>
-                    </tr>
-                    <tr>
-                        <td>Maria</td>
-                        <td>24.12</td>
+                        <td>{{ groupMember.balance }}</td>
                     </tr>
                     </tbody>
                 </table>

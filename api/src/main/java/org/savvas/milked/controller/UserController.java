@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,6 +35,11 @@ public class UserController {
         return userService.getUserGroups(id);
     }
 
+    @RequestMapping(value = "/group/{groupId}/users", method = RequestMethod.GET)
+    public List<MilkedUser> getGroupUsers(@PathVariable("groupId") Long groupId) {
+        List<MilkedUser> groupUserList = userService.getGroupUsers(groupId);
+        return groupUserList;
+    }
     @RequestMapping(value = "user/{userId}/group/{groupId}/leave", method = RequestMethod.POST)
     public ResponseEntity leaveGroup(@PathVariable("userId") Long userId, @PathVariable("groupId") Long groupId) {
         userService.leaveGroup(userId, groupId);

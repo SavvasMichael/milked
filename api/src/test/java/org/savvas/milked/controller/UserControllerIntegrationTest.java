@@ -84,4 +84,19 @@ public class UserControllerIntegrationTest {
         assertEquals("Unexpected Response Code", 200, leaveGroupResponse.getStatusCode().value());
         assertThat(joeGroupsResponse).isEmpty();
     }
+
+    @Test
+    public void checkGetGroupUsers() {
+        //given
+        String baseUrl = "http://localhost:" + port;
+        MilkedUser savvas = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Savvas", "pass");
+        MilkingGroup group = givenTheMilkingGroup(rest, baseUrl, savvas.getId(), "savvasGroup");
+        MilkedUser joe = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Joe", "pass");
+        givenTheUserHasJoinedTheGroup(rest, baseUrl, joe.getId(), group.getId());
+        String getGroupUsersUrl = baseUrl + "/group/" + group.getId() + "/users";
+        //when
+        MilkedUser[] groupUsersResponse = rest.getForEntity(URI.create(getGroupUsersUrl), MilkedUser[].class).getBody();
+        //then
+        assertThat(groupUsersResponse).hasSize(2);
+    }
 }

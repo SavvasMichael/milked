@@ -65,6 +65,17 @@
             });
             $scope.getGroups();
 
-        });
+            $scope.getGroupMembers = function() {
+                            $scope.groupMembers = [];
+                            $http.get(BASE_URL + "/group/1/users").
+                                success(function (data, status, headers, config) {
+                                    $scope.groupMembers = data;
+                                }).error(function(data, status, headers, config) {
+                                    $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
+                                });
 
+                        }
+                        $scope.getGroupMembers();
+
+        });
 })();
