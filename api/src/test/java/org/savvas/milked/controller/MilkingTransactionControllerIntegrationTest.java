@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -34,7 +35,7 @@ public class MilkingTransactionControllerIntegrationTest {
     private final TestRestTemplate rest = new TestRestTemplate();
 
     @Test
-    public void milkingTransactionSavesCorrectFieldsAndReturs201() {
+    public void milkingTransactionSavesCorrectFieldsAndReturs201() throws UnsupportedEncodingException {
         //given
         String baseUrl = "http://localhost:" + port;
         MilkedUser savvas = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "pass");
@@ -44,8 +45,8 @@ public class MilkingTransactionControllerIntegrationTest {
         MilkingGroup savvasGroup = givenTheMilkingGroup(rest, baseUrl, savvas.getId(), "savvasgroup");
         MilkingGroup joeGroup = givenTheMilkingGroup(rest, baseUrl, savvasFriend.getId(), "savvasfriendgroup");
 
-        givenTheUserHasJoinedTheGroup(rest, baseUrl, savvasFriend.getId(), savvasGroup.getId());
-        givenTheUserHasJoinedTheGroup(rest, baseUrl, savvas.getId(), joeGroup.getId());
+        givenTheUserHasJoinedTheGroup(rest, baseUrl, savvasFriend.getEmail(), savvasGroup.getId());
+        givenTheUserHasJoinedTheGroup(rest, baseUrl, savvas.getEmail(), joeGroup.getId());
 
         String savvasGroupMilkUrl = baseUrl + "/group/" + savvasGroup.getId() + "/milk";
         String joeGroupMilkUrl = baseUrl + "/group/" + joeGroup.getId() + "/milk";

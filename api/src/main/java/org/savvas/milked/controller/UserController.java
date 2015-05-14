@@ -40,7 +40,8 @@ public class UserController {
         List<MilkedUser> groupUserList = userService.getGroupUsers(groupId);
         return groupUserList;
     }
-    @RequestMapping(value = "user/{userId}/group/{groupId}/leave", method = RequestMethod.POST)
+
+    @RequestMapping(value = "/user/{userId}/group/{groupId}/leave", method = RequestMethod.POST)
     public ResponseEntity leaveGroup(@PathVariable("userId") Long userId, @PathVariable("groupId") Long groupId) {
         userService.leaveGroup(userId, groupId);
         return ResponseEntity.ok().build();

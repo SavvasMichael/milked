@@ -40,7 +40,6 @@ public class RegistrationController {
         }
         MilkedUser user = userService.createUser(registrationRequest);
         URI userLocationUri = URI.create("/user/" + user.getId());
-        userService.sendEmail();
         LOG.info("send email containing following url - {}", "http://milked.io/activation/" + user.getUuid());
 
         return ResponseEntity.created(userLocationUri).build();

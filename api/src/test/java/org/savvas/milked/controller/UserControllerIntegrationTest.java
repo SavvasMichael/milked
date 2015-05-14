@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.List;
 
@@ -61,13 +62,13 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    public void checkLeaveGroupRemovesUserFromTheGroup() {
+    public void checkLeaveGroupRemovesUserFromTheGroup() throws UnsupportedEncodingException {
         //given
         String baseUrl = "http://localhost:" + port;
         MilkedUser savvas = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Savvas", "pass");
         MilkedUser joe = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Joe", "pass");
         MilkingGroup group = givenTheMilkingGroup(rest, baseUrl, savvas.getId(), "savvasGroup");
-        givenTheUserHasJoinedTheGroup(rest, baseUrl, joe.getId(), group.getId());
+        givenTheUserHasJoinedTheGroup(rest, baseUrl, joe.getEmail(), group.getId());
 
         String leaveGroupUrl = baseUrl + "/user/" + joe.getId() + "/group/" + group.getId() + "/leave";
         LeaveGroupRequest leaveGroupRequest = new LeaveGroupRequest(joe.getId(), group.getId());
@@ -86,13 +87,13 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    public void checkGetGroupUsers() {
+    public void checkGetGroupUsers() throws UnsupportedEncodingException {
         //given
         String baseUrl = "http://localhost:" + port;
         MilkedUser savvas = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Savvas", "pass");
         MilkingGroup group = givenTheMilkingGroup(rest, baseUrl, savvas.getId(), "savvasGroup");
         MilkedUser joe = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Joe", "pass");
-        givenTheUserHasJoinedTheGroup(rest, baseUrl, joe.getId(), group.getId());
+        givenTheUserHasJoinedTheGroup(rest, baseUrl, joe.getEmail(), group.getId());
         String getGroupUsersUrl = baseUrl + "/group/" + group.getId() + "/users";
         //when
         MilkedUser[] groupUsersResponse = rest.getForEntity(URI.create(getGroupUsersUrl), MilkedUser[].class).getBody();

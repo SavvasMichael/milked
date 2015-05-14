@@ -16,8 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -51,8 +54,10 @@ public class GroupInviteControllerIntegrationTest {
         MilkingGroup milkedGroup = givenTheMilkingGroup(rest, baseUrl, groupOwner.getId(), "savvasgroup");
 
         //when
-        String createGroupUserUrl = baseUrl + "/group/" + milkedGroup.getId() + "/invite/" + friend.getId();
-        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), null, String.class);
+        Map<String, String> userEmail = new HashMap<>();
+        userEmail.put("email", friend.getEmail());
+        String createGroupUserUrl = baseUrl + "/group/" + milkedGroup.getId() + "/invite/";
+        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), userEmail, String.class);
 
         //then
         String invitesUrl = baseUrl + "/user/" + friend.getId() + "/group/invite";
@@ -72,19 +77,21 @@ public class GroupInviteControllerIntegrationTest {
         //given
         MilkedUser milkedUser = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
         //when
-        String createGroupUserUrl = baseUrl + "/group/" + null + "/invite/" + milkedUser.getId();
-        ResponseEntity<ErrorResponse> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), null, ErrorResponse.class);
+        Map<String, String> userEmail = new HashMap<>();
+        userEmail.put("email", milkedUser.getEmail());
+        String createGroupUserUrl = baseUrl + "/group/" + null + "/invite/";
+        ResponseEntity<ErrorResponse> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), userEmail, ErrorResponse.class);
         //then
         assertEquals("Unexpected Error", 400, createGroupUserResponse.getStatusCode().value());
     }
 
     @Test
-    public void acceptingGroupInviteAddsTheUserToTheGroup() {
+    public void acceptingGroupInviteAddsTheUserToTheGroup() throws UnsupportedEncodingException {
         //given
         MilkedUser owner = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
         MilkedUser friend = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvassfriend", "password");
         MilkingGroup milkingGroup = givenTheMilkingGroup(rest, baseUrl, owner.getId(), "savvasgroup");
-        String invitationLocation = givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, friend.getId(), milkingGroup.getId());
+        String invitationLocation = givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, friend.getEmail(), milkingGroup.getId());
 
         //when
         String acceptInvitationUrl = baseUrl + invitationLocation + "/accept";
@@ -96,17 +103,17 @@ public class GroupInviteControllerIntegrationTest {
         MilkingGroup group = acceptInvitationResponse.getBody();
         List<MilkedUser> fetchedMilkingUsers = group.getMilkedUsers();
         assertThat(fetchedMilkingUsers).hasSize(2);
-        assertThat(fetchedMilkingUsers.get(1)).isEqualToComparingFieldByField(friend);
+        assertThat(fetchedMilkingUsers).contains(friend);
         assertThat(invites).isEmpty();
     }
 
     @Test
-    public void decliningInvitationDeletesInvitation() {
+    public void decliningInvitationDeletesInvitation() throws UnsupportedEncodingException {
         //given
         MilkedUser owner = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
         MilkedUser friend = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvassfriend", "password");
         MilkingGroup milkingGroup = givenTheMilkingGroup(rest, baseUrl, owner.getId(), "savvasgroup");
-        String invitationLocation = givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, friend.getId(), milkingGroup.getId());
+        String invitationLocation = givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, friend.getEmail(), milkingGroup.getId());
 
         //when
         String acceptInvitationUrl = baseUrl + invitationLocation + "/decline";
@@ -120,6 +127,27 @@ public class GroupInviteControllerIntegrationTest {
         assertThat(fetchedMilkingUsers).hasSize(1);
         assertThat(fetchedMilkingUsers.get(0)).isEqualToComparingFieldByField(owner);
         assertThat(invites).isEmpty();
+    }
+
+    @Test
+    public void aNewUserGetsCreatedAfterInvitingANonExistentUser() throws UnsupportedEncodingException {
+        //given
+        MilkedUser owner = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
+        MilkingGroup milkingGroup = givenTheMilkingGroup(rest, baseUrl, owner.getId(), "savvasgroup");
+        givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, "unregistered@email.com", milkingGroup.getId());
+        Map<String, String> userEmail = new HashMap<>();
+        userEmail.put("email", "unregistered@email.com");
+        String createGroupUserUrl = baseUrl + "/group/" + milkingGroup.getId() + "/invite/";
+        //when
+        ResponseEntity<String> createGroupUserResponse = rest.postForEntity(URI.create(createGroupUserUrl), userEmail, String.class);
+        String location = createGroupUserResponse.getHeaders().getFirst("Location");
+        location = location.replaceFirst("/\\d+$", "");
+        GroupInvite[] invites = rest.getForEntity(baseUrl + location + "/invite", GroupInvite[].class).getBody();
+
+        //then
+        assertEquals(201, createGroupUserResponse.getStatusCode().value());
+        assertThat(invites).isNotEmpty();
+
     }
 
 }

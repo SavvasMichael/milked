@@ -9,7 +9,11 @@
                 $scope.groups = [];
 
                 $scope.loadGroup = function(group){
-                    alert(group.name);
+                    if (confirm("Are you sure you want to leave the group " + group.name + " ?")) {
+                        alert("You have left the group");
+                    } else {
+                        alert("You didn't leave the group");
+                        }
                 }
 
                 $scope.createGroup = function() {
@@ -36,8 +40,8 @@
                     $scope.getGroups();
                 });
 
-                $scope.getGroupDetails = function() {
-                                $http.get(BASE_URL + "/group/1/users", $scope.GroupDetails).
+                $scope.getGroupDetails = function(groupId) {
+                                $http.get(BASE_URL + "/group/" +groupId +"/users").
                                     success(function (data, status, headers, config) {
                                     if(data == null){
                                         console.log("Data is null");
@@ -49,8 +53,14 @@
                                     });
                             }
 
+                $scope.leaveGroup = function(group) {
+                                $http.post(BASE_URL + "/group/" + group.id + "/leave")
+                                .success(function (data, status, headers, config) {
+                                        console.log(data);
+                                }).error(function(data, status, headers, config){
+                                        $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
+                                });
+                }
                 $scope.getGroups();
-                $scope.getGroupDetails();
-
             });
     })();

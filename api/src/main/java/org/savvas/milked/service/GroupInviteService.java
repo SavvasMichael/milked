@@ -1,6 +1,7 @@
 package org.savvas.milked.service;
 
 import org.savvas.milked.controller.error.NotFoundException;
+import org.savvas.milked.controller.request.RegistrationRequest;
 import org.savvas.milked.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,14 @@ public class GroupInviteService {
     private GroupInviteRepository groupInviteRepository;
     private MilkedUserRepository milkedUserRepository;
     private MilkingGroupRepository milkingGroupRepository;
+    private UserService userService;
 
     @Autowired
-    public GroupInviteService(GroupInviteRepository groupInviteRepository, MilkedUserRepository milkedUserRepository, MilkingGroupRepository milkingGroupRepository) {
+    public GroupInviteService(GroupInviteRepository groupInviteRepository, MilkedUserRepository milkedUserRepository, MilkingGroupRepository milkingGroupRepository, UserService userService) {
         this.groupInviteRepository = groupInviteRepository;
         this.milkedUserRepository = milkedUserRepository;
         this.milkingGroupRepository = milkingGroupRepository;
+        this.userService = userService;
     }
 
     public List<GroupInvite> getGroupInvites(Long userId) {
@@ -28,13 +31,19 @@ public class GroupInviteService {
         return groupInvites;
     }
 
-    public Long inviteGroupUser(Long groupId, Long userId) {
+    public MilkedUser inviteGroupUser(Long groupId, String email) {
+        String randomPass = "pass" + Math.random();
         MilkingGroup fetchedGroup = milkingGroupRepository.findById(groupId);
-        MilkedUser fetchedUser = milkedUserRepository.findOne(userId);
+        MilkedUser fetchedUser = milkedUserRepository.findByEmail(email);
+        if (fetchedUser == null) {
+            RegistrationRequest registrationRequest = new RegistrationRequest(email, "", randomPass);
+            fetchedUser = userService.createUser(registrationRequest);
+        }
+
         GroupInvite groupInvite = new GroupInvite(fetchedGroup.getId(), fetchedUser.getId());
-        GroupInvite savedGroupInvite = groupInviteRepository.save(groupInvite);
+        groupInviteRepository.save(groupInvite);
         //TODO: Send Email
-        return savedGroupInvite.getGroupId();
+        return fetchedUser;
     }
 
     public MilkingGroup acceptGroupInvite(Long userId, Long groupId) {

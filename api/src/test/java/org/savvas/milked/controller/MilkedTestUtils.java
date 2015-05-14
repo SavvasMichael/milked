@@ -7,7 +7,11 @@ import org.savvas.milked.domain.MilkingGroup;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class MilkedTestUtils {
@@ -39,14 +43,16 @@ public class MilkedTestUtils {
         return rest.getForEntity((URI.create(milkerGroupUrl)), MilkingGroup.class).getBody();
     }
 
-    public static void givenTheUserHasJoinedTheGroup(RestTemplate rest, String baseUrl, Long milkedUserId, Long mikedGroupId) {
-        String inviteGroupUserLocation = givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, milkedUserId, mikedGroupId);
+    public static void givenTheUserHasJoinedTheGroup(RestTemplate rest, String baseUrl, String email, Long mikedGroupId) throws UnsupportedEncodingException {
+        String inviteGroupUserLocation = givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, email, mikedGroupId);
         givenTheUserHasAcceptedTheInvitationToTheGroup(rest, baseUrl, inviteGroupUserLocation);
     }
 
-    public static String givenTheUserHasBeenInvitedToTheGroup(RestTemplate rest, String baseUrl, Long milkedUserId, Long milkedGroupId) {
-        String inviteUserUrl = baseUrl + "/group/" + milkedGroupId + "/invite/" + milkedUserId;
-        ResponseEntity<String> inviteGroupUserResponse = rest.postForEntity(URI.create(inviteUserUrl), null, String.class);
+    public static String givenTheUserHasBeenInvitedToTheGroup(RestTemplate rest, String baseUrl, String email, Long milkedGroupId) throws UnsupportedEncodingException {
+        String inviteUserUrl = baseUrl + "/group/" + milkedGroupId + "/invite";
+        Map<String, String> emailBody = new HashMap<>();
+        emailBody.put("email", email);
+        ResponseEntity<String> inviteGroupUserResponse = rest.postForEntity(URI.create(inviteUserUrl), emailBody, String.class);
         return inviteGroupUserResponse.getHeaders().getFirst("Location");
     }
 

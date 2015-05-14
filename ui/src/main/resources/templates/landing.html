@@ -12,7 +12,7 @@
     <meta charset="utf-8"/>
     <title>Milked</title>
 </head>
-<body>
+<body ng-controller="GroupController">
 <div class="container-fluid wrapper">
     <nav class="navbar navbar-default">
         <div class="container-fluid nav-bar">
@@ -32,13 +32,13 @@
             </div>
         </div>
     </nav>
-    <div class="col-md-2 groupMenu" ng-controller="GroupController">
+    <div class="col-md-2 groupMenu">
         <ul>
-            <li ng-click="loadGroup(group)" ng-repeat="group in groups"><a href="#">
+            <li ng-repeat="group in groups"><a ng-click="getGroupDetails(group.id)">
                 <strong>{{ group.name }}</strong></a><br></br>
                 <small>Group members: {{ group.milkedUsers.length }}</small>
                 <br></br>
-                <small><a href=" ">Leave group</a></small>
+                <small ng-click="leaveGroup(group)"><a href=" ">Leave group</a></small>
             </li>
         </ul>
         <div class="createGroupInput createGroup">
@@ -74,11 +74,11 @@
                         <th>Balance</th>
                     </tr>
                     </thead>
-                    <tbody ng-controller="GroupController">
-                    <tr ng-repeat="groupMember in groupMembers">
-                        <td>{{ groupMember.name }}<span class="glyphicon glyphicon-thumbs-up leaderboardGlyph"
+                    <tbody>
+                    <tr ng-repeat="milkedUser in groupDetails.milkedUsers">
+                        <td>{{ milkedUser.name }}<span class="glyphicon glyphicon-thumbs-up leaderboardGlyph"
                                         aria-hidden="true"></span></td>
-                        <td>{{ groupMember.balance }}</td>
+                        <td>{{ milkedUser.balance }}</td>
                     </tr>
                     </tbody>
                 </table>
