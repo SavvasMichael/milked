@@ -67,7 +67,7 @@ public class FrontEndRestController {
     }
 
     @RequestMapping(value = "/group/{groupId}/users", method = RequestMethod.GET)
-    public String getGroupMembers(@PathVariable("groupId") Long groupId, Principal principal) {
+    public ResponseEntity getGroupMembers(@PathVariable("groupId") Long groupId, Principal principal) {
         Authentication authentication = (Authentication) principal;
         GrantedAuthority authority = authentication.getAuthorities().iterator().next();
         String userId = authority.getAuthority();
@@ -75,11 +75,10 @@ public class FrontEndRestController {
             MilkedUser[] milkedUsers = restTemplate.getForEntity(URI.create(BASE_URL + "/group/" + groupId + "/users"), MilkedUser[].class).getBody();
             MilkingTransaction[] milkingTransactions = restTemplate.getForEntity(URI.create(BASE_URL + "/group/" + groupId + "/milk"), MilkingTransaction[].class).getBody();
             balanceCalculator.calculateBalances(milkedUsers, milkingTransactions);
-            return "";
+            return ResponseEntity.ok().body(new GroupDetails(milkedUsers, milkingTransactions));
         } catch (HttpClientErrorException e) {
             LOG.warn("Error when trying to fetch group members", e);
-            return "";
-//            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
         }
     }
 //    @RequestMapping(value = "user/{userId}/group/{groupId}/leave", method = RequestMethod.POST)

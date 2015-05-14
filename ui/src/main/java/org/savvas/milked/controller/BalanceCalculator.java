@@ -7,19 +7,22 @@ import java.util.Map;
 
 @Component
 public class BalanceCalculator {
-    public void calculateBalances(MilkedUser[] milkedUsers, MilkingTransaction[] milkingTransactions) {
+    public static void calculateBalances(MilkedUser[] milkedUsers, MilkingTransaction[] milkingTransactions) {
+        Map<Long, MilkedUser> userMap = new HashMap<>();
 
-        Map userIdMap = new HashMap<>();
-        Map transactionMap = new HashMap<>();
-
-        for (MilkingTransaction milkingTransaction : milkingTransactions) {
-            transactionMap.put("milkerId", milkingTransaction.getMilker().getId());
-            transactionMap.put("milkeeId", milkingTransaction.getMilkee().getId());
-            transactionMap.put("amount", milkingTransaction.getAmount());
-        }
-        for (MilkedUser milkedUser : milkedUsers) {
-            userIdMap.put("userId", milkedUser.getId());
+        for (MilkedUser user : milkedUsers) {
+            userMap.put(user.getId(), user);
         }
 
+        for (MilkingTransaction tx : milkingTransactions) {
+            MilkedUser txMilker = tx.getMilker();
+            MilkedUser txMilkee = tx.getMilkee();
+
+            int milkerBalance = txMilker.getBalance() - tx.getAmount();
+            int milkeeBalance = txMilkee.getBalance() + tx.getAmount();
+
+            userMap.get(txMilker.getId()).setBalance(milkerBalance);
+            userMap.get(txMilkee.getId()).setBalance(milkeeBalance);
+        }
     }
 }
