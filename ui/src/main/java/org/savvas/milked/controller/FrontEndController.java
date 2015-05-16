@@ -29,4 +29,15 @@ public class FrontEndController {
             return "errorLanding";
         }
     }
+
+    @RequestMapping(value = "/user/{userId}/group/{groupId}/accept", method = RequestMethod.GET)
+    public String activateUser(@PathVariable("userId") Long userId, @PathVariable("groupId") Long groupId) {
+        try {
+            restTemplate.getForEntity(URI.create(BASE_URL + "/user/" + userId + "/group/" + groupId + "/accept"), String.class);
+            return "invitedUserAcceptLanding";
+        } catch (HttpClientErrorException e) {
+            LOG.warn("Error when trying to activate user", e);
+            return "errorLanding";
+        }
+    }
 }

@@ -24,9 +24,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.savvas.milked.controller.MilkedTestUtils.givenTheMilkingGroup;
-import static org.savvas.milked.controller.MilkedTestUtils.givenTheUserHasBeenInvitedToTheGroup;
-import static org.savvas.milked.controller.MilkedTestUtils.givenTheUserIsRegisteredAndActivated;
+import static org.savvas.milked.controller.MilkedTestUtils.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = MilkedApiApplication.class)
@@ -95,7 +93,7 @@ public class GroupInviteControllerIntegrationTest {
 
         //when
         String acceptInvitationUrl = baseUrl + invitationLocation + "/accept";
-        ResponseEntity<MilkingGroup> acceptInvitationResponse = rest.postForEntity(URI.create(acceptInvitationUrl), null, MilkingGroup.class);
+        ResponseEntity<MilkingGroup> acceptInvitationResponse = rest.getForEntity(URI.create(acceptInvitationUrl), MilkingGroup.class);
 
         //then
         GroupInvite[] invites = rest.getForEntity(baseUrl + "/user/" + friend.getId() + "/group/invite", GroupInvite[].class).getBody();
@@ -134,7 +132,7 @@ public class GroupInviteControllerIntegrationTest {
         //given
         MilkedUser owner = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "password");
         MilkingGroup milkingGroup = givenTheMilkingGroup(rest, baseUrl, owner.getId(), "savvasgroup");
-        givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, "unregistered@email.com", milkingGroup.getId());
+        givenTheUserHasBeenInvitedToTheGroup(rest, baseUrl, randomEmail(), milkingGroup.getId());
         Map<String, String> userEmail = new HashMap<>();
         userEmail.put("email", "unregistered@email.com");
         String createGroupUserUrl = baseUrl + "/group/" + milkingGroup.getId() + "/invite/";

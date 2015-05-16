@@ -93,6 +93,16 @@ public class FrontEndRestController {
             LOG.warn("Error when deleting group", e);
             return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
         }
+    }
 
+    @RequestMapping(value = "/group/{groupId}/invite", method = RequestMethod.POST)
+    public ResponseEntity inviteUser(@RequestBody Map<String, String> emailBody, @PathVariable("groupId") Long groupId) {
+
+        try {
+            return restTemplate.postForEntity(URI.create(BASE_URL + "/group/" + groupId + "/invite/"), emailBody, Map.class);
+        } catch (HttpClientErrorException e) {
+            LOG.warn("Error when inviting user", e);
+            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+        }
     }
 }

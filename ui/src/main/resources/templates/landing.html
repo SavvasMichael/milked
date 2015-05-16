@@ -58,8 +58,10 @@
             </div>
             <div class="col-md-5 col-md-offset-2 inviteWrapper">
                 <h5><strong>Invite someone to the group</strong></h5>
-                <input type="email" class="form-control inviteInput" placeholder="Enter Email"/>
-                <button type="submit" class="btn btn-primary btn-sm inviteButton">Invite</button>
+                <input ng-model="emailBody.email" type="email" class="form-control inviteInput"
+                       placeholder="Enter Email"/>
+                <button type="submit" class="btn btn-primary btn-sm inviteButton" ng-click="inviteUser()">Invite
+                </button>
             </div>
         </div>
         <div class="col-md-12 tableWrapper">

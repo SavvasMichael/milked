@@ -34,7 +34,7 @@ public class GroupInviteController {
         return ResponseEntity.created(groupUserLocationURI).build();
     }
 
-    @RequestMapping(value = "/user/{userId}/group/{groupId}/accept", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/{userId}/group/{groupId}/accept", method = RequestMethod.GET)
     public ResponseEntity acceptGroupInvite(@PathVariable("userId") Long userId, @PathVariable("groupId") Long groupId) {
         MilkingGroup group = groupInviteService.acceptGroupInvite(userId, groupId);
         return ResponseEntity.ok(group);

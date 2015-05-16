@@ -57,6 +57,6 @@ public class MilkedTestUtils {
     }
 
     public static void givenTheUserHasAcceptedTheInvitationToTheGroup(RestTemplate rest, String baseUrl, String inviteGroupUserLocation) {
-        rest.postForEntity(URI.create(baseUrl + inviteGroupUserLocation + "/accept"), null, String.class);
+        rest.getForEntity(URI.create(baseUrl + inviteGroupUserLocation + "/accept"), String.class);
     }
 }
