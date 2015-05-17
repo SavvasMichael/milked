@@ -100,16 +100,15 @@ public class UserService {
         String uuid = UUID.randomUUID().toString();
         MilkedUser milkedUser = new MilkedUser(registrationRequest.getEmail(), registrationRequest.getName(), registrationRequest.getPassword(), uuid);
         MilkedUser savedMilkedUser = milkedUserRepository.save(milkedUser);
-//        sendRegistrationEmail(savedMilkedUser);
+        sendRegistrationEmail(savedMilkedUser);
         return savedMilkedUser;
     }
 
     public MilkedUser createInvitedUser(RegistrationRequest registrationRequest, Long groupId) {
         String uuid = UUID.randomUUID().toString();
         MilkedUser milkedUser = new MilkedUser(registrationRequest.getEmail(), "", registrationRequest.getPassword(), uuid);
-        milkedUser.setActivated(true);
         MilkedUser savedMilkedUser = milkedUserRepository.save(milkedUser);
-//        sendInvitationEmail(milkedUser, groupId);
+        sendInvitationEmail(milkedUser, groupId);
         return savedMilkedUser;
     }
     public MilkedUser getUser(Long id) {

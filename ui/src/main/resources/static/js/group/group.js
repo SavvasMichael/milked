@@ -9,7 +9,7 @@
                 $scope.groupRequest = {};
                 $scope.groups = [];
                 $scope.emailBody = {email:""};
-                $scope.invitedUserDetails = {};
+                $scope.invitedUserDetails = {name:"", password:""};
 
                 $scope.createGroup = function() {
                     $http.post(BASE_URL + "/group", $scope.groupRequest).
@@ -70,7 +70,7 @@
                $scope.updateUserDetails = function() {
                                 $http.post(BASE_URL + "/user/update/", $scope.invitedUserDetails)
                                .success(function (data, status, headers, config) {
-                                       console.log("Success");
+                                       console.log("success");
                                }).error(function(data, status, headers, config){
                                        $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                                });

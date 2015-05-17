@@ -41,13 +41,14 @@ public class GroupInviteService {
         }
         GroupInvite groupInvite = new GroupInvite(fetchedGroup.getId(), fetchedUser.getId());
         groupInviteRepository.save(groupInvite);
-//        userService.sendInvitationEmail(fetchedUser, groupId);
+        userService.sendInvitationEmail(fetchedUser, groupId);
         return fetchedUser;
     }
 
     public MilkingGroup acceptGroupInvite(Long userId, Long groupId) {
         MilkingGroup group = milkingGroupRepository.findOne(groupId);
         MilkedUser user = milkedUserRepository.findOne(userId);
+        user.setActivated(true);
         group.addUserToGroup(user);
         milkingGroupRepository.save(group);
         GroupInvite invite = groupInviteRepository.findOneByGroupIdAndUserId(groupId, userId);
