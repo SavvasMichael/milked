@@ -105,4 +105,17 @@ public class FrontEndRestController {
             return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
         }
     }
+
+    @RequestMapping(value = "/user/update", method = RequestMethod.POST)
+    public ResponseEntity updateUserDetails(@RequestBody Map<String, String> userDetails, Principal principal) {
+        Authentication authentication = (Authentication) principal;
+        GrantedAuthority authority = authentication.getAuthorities().iterator().next();
+        String userId = authority.getAuthority();
+        try {
+            return restTemplate.postForEntity(URI.create(BASE_URL + "/user/" + userId + "/update/"), userDetails, Map.class);
+        } catch (HttpClientErrorException e) {
+            LOG.warn("Error when updating user", e);
+            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+        }
+    }
 }

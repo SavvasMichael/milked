@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.savvas.milked.MilkedApiApplication;
 import org.savvas.milked.controller.request.LeaveGroupRequest;
+import org.savvas.milked.controller.request.UpdateUserRequest;
 import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.domain.MilkingGroup;
 import org.springframework.beans.factory.annotation.Value;
@@ -99,5 +100,24 @@ public class UserControllerIntegrationTest {
         MilkedUser[] groupUsersResponse = rest.getForEntity(URI.create(getGroupUsersUrl), MilkedUser[].class).getBody();
         //then
         assertThat(groupUsersResponse).hasSize(2);
+    }
+
+    @Test
+    public void checkUpdatesUserDetailsOnNewUserInvitation() throws UnsupportedEncodingException {
+        //given
+        String baseUrl = "http://localhost:" + port;
+        MilkedUser savvas = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Savvas", "pass");
+        MilkingGroup savvasGroup = givenTheMilkingGroup(rest, baseUrl, savvas.getId(), "savvasGroup");
+        givenTheUserHasJoinedTheGroup(rest, baseUrl, "savvas.a.michael@gmail.com", savvasGroup.getId());
+        String getGroupUsersUrl = baseUrl + "/group/" + savvasGroup.getId() + "/users";
+        UpdateUserRequest request = new UpdateUserRequest("Invited Savvas", "pass123");
+        //when
+        MilkedUser[] groupUsersResponse = rest.getForEntity(URI.create(getGroupUsersUrl), MilkedUser[].class).getBody();
+        String updateUrl = baseUrl + "/user/" + groupUsersResponse[1].getId() + "/update";
+        ResponseEntity<MilkedUser> user = rest.postForEntity(URI.create(updateUrl), request, MilkedUser.class);
+        MilkedUser[] groupUsersResponseAfterUpdate = rest.getForEntity(URI.create(getGroupUsersUrl), MilkedUser[].class).getBody();
+        //then
+        assertThat(groupUsersResponseAfterUpdate[1].getName()).matches("Invited Savvas");
+        assertThat(groupUsersResponseAfterUpdate[1].getPassword()).matches("pass123");
     }
 }

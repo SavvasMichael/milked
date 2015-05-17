@@ -102,4 +102,12 @@ public class MilkedUser {
         result = 31 * result + (defaultGroupId != null ? defaultGroupId.hashCode() : 0);
         return result;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

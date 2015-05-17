@@ -9,6 +9,7 @@
                 $scope.groupRequest = {};
                 $scope.groups = [];
                 $scope.emailBody = {email:""};
+                $scope.invitedUserDetails = {};
 
                 $scope.createGroup = function() {
                     $http.post(BASE_URL + "/group", $scope.groupRequest).
@@ -59,6 +60,15 @@
 
                 $scope.inviteUser = function() {
                                $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/invite/", $scope.emailBody)
+                               .success(function (data, status, headers, config) {
+                                       console.log("Success");
+                               }).error(function(data, status, headers, config){
+                                       $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
+                               });
+               }
+
+               $scope.updateUserDetails = function() {
+                                $http.post(BASE_URL + "/user/update/", $scope.invitedUserDetails)
                                .success(function (data, status, headers, config) {
                                        console.log("Success");
                                }).error(function(data, status, headers, config){

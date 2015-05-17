@@ -1,9 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hello Invited user!</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="/js/login/login.js"></script>
+    <script src="/js/register/register.js"></script>
+    <script src="/js/group/group.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta charset="utf-8"/>
+    <title>Milked</title>
 </head>
-<body>
-<h1>You are invited</h1>
+<body ng-controller="GroupController">
+<div class="container-fluid wrapper">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid nav-bar">
+            <div class="navbar-header">
+                <a class="navbar-logo" href="#">
+                    <img src="img/milked.png"/>
+                </a>
+            </div>
+            <div class="navbar-right menuItems">
+            </div>
+        </div>
+    </nav>
+</div>
+<h2>Welcome to Milked! Please fill in the details below</h2>
+<input ng-model="invitedUserDetails.name" class="form-control inviteInput"
+       placeholder="Enter your full name"/>
+<input ng-model="invitedUserDetails.password" class="form-control inviteInput"
+       placeholder="Enter a password"/>
 </body>
 </html>

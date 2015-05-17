@@ -1,6 +1,7 @@
 package org.savvas.milked.service;
 
 import org.savvas.milked.controller.request.RegistrationRequest;
+import org.savvas.milked.controller.request.UpdateUserRequest;
 import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.domain.MilkedUserRepository;
 import org.savvas.milked.domain.MilkingGroup;
@@ -62,7 +63,7 @@ public class UserService {
         }
     }
 
-    public void sendInvitationEmail(MilkedUser user) {
+    public void sendInvitationEmail(MilkedUser user, Long groupId) {
 
         try {
             String host = "smtp.gmail.com";
@@ -84,8 +85,7 @@ public class UserService {
             message.setFrom(fromAddress);
             message.setRecipient(Message.RecipientType.TO, toAddress);
             message.setSubject("You are invited to join milked!");
-            //TODO FIX GROUPID
-            message.setText("A friend has invited you to join a group. If you wish to join click: http://localhost:7070/user/" + user.getId() + "/group/1/accept");
+            message.setText("A friend has invited you to join a group. If you wish to join click: http://localhost:7070/user/" + user.getId() + "/group/" + groupId + "/accept");
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
             message.saveChanges();
@@ -100,16 +100,16 @@ public class UserService {
         String uuid = UUID.randomUUID().toString();
         MilkedUser milkedUser = new MilkedUser(registrationRequest.getEmail(), registrationRequest.getName(), registrationRequest.getPassword(), uuid);
         MilkedUser savedMilkedUser = milkedUserRepository.save(milkedUser);
-        sendRegistrationEmail(savedMilkedUser);
+//        sendRegistrationEmail(savedMilkedUser);
         return savedMilkedUser;
     }
 
-    public MilkedUser createInvitedUser(RegistrationRequest registrationRequest) {
+    public MilkedUser createInvitedUser(RegistrationRequest registrationRequest, Long groupId) {
         String uuid = UUID.randomUUID().toString();
         MilkedUser milkedUser = new MilkedUser(registrationRequest.getEmail(), "", registrationRequest.getPassword(), uuid);
         milkedUser.setActivated(true);
         MilkedUser savedMilkedUser = milkedUserRepository.save(milkedUser);
-        sendInvitationEmail(milkedUser);
+//        sendInvitationEmail(milkedUser, groupId);
         return savedMilkedUser;
     }
     public MilkedUser getUser(Long id) {

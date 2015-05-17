@@ -37,11 +37,11 @@ public class GroupInviteService {
         MilkedUser fetchedUser = milkedUserRepository.findByEmail(email);
         if (fetchedUser == null) {
             RegistrationRequest registrationRequest = new RegistrationRequest(email, "", randomPass);
-            fetchedUser = userService.createInvitedUser(registrationRequest);
+            fetchedUser = userService.createInvitedUser(registrationRequest, groupId);
         }
-
         GroupInvite groupInvite = new GroupInvite(fetchedGroup.getId(), fetchedUser.getId());
         groupInviteRepository.save(groupInvite);
+//        userService.sendInvitationEmail(fetchedUser, groupId);
         return fetchedUser;
     }
 
