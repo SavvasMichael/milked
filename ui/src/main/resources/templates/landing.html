@@ -124,60 +124,30 @@
 
                                     <div class="input-group">
                                         <div class="input-group-addon">Pound</div>
-                                        <input type="text" class="form-control milkInput" placeholder="Enter Amount"/>
+                                        <input type="text" class="form-control milkInput" placeholder="Enter Amount"
+                                               ng-model="milkDetails.amount"/>
                                     </div>
                                 </div>
                             </form>
                             <div class="milkDescriptionInput">
                                 <input type="description" class="form-control"
-                                       placeholder="i.e: Pint of Beer"/>
+                                       placeholder="i.e: Pint of Beer" ng-model="milkDetails.description"/>
                             </div>
                             <div class="milkLocationInput">
                                 <input type="place" class="form-control"
                                        placeholder="Where? i.e: Pub"/>
                             </div>
                             <ul class="milkerAction">
-                                <li class="milkerAction"><a href="#">Joe</a>
+                                <li ng-repeat="milkedUser in groupDetails.milkedUsers" class="milkerAction"><a href="#">
+                                    {{milkedUser.name}}
+                                </a>
 
                                     <div class="row">
-                                        <button type="submit" class="btn btn-primary btn-sm milkButton">Milk</button>
-                                        <button type="submit" class="btn btn-danger btn-sm milkedMeButton">Milked Me
+                                        <button type="submit" class="btn btn-primary btn-sm milkButton"
+                                                ng-click="milk(milkedUser.id)">Milk
                                         </button>
-                                    </div>
-                                </li>
-                                <li class="milkerAction">
-                                    <a href="#">Savvas</a>
-
-                                    <div class="row">
-                                        <button type="submit" class="btn btn-primary btn-sm milkButton">Milk</button>
-                                        <button type="submit" class="btn btn-danger btn-sm milkedMeButton">Milked Me
-                                        </button>
-                                    </div>
-                                </li>
-                                <li class="milkerAction">
-                                    <a href="#">Irini</a>
-
-                                    <div class="row">
-                                        <button type="submit" class="btn btn-primary btn-sm milkButton">Milk</button>
-                                        <button type="submit" class="btn btn-danger btn-sm milkedMeButton">Milked Me
-                                        </button>
-                                    </div>
-                                </li>
-                                <li class="milkerAction">
-                                    <a href="#">Maria</a>
-
-                                    <div class="row">
-                                        <button type="submit" class="btn btn-primary btn-sm milkButton">Milk</button>
-                                        <button type="submit" class="btn btn-danger btn-sm milkedMeButton">Milked Me
-                                        </button>
-                                    </div>
-                                </li>
-                                <li class="milkerAction">
-                                    <a href="#">Helena</a>
-
-                                    <div class="row">
-                                        <button type="submit" class="btn btn-primary btn-sm milkButton">Milk</button>
-                                        <button type="submit" class="btn btn-danger btn-sm milkedMeButton">Milked Me
+                                        <button type="submit" class="btn btn-danger btn-sm milkedMeButton"
+                                                ng-click="milked(milkedUser.id)">Milked Me
                                         </button>
                                     </div>
                                 </li>

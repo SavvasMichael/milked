@@ -10,6 +10,9 @@
                 $scope.groups = [];
                 $scope.emailBody = {email:""};
                 $scope.invitedUserDetails = {name:"", password:""};
+                $scope.milkDetails = {};
+                $scope.milkingUserId = 0;
+                $scope.milkedUserId = 0;
 
                 $scope.createGroup = function() {
                     $http.post(BASE_URL + "/group", $scope.groupRequest).
@@ -75,6 +78,36 @@
                                }).error(function(data, status, headers, config){
                                        $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                                });
+               }
+
+               var milk = function(userId){
+
+                               $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/milk", $scope.milkDetails)
+                              .success(function (data, status, headers, config) {
+                                      console.log("Success");
+                                      $scope.milkedDetails = {"milkeeId": userId};
+                              }).error(function(data, status, headers, config){
+                                      $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
+                              });
+                             }
+               var milked = function(userId){
+
+                              $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/milked", $scope.milkDetails)
+                             .success(function (data, status, headers, config) {
+                                     $scope.milkedDetails = {"milkerId": userId};
+                                     console.log("Success");
+                             }).error(function(data, status, headers, config){
+                                     $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
+                             });
+                            }
+
+               var getMilkingTransactions = function(){
+               $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/milk")
+                            .success(function (data, status, headers, config) {
+                                    console.log("Success");
+                            }).error(function(data, status, headers, config){
+                                    $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
+                            });
                }
                 $scope.getGroups();
             });

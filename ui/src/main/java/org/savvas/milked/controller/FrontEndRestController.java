@@ -105,4 +105,34 @@ public class FrontEndRestController {
             return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
         }
     }
+
+    @RequestMapping(value = "/group/{groupId}/milk", method = RequestMethod.POST)
+    public ResponseEntity milk(@RequestBody Map milkRequest, @PathVariable("groupId") Long groupId, Principal principal) {
+        Authentication authentication = (Authentication) principal;
+        GrantedAuthority authority = authentication.getAuthorities().iterator().next();
+        String milkerId = authority.getAuthority();
+        milkRequest.put("milkerId", milkerId);
+        try {
+            return restTemplate.postForEntity(URI.create(BASE_URL + "/group/" + groupId + "/milk"), milkRequest, Map.class);
+        } catch (HttpClientErrorException e) {
+            LOG.warn("Error when processing milking transaction", e);
+            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+        }
+    }
+
+    @RequestMapping(value = "/group/{groupId}/milked", method = RequestMethod.POST)
+    public ResponseEntity milked(@RequestBody Map milkRequest, @PathVariable("groupId") Long groupId, Principal principal) {
+        Authentication authentication = (Authentication) principal;
+        GrantedAuthority authority = authentication.getAuthorities().iterator().next();
+        String milkeeId = authority.getAuthority();
+        milkRequest.put("milkeeId", milkeeId);
+        try {
+            return restTemplate.postForEntity(URI.create(BASE_URL + "/group/" + groupId + "/milk"), milkRequest, Map.class);
+        } catch (HttpClientErrorException e) {
+            LOG.warn("Error when processing milking transaction", e);
+            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+        }
+    }
+
+
 }
