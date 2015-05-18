@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,10 +36,11 @@ public class FrontEndController {
         }
     }
 
-    @RequestMapping(value = "/user/{userId}/group/{groupId}/accept", method = RequestMethod.GET)
-    public String activateUser(@PathVariable("userId") Long userId, @PathVariable("groupId") Long groupId) {
+    @RequestMapping(value = "/anonymous-invite/{uuid}", method = RequestMethod.GET)
+    public String activateAnonymousUser(@PathVariable("uuid") String uuid, Model model) {
+        model.addAttribute(uuid);
         try {
-            restTemplate.getForEntity(URI.create(BASE_URL + "/user/" + userId + "/group/" + groupId + "/accept"), String.class);
+            restTemplate.getForEntity(URI.create(BASE_URL + "/anonymous-invite/" + uuid), String.class);
             return "invitedUserAcceptLanding";
         } catch (HttpClientErrorException e) {
             LOG.warn("Error when trying to activate user", e);
@@ -46,17 +48,38 @@ public class FrontEndController {
         }
     }
 
-    @RequestMapping(value = "/user/update")
-    public String updateUserDetails(@RequestBody Map<String, String> userDetails, Principal principal) {
-        Authentication authentication = (Authentication) principal;
-        GrantedAuthority authority = authentication.getAuthorities().iterator().next();
-        String userId = authority.getAuthority();
+    @RequestMapping(value = "/user/{uuid}/group/{groupId}/accept", method = RequestMethod.GET)
+    public String acceptGroupInviteAndActivate(@PathVariable("uuid") String uuid, @PathVariable("groupId") Long groupId, Model model) {
+        model.addAttribute(uuid);
         try {
-            restTemplate.postForEntity(URI.create(BASE_URL + "/user/" + userId + "/update"), userDetails, Map.class);
+            restTemplate.getForEntity(URI.create(BASE_URL + "/user/" + uuid + "/group/" + groupId + "/accept"), String.class);
+            return "invitedUserAcceptLanding";
+        } catch (HttpClientErrorException e) {
+            LOG.warn("Error when trying to activate user", e);
+            return "errorLanding";
+        }
+    }
+
+    @RequestMapping(value = "/existing-user/{userId}/group/{groupId}/accept", method = RequestMethod.GET)
+    public String acceptGroupInvite(@PathVariable("userId") String userId, @PathVariable("groupId") Long groupId) {
+        try {
+            restTemplate.getForEntity(URI.create(BASE_URL + "/existing-user/" + userId + "/group/" + groupId + "/accept"), String.class);
             return "landing";
         } catch (HttpClientErrorException e) {
-            LOG.warn("Error when updating user", e);
+            LOG.warn("Error when trying to activate user", e);
+            return "errorLanding";
+        }
+    }
+
+    @RequestMapping(value = "/user/{uuid}/update", method = RequestMethod.POST)
+    public String updateUser(@PathVariable("uuid") String uuid, @RequestBody Map<String, String> invitedUserDetails) {
+        try {
+            restTemplate.postForEntity(URI.create(BASE_URL + "/user/" + uuid + "/update"), invitedUserDetails, String.class);
+            return "login";
+        } catch (HttpClientErrorException e) {
+            LOG.warn("Error when trying to activate user", e);
             return "errorLanding";
         }
     }
 }
+

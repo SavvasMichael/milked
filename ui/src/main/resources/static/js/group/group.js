@@ -67,8 +67,9 @@
                                });
                }
 
-               $scope.updateUserDetails = function() {
-                                $http.post(BASE_URL + "/user/update/", $scope.invitedUserDetails)
+               $scope.updateNewUserDetails = function() {
+                                var uuid = $("#uuid").val();
+                                $http.post(BASE_URL + "/user/" + uuid +"/update", $scope.invitedUserDetails)
                                .success(function (data, status, headers, config) {
                                        console.log("success");
                                }).error(function(data, status, headers, config){

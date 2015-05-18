@@ -16,8 +16,8 @@ public class UpdateUserService {
         this.milkedUserRepository = milkedUserRepository;
     }
 
-    public MilkedUser updateUserDetails(Long userId, UpdateUserRequest updateUserRequest) {
-        MilkedUser fetchedUser = milkedUserRepository.findOne(userId);
+    public MilkedUser updateUserDetails(String uuid, UpdateUserRequest updateUserRequest) {
+        MilkedUser fetchedUser = milkedUserRepository.findByUuid(uuid);
         fetchedUser.setName(updateUserRequest.getName());
         fetchedUser.setPassword(updateUserRequest.getPassword());
         MilkedUser updatedUser = milkedUserRepository.save(fetchedUser);

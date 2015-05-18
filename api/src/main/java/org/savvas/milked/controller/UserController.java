@@ -49,12 +49,12 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/user/{userId}/update", method = RequestMethod.POST)
-    public ResponseEntity<MilkedUser> updateUserDetails(@PathVariable("userId") Long userId, @Valid @RequestBody UpdateUserRequest updateUserRequest, BindingResult validation) {
+    @RequestMapping(value = "/user/{uuid}/update", method = RequestMethod.POST)
+    public ResponseEntity<MilkedUser> updateUserDetails(@PathVariable("uuid") String uuid, @Valid @RequestBody UpdateUserRequest updateUserRequest, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new ValidationException("Invalid name or password");
         }
-        MilkedUser updatedUser = updateUserService.updateUserDetails(userId, updateUserRequest);
+        MilkedUser updatedUser = updateUserService.updateUserDetails(uuid, updateUserRequest);
         return ResponseEntity.ok(updatedUser);
     }
 }
