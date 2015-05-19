@@ -10,9 +10,12 @@
                 $scope.groups = [];
                 $scope.emailBody = {email:""};
                 $scope.invitedUserDetails = {name:"", password:""};
-                $scope.milkDetails = {};
+                $scope.milkingTransactions = [];
+                $scope.milkingTransactionRequest = {};
                 $scope.milkingUserId = 0;
                 $scope.milkedUserId = 0;
+                $scope.hasGroupId = false;
+                $scope.selfMilk = false;
 
                 $scope.createGroup = function() {
                     $http.post(BASE_URL + "/group", $scope.groupRequest).
@@ -41,6 +44,8 @@
                 $scope.getGroupDetails = function(groupId) {
                                 $http.get(BASE_URL + "/group/" +groupId +"/users").
                                     success(function (data, status, headers, config) {
+                                    $rootScope.$broadcast("loaded-group");
+                                    $scope.hasGroupId = true;
                                     if(data == null){
                                         console.log("Data is null");
                                     }
@@ -53,12 +58,14 @@
                             }
 
                 $scope.leaveGroup = function(group) {
+                                if(confirm("Are you sure you want to leave the group " + group.name + "?")){
                                 $http.post(BASE_URL + "/group/" + group.id + "/leave")
                                 .success(function (data, status, headers, config) {
                                         console.log(data);
                                 }).error(function(data, status, headers, config){
                                         $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                                 });
+                                }
                 }
 
                 $scope.inviteUser = function() {
@@ -80,35 +87,39 @@
                                });
                }
 
-               var milk = function(userId){
-
-                               $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/milk", $scope.milkDetails)
+               $scope.milk = function(userId){
+                               $scope.milkingTransactionRequest.milkeeId = userId;
+                               $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/milk", $scope.milkingTransactionRequest)
                               .success(function (data, status, headers, config) {
                                       console.log("Success");
-                                      $scope.milkedDetails = {"milkeeId": userId};
                               }).error(function(data, status, headers, config){
                                       $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
+                                      $scope.selfMilk = true;
                               });
                              }
-               var milked = function(userId){
-
-                              $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/milked", $scope.milkDetails)
+               $scope.milked = function(userId){
+                              $scope.milkingTransactionRequest.milkerId = userId;
+                              $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/milked", $scope.milkingTransactionRequest)
                              .success(function (data, status, headers, config) {
-                                     $scope.milkedDetails = {"milkerId": userId};
                                      console.log("Success");
                              }).error(function(data, status, headers, config){
                                      $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
+                                     $scope.selfMilk = true;
                              });
                             }
 
-               var getMilkingTransactions = function(){
-               $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/milk")
+               $scope.getMilkingTransactions = function(){
+                            $http.get(BASE_URL + "/group/" + $scope.currentGroupId + "/milk")
                             .success(function (data, status, headers, config) {
+                                    $scope.milkingTransactions = data;
                                     console.log("Success");
                             }).error(function(data, status, headers, config){
                                     $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                             });
                }
+               $scope.$on("loaded-group", function(event) {
+                                    $scope.getMilkingTransactions();
+                               });
                 $scope.getGroups();
             });
     })();

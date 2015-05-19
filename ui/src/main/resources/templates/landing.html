@@ -50,16 +50,19 @@
     <div class="col-md-10 content">
         <div class="row headerRow">
             <div class="col-md-4 col-md-offset-1">
-                <h3><strong>CIRRUS</strong>
+                <h3><strong>CIRRUS
+                </strong>
                     <small><strong>-You owe 52.30-</strong></small>
                 </h3>
             </div>
             <div class="col-md-5 col-md-offset-2 inviteWrapper">
+                <div ng-show="hasGroupId">
                 <h5><strong>Invite someone to the group</strong></h5>
                 <input ng-model="emailBody.email" type="email" class="form-control inviteInput"
                        placeholder="Enter Email"/>
                 <button type="submit" class="btn btn-primary btn-sm inviteButton" ng-click="inviteUser()">Invite
                 </button>
+                </div>
             </div>
         </div>
         <div class="col-md-12 tableWrapper">
@@ -76,7 +79,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="milkedUser in groupDetails.milkedUsers">
-                        <td>{{ milkedUser.name }}<span class="glyphicon glyphicon-thumbs-up leaderboardGlyph"
+                        <td>{{ milkedUser.name }}<span class="leaderboardGlyph"
                                         aria-hidden="true"></span></td>
                         <td>{{ milkedUser.balance }}</td>
                     </tr>
@@ -125,23 +128,26 @@
                                     <div class="input-group">
                                         <div class="input-group-addon">Pound</div>
                                         <input type="text" class="form-control milkInput" placeholder="Enter Amount"
-                                               ng-model="milkDetails.amount"/>
+                                               ng-model="milkingTransactionRequest.amount"/>
                                     </div>
                                 </div>
                             </form>
                             <div class="milkDescriptionInput">
                                 <input type="description" class="form-control"
-                                       placeholder="i.e: Pint of Beer" ng-model="milkDetails.description"/>
+                                       placeholder="i.e: Pint of Beer"
+                                       ng-model="milkingTransactionRequest.description"/>
                             </div>
                             <div class="milkLocationInput">
                                 <input type="place" class="form-control"
                                        placeholder="Where? i.e: Pub"/>
                             </div>
                             <ul class="milkerAction">
+                                <div ng-show="selfMilk">
+                                    <small style="color:red">You can't attempt a transaction with yourself</small>
+                                </div>
                                 <li ng-repeat="milkedUser in groupDetails.milkedUsers" class="milkerAction"><a href="#">
                                     {{milkedUser.name}}
                                 </a>
-
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm milkButton"
                                                 ng-click="milk(milkedUser.id)">Milk
@@ -163,23 +169,11 @@
                         <div class="panel-body">
                             <table class="table">
                                 <tbody>
-                                <tr>
+                                <tr ng-repeat="milkingTransaction in milkingTransactions">
                                     <td>5 April 2015</td>
-                                    <td>Joe milked Savvas 5.25 for a really amazing cold pint of beer at
-                                        Westfields
+                                    <td>{{milkingTransaction.milker.name}} milked {{milkingTransaction.milkee.name}}
+                                        {{milkingTransaction.amount}} for a {{milkingTransaction.description}}
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>4 April 2015</td>
-                                    <td>Savvas milked Joe 3.30 for a sandwich at the Broadway</td>
-                                </tr>
-                                <tr>
-                                    <td>3 April 2015</td>
-                                    <td>Irini milked Maria 1.20 for a juice at the Park</td>
-                                </tr>
-                                <tr>
-                                    <td>3 April 2015</td>
-                                    <td>Maria milked Joe 2.20 for a beriyani at Delivery</td>
                                 </tr>
                                 </tbody>
                             </table>

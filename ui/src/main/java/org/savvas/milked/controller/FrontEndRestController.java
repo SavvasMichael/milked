@@ -134,5 +134,15 @@ public class FrontEndRestController {
         }
     }
 
+    @RequestMapping(value = "/group/{groupId}/milk", method = RequestMethod.GET)
+    public ResponseEntity getMilkingTransactions(@PathVariable("groupId") Long groupId) {
+        try {
+            return restTemplate.getForEntity(URI.create(BASE_URL + "/group/" + groupId + "/milk"), MilkingTransaction[].class);
+        } catch (HttpClientErrorException e) {
+            LOG.warn("Error when getting milking transaction", e);
+            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+        }
+    }
+
 
 }
