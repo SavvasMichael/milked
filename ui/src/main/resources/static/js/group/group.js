@@ -16,6 +16,11 @@
                 $scope.milkedUserId = 0;
                 $scope.hasGroupId = false;
                 $scope.selfMilk = false;
+                $scope.transactionOk = false;
+                $scope.successfulUserInvite = false;
+                $scope.unsuccessfulUserInvite = false;
+                $scope.updateNewUserDetailsError = false;
+
 
                 $scope.createGroup = function() {
                     $http.post(BASE_URL + "/group", $scope.groupRequest).
@@ -72,18 +77,12 @@
                                $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/invite/", $scope.emailBody)
                                .success(function (data, status, headers, config) {
                                        console.log("Success");
+                                       $scope.successfulUserInvite = true;
+                                       $scope.unsuccessfulUserInvite = false;
                                }).error(function(data, status, headers, config){
                                        $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
-                               });
-               }
-
-               $scope.updateNewUserDetails = function() {
-                                var uuid = $("#uuid").val();
-                                $http.post(BASE_URL + "/user/" + uuid +"/update", $scope.invitedUserDetails)
-                               .success(function (data, status, headers, config) {
-                                       console.log("success");
-                               }).error(function(data, status, headers, config){
-                                       $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
+                                       $scope.unsuccessfulUserInvite = true;
+                                       $scope.successfulUserInvite = false;
                                });
                }
 
@@ -92,9 +91,14 @@
                                $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/milk", $scope.milkingTransactionRequest)
                               .success(function (data, status, headers, config) {
                                       console.log("Success");
+                                      $scope.transactionOk = true;
+                                      $scope.selfMilk = false;
+                                      $rootScope.$broadcast("successful-transaction");
                               }).error(function(data, status, headers, config){
                                       $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                                       $scope.selfMilk = true;
+                                      $scope.transactionOk = false;
+
                               });
                              }
                $scope.milked = function(userId){
@@ -102,9 +106,14 @@
                               $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/milked", $scope.milkingTransactionRequest)
                              .success(function (data, status, headers, config) {
                                      console.log("Success");
+                                     $scope.transactionOk = true;
+                                     $scope.selfMilk = false;
+                                     $rootScope.$broadcast("successful-transaction");
+
                              }).error(function(data, status, headers, config){
                                      $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                                      $scope.selfMilk = true;
+                                     $scope.transactionOk = false;
                              });
                             }
 
@@ -120,6 +129,9 @@
                $scope.$on("loaded-group", function(event) {
                                     $scope.getMilkingTransactions();
                                });
+               $scope.$on("successful-transaction", function(event) {
+                            $scope.getMilkingTransactions();
+               });
                 $scope.getGroups();
             });
     })();

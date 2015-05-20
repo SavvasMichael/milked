@@ -70,16 +70,5 @@ public class FrontEndController {
             return "errorLanding";
         }
     }
-
-    @RequestMapping(value = "/user/{uuid}/update", method = RequestMethod.POST)
-    public String updateUser(@PathVariable("uuid") String uuid, @RequestBody Map<String, String> invitedUserDetails) {
-        try {
-            restTemplate.postForEntity(URI.create(BASE_URL + "/user/" + uuid + "/update"), invitedUserDetails, String.class);
-            return "landing";
-        } catch (HttpClientErrorException e) {
-            LOG.warn("Error when trying to activate user", e);
-            return "errorLanding";
-        }
-    }
 }
 

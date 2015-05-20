@@ -23,6 +23,9 @@ public class FrontEndRestController {
     private static final String BASE_URL = "http://localhost:8080";
     private final RestTemplate restTemplate = new RestTemplate();
     private final BalanceCalculator balanceCalculator;
+    private static final String EMAIL_PATTERN =
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     @Autowired
     public FrontEndRestController(BalanceCalculator balanceCalculator) {
@@ -97,7 +100,9 @@ public class FrontEndRestController {
 
     @RequestMapping(value = "/group/{groupId}/invite", method = RequestMethod.POST)
     public ResponseEntity inviteUser(@RequestBody Map<String, String> emailBody, @PathVariable("groupId") Long groupId) {
-
+        if (!emailBody.get("email").matches(EMAIL_PATTERN)) {
+            return ResponseEntity.badRequest().build();
+        }
         try {
             return restTemplate.postForEntity(URI.create(BASE_URL + "/group/" + groupId + "/invite/"), emailBody, Map.class);
         } catch (HttpClientErrorException e) {
@@ -140,6 +145,16 @@ public class FrontEndRestController {
             return restTemplate.getForEntity(URI.create(BASE_URL + "/group/" + groupId + "/milk"), MilkingTransaction[].class);
         } catch (HttpClientErrorException e) {
             LOG.warn("Error when getting milking transaction", e);
+            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+        }
+    }
+
+    @RequestMapping(value = "/user/{uuid}/update", method = RequestMethod.POST)
+    public ResponseEntity updateUser(@PathVariable("uuid") String uuid, @RequestBody Map<String, String> invitedUserDetails) {
+        try {
+            return restTemplate.postForEntity(URI.create(BASE_URL + "/user/" + uuid + "/update"), invitedUserDetails, String.class);
+        } catch (HttpClientErrorException e) {
+            LOG.warn("Error when trying to activate user", e);
             return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
         }
     }

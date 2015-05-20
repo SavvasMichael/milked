@@ -1,5 +1,6 @@
 package org.savvas.milked.controller;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class MilkingTransaction {
@@ -23,7 +24,7 @@ public class MilkingTransaction {
         this.milkee = milkee;
         this.amount = amount;
         this.description = description;
-        this.createDate = new Date();
+        this.createDate = new Timestamp(createDate.getTime());
     }
 
     public Long getId() {

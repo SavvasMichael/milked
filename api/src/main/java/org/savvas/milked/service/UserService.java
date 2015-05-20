@@ -83,7 +83,7 @@ public class UserService {
             Address toAddress = new InternetAddress(user.getEmail());
             message.setFrom(fromAddress);
             message.setRecipient(Message.RecipientType.TO, toAddress);
-            message.setSubject("You are invited to join milked!");
+            message.setSubject("You are invited to join a group at milked!");
             message.setText("A friend has invited you to join a group. If you wish to join click: http://localhost:7070/existing-user/" + user.getId() + "/group/" + groupId + "/accept");
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);

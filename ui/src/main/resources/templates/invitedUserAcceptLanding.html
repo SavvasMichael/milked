@@ -10,8 +10,8 @@
     <meta charset="utf-8"/>
     <title>Milked</title>
 </head>
-<body>
-<div class="container-fluid homeWrapper">
+<body class="homeWrapper">
+<div class="container-fluid">
     <nav class="navbar navbar-default">
         <div class="container-fluid nav-bar">
             <div class="navbar-header">
@@ -23,7 +23,7 @@
             </div>
         </div>
     </nav>
-    <div class="row">
+    <div>
         <div class="col-md-4 col-md-offset-2 welcomeMessage">
             <h1><strong>Welcome to Milked.</strong></h1>
 
@@ -31,8 +31,8 @@
                 daily between group members</p>
         </div>
     </div>
-    <div class="row signup">
-        <div class="col-md-3 col-md-offset-7 signupForm" ng-controller="UpdateController">
+    <div class="signup">
+        <div class="col-md-3 col-md-offset-1 signupForm" ng-controller="UpdateController">
             <form ng-show="!hasRegistered" role="form" class="signupFormInner">
                 <div class="formHeader">
                     <h4>Finish your registration</h4>
@@ -45,8 +45,8 @@
                     <input ng-model="invitedUserDetails.password" type="password" class="form-control" id="pwd"
                            placeholder="password"/>
                 </div>
-                <div ng-show="hasRegisterErrors" class="errorMessage">
-                    <small><strong>Email has already been registered</strong></small>
+                <div ng-show="updateNewUserDetailsError">
+                    <small style="color:red"><strong>Invalid name or Password</strong></small>
                 </div>
                 <input type="hidden" th:value="${uuid}" id="uuid"/>
                 <div class="signupButton">

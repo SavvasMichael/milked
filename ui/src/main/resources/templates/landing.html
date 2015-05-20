@@ -62,6 +62,12 @@
                        placeholder="Enter Email"/>
                 <button type="submit" class="btn btn-primary btn-sm inviteButton" ng-click="inviteUser()">Invite
                 </button>
+                    <div ng-show="successfulUserInvite" id="successfulInviteMessage">
+                        <small style="color:green">User successfuly invited</small>
+                    </div>
+                    <div ng-show="unsuccessfulUserInvite">
+                        <small style="color:red">Invalid Email</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -127,7 +133,7 @@
 
                                     <div class="input-group">
                                         <div class="input-group-addon">Pound</div>
-                                        <input type="text" class="form-control milkInput" placeholder="Enter Amount"
+                                        <input type="text" class="form-control milkInput" placeholder="Amount"
                                                ng-model="milkingTransactionRequest.amount"/>
                                     </div>
                                 </div>
@@ -137,13 +143,12 @@
                                        placeholder="i.e: Pint of Beer"
                                        ng-model="milkingTransactionRequest.description"/>
                             </div>
-                            <div class="milkLocationInput">
-                                <input type="place" class="form-control"
-                                       placeholder="Where? i.e: Pub"/>
-                            </div>
                             <ul class="milkerAction">
                                 <div ng-show="selfMilk">
                                     <small style="color:red">You can't attempt a transaction with yourself</small>
+                                </div>
+                                <div ng-show="transactionOk">
+                                    <small style="color:green">Transaction successful</small>
                                 </div>
                                 <li ng-repeat="milkedUser in groupDetails.milkedUsers" class="milkerAction"><a href="#">
                                     {{milkedUser.name}}
@@ -170,7 +175,7 @@
                             <table class="table">
                                 <tbody>
                                 <tr ng-repeat="milkingTransaction in milkingTransactions">
-                                    <td>5 April 2015</td>
+                                    <td>{{milkingTransaction.createDate}}</td>
                                     <td>{{milkingTransaction.milker.name}} milked {{milkingTransaction.milkee.name}}
                                         {{milkingTransaction.amount}} for a {{milkingTransaction.description}}
                                     </td>

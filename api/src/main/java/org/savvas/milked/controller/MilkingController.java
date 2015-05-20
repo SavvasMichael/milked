@@ -1,6 +1,5 @@
 package org.savvas.milked.controller;
 
-import com.sun.xml.internal.ws.developer.MemberSubmissionAddressing;
 import org.savvas.milked.controller.error.ValidationException;
 import org.savvas.milked.controller.request.MilkingTransactionRequest;
 import org.savvas.milked.domain.MilkingTransaction;

@@ -1,6 +1,7 @@
 package org.savvas.milked.service;
 
 import org.savvas.milked.controller.error.NotFoundException;
+import org.savvas.milked.controller.error.ValidationException;
 import org.savvas.milked.controller.request.RegistrationRequest;
 import org.savvas.milked.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class GroupInviteService {
     private MilkedUserRepository milkedUserRepository;
     private MilkingGroupRepository milkingGroupRepository;
     private UserService userService;
+    private static final String EMAIL_PATTERN =
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     @Autowired
     public GroupInviteService(GroupInviteRepository groupInviteRepository, MilkedUserRepository milkedUserRepository, MilkingGroupRepository milkingGroupRepository, UserService userService) {

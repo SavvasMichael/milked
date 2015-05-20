@@ -1,7 +1,10 @@
 .homeWrapper{
 	background-image: url("http://www.roncorso.com/data/photos/76_1blue_martini_couples.jpg");
     background-size: cover;
-    padding-bottom: 11em;
+}
+.genericWrapper{
+    background-image: url("../img/ZenBG3.png");
+    background-size: cover;
 }
 body h3, body h4{
     padding: 0.2em;
@@ -125,6 +128,7 @@ html .table tbody tr td{
 }
 .panel-heading{
     text-align: center;
+    color:#565F66;
 }
 .milkWrapper, .historyWrapper{
     padding: 2em;

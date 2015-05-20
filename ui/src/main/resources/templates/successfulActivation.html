@@ -10,8 +10,8 @@
     <meta charset="utf-8"/>
     <title>Milked</title>
 </head>
-<body>
-<div class="container-fluid wrapper">
+<body class="genericWrapper">
+<div class="container-fluid">
     <nav class="navbar navbar-default">
         <div class="container-fluid nav-bar">
             <div class="navbar-header">
@@ -19,16 +19,11 @@
                     <img src="/img/milked.png"/>
                 </a>
             </div>
-            <div class="navbar-right menuItems">
-                <ul>
-                    <li><a href="#">Log out</a></li>
-                </ul>
-            </div>
         </div>
     </nav>
 </div>
-<div class="content"><h1 class="panel-heading">Activation Successful. Login below to go to your profile</h1></div>
-<div class="col-md-3 col-md-offset-1 loginForm">
+<div class="content"><h2 class="panel-heading">Activation Successful. Login below to go to your profile</h2></div>
+<div class="col-md-3 col-md-offset-4 loginForm">
     <form th:action="@{/login}" method="post">
         <div class="form-group">
             <div class="formHeader">
