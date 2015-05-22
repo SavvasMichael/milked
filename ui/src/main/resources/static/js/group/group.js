@@ -47,7 +47,7 @@
                 });
 
                 $scope.getGroupDetails = function(groupId) {
-                                $http.get(BASE_URL + "/group/" +groupId +"/users").
+                                $http.get(BASE_URL + "/group/" + groupId +"/users").
                                     success(function (data, status, headers, config) {
                                     $rootScope.$broadcast("loaded-group");
                                     $scope.hasGroupId = true;
@@ -74,15 +74,20 @@
                 }
 
                 $scope.inviteUser = function() {
+                               $('.inviteButton').attr("disabled", true);
                                $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/invite/", $scope.emailBody)
                                .success(function (data, status, headers, config) {
                                        console.log("Success");
                                        $scope.successfulUserInvite = true;
                                        $scope.unsuccessfulUserInvite = false;
+                                       $('.inviteInput').val('')
+                                       $('.inviteButton').attr("disabled", false);
                                }).error(function(data, status, headers, config){
                                        $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                                        $scope.unsuccessfulUserInvite = true;
                                        $scope.successfulUserInvite = false;
+                                       $('.inviteInput').val('')
+                                       $('.inviteButton').attr("disabled", false);
                                });
                }
 
@@ -109,7 +114,6 @@
                                      $scope.transactionOk = true;
                                      $scope.selfMilk = false;
                                      $rootScope.$broadcast("successful-transaction");
-
                              }).error(function(data, status, headers, config){
                                      $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                                      $scope.selfMilk = true;

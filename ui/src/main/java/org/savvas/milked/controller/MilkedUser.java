@@ -18,7 +18,7 @@ public class MilkedUser {
         this.name = name;
         this.password = password;
         this.uuid = uuid;
-        this.balance = 0;
+        balance = 0;
     }
 
     public MilkedUser(long id) {

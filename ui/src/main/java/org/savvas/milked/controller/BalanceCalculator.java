@@ -7,8 +7,10 @@ import java.util.Map;
 
 @Component
 public class BalanceCalculator {
+
     public static void calculateBalances(MilkedUser[] milkedUsers, MilkingTransaction[] milkingTransactions) {
-        Map<Long, MilkedUser> userMap = new HashMap<>();
+
+        Map<Long, MilkedUser> userMap = new HashMap();
 
         for (MilkedUser user : milkedUsers) {
             userMap.put(user.getId(), user);
@@ -18,8 +20,10 @@ public class BalanceCalculator {
             MilkedUser txMilker = tx.getMilker();
             MilkedUser txMilkee = tx.getMilkee();
 
-            int milkerBalance = txMilker.getBalance() - tx.getAmount();
-            int milkeeBalance = txMilkee.getBalance() + tx.getAmount();
+            MilkedUser milker = userMap.get(txMilker.getId());
+            int milkerBalance = milker.getBalance() - tx.getAmount();
+            MilkedUser milkee = userMap.get(txMilkee.getId());
+            int milkeeBalance = milkee.getBalance() + tx.getAmount();
 
             userMap.get(txMilker.getId()).setBalance(milkerBalance);
             userMap.get(txMilkee.getId()).setBalance(milkeeBalance);

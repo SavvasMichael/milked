@@ -35,11 +35,13 @@ public class BalanceCalculatorTest {
     public void calculatesBalanceForMultipleTransactionsBetweenSameUsers() {
         //given
         BalanceCalculator balanceCalculator = new BalanceCalculator();
+        MilkedUser txMilker = new MilkedUser(0);
+        MilkedUser txMilkee = new MilkedUser(1);
         MilkedUser milker = new MilkedUser(0);
         MilkedUser milkee = new MilkedUser(1);
 
-        MilkingTransaction milkingTransaction = new MilkingTransaction(-1L, milker, milkee, 50, "");
-        MilkingTransaction milkingTransaction2 = new MilkingTransaction(-1L, milkee, milker, 20, "");
+        MilkingTransaction milkingTransaction = new MilkingTransaction(-1L, txMilker, txMilkee, 50, "");
+        MilkingTransaction milkingTransaction2 = new MilkingTransaction(-1L, txMilkee, txMilker, 20, "");
         MilkedUser[] milkedUsers = {milker, milkee};
         MilkingTransaction[] milkingTransactions = {milkingTransaction, milkingTransaction2};
 

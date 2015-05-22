@@ -7,7 +7,6 @@ public class MilkingTransaction {
     private Long id;
 
     private MilkedUser milker;
-
     private MilkedUser milkee;
 
     private Long milkingGroupId;
@@ -24,7 +23,7 @@ public class MilkingTransaction {
         this.milkee = milkee;
         this.amount = amount;
         this.description = description;
-        this.createDate = new Timestamp(createDate.getTime());
+        this.createDate = new Date();
     }
 
     public Long getId() {
