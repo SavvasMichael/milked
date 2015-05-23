@@ -149,15 +149,13 @@ public class FrontEndRestController {
         }
     }
 
-    @RequestMapping(value = "/user/{uuid}/update", method = RequestMethod.POST)
-    public ResponseEntity updateUser(@PathVariable("uuid") String uuid, @RequestBody Map<String, String> invitedUserDetails) {
+    @RequestMapping(value = "/user/{email}/forgot-password", method = RequestMethod.POST)
+    public ResponseEntity recoverPassword(@PathVariable("email") String email) {
         try {
-            return restTemplate.postForEntity(URI.create(BASE_URL + "/user/" + uuid + "/update"), invitedUserDetails, String.class);
+            return restTemplate.postForEntity(URI.create(BASE_URL + "/user/" + email + "/forgot-password"), null, String.class);
         } catch (HttpClientErrorException e) {
-            LOG.warn("Error when trying to activate user", e);
+            LOG.warn("Error when recovering password", e);
             return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
         }
     }
-
-
 }

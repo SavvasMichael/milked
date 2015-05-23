@@ -19,7 +19,8 @@
                 $scope.transactionOk = false;
                 $scope.successfulUserInvite = false;
                 $scope.unsuccessfulUserInvite = false;
-                $scope.updateNewUserDetailsError = false;
+                $scope.isLoading = false;
+                $scope.invalidGroupName = false;
 
 
                 $scope.createGroup = function() {
@@ -27,9 +28,11 @@
                         success(function (data, status, headers, config) {
                           console.log("Success");
                           $rootScope.$broadcast("created-group");
-
+                          $scope.invalidGroupName = false;
+                          $(".createGroupInput").val("");
                         }).error(function(data, status, headers, config) {
-                           $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
+                          $scope.invalidGroupName = true;
+                          $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                         });
                 }
 
@@ -75,6 +78,7 @@
 
                 $scope.inviteUser = function() {
                                $('.inviteButton').attr("disabled", true);
+                               $scope.isLoading = true;
                                $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/invite/", $scope.emailBody)
                                .success(function (data, status, headers, config) {
                                        console.log("Success");
@@ -82,12 +86,14 @@
                                        $scope.unsuccessfulUserInvite = false;
                                        $('.inviteInput').val('')
                                        $('.inviteButton').attr("disabled", false);
+                                       $scope.isLoading = false;
                                }).error(function(data, status, headers, config){
                                        $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                                        $scope.unsuccessfulUserInvite = true;
                                        $scope.successfulUserInvite = false;
                                        $('.inviteInput').val('')
                                        $('.inviteButton').attr("disabled", false);
+                                       $scope.isLoading = false;
                                });
                }
 

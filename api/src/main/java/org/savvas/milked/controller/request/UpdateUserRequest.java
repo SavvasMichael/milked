@@ -3,9 +3,7 @@ package org.savvas.milked.controller.request;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class UpdateUserRequest {
-    @NotEmpty
     private String name;
-    @NotEmpty
     private String password;
 
     UpdateUserRequest() {

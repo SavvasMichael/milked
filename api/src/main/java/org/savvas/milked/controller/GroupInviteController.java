@@ -39,9 +39,14 @@ public class GroupInviteController {
 
     @RequestMapping(value = "/group/{groupId}/invite", method = RequestMethod.POST)
     public ResponseEntity inviteUser(@RequestBody Map<String, String> emailBody, @PathVariable("groupId") Long groupId) throws UnsupportedEncodingException {
+        String createdUrl = "";
         String email = emailBody.get("email");
         MilkedUser user = groupInviteService.inviteGroupUser(groupId, email);
-        String createdUrl = "/user/" + user.getId() + "/group/" + groupId;
+        if ("".equals(user.getName())) {
+            createdUrl = "/user/" + user.getId() + "/group/" + groupId;
+        } else {
+            createdUrl = "/existing-user/" + user.getId() + "/group/" + groupId;
+        }
         URI groupUserLocationURI = URI.create(createdUrl);
         return ResponseEntity.created(groupUserLocationURI).build();
     }
@@ -72,6 +77,12 @@ public class GroupInviteController {
 
     @RequestMapping(value = "/user/{userId}/group/{groupId}/decline", method = RequestMethod.DELETE)
     public ResponseEntity declineInvitation(@PathVariable("userId") Long userId, @PathVariable("groupId") Long groupId) {
+        groupInviteService.declineInvitation(userId, groupId);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/existing-user/{userId}/group/{groupId}/decline", method = RequestMethod.DELETE)
+    public ResponseEntity declineInvitationForExisting(@PathVariable("userId") Long userId, @PathVariable("groupId") Long groupId) {
         groupInviteService.declineInvitation(userId, groupId);
         return ResponseEntity.ok().build();
     }

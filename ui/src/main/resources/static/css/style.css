@@ -47,6 +47,9 @@ html .navbar-default{
     margin-bottom:0.5em;
     margin-left: 5.1em;
 }
+.passwordRecoveryButton{
+    margin-top:0.2em;
+}
 .signupFormInner{
 	padding-top: 0.8em;
 }

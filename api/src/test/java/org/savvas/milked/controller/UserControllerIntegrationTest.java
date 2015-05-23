@@ -101,7 +101,20 @@ public class UserControllerIntegrationTest {
         //then
         assertThat(groupUsersResponse).hasSize(2);
     }
-//TODO : Fix this
+
+    @Test
+    public void checkForgotPasswordRecoversIt() {
+        //given
+        String baseUrl = "http://localhost:" + port;
+        MilkedUser registeredUser = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "12345");
+        String passwordRecoveryUrl = baseUrl + "/user/" + registeredUser.getEmail() + "/forgot-password";
+        //when
+        String password = rest.postForEntity(URI.create(passwordRecoveryUrl), null, String.class).getBody();
+        //then
+        assertEquals("Unexpected Password", "12345", password);
+    }
+
+//TODO:FIX THIS
 //    @Test
 //    public void checkUpdatesUserDetailsOnNewUserInvitation() throws UnsupportedEncodingException {
 //        //given

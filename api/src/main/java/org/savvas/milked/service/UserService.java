@@ -1,5 +1,6 @@
 package org.savvas.milked.service;
 
+import org.savvas.milked.controller.error.ValidationException;
 import org.savvas.milked.controller.request.RegistrationRequest;
 import org.savvas.milked.controller.request.UpdateUserRequest;
 import org.savvas.milked.domain.MilkedUser;
@@ -127,6 +128,38 @@ public class UserService {
         }
     }
 
+    public void sendPasswordRecoveryEmail(MilkedUser fetchedUser, String recoveredPassword) {
+        try {
+            String host = "smtp.gmail.com";
+            String from = "savvas.a.michael@gmail.com";
+            String pass = "pass";
+            Properties props = System.getProperties();
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.user", from);
+            props.put("mail.smtp.password", pass);
+            props.put("mail.smtp.port", "587");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.debug", "true");
+
+            Session session = Session.getInstance(props, new GMailAuthenticator("savvas.a.michael@gmail.com", "cstrike54321"));
+            MimeMessage message = new MimeMessage(session);
+            Address fromAddress = new InternetAddress(from);
+            Address toAddress = new InternetAddress(fetchedUser.getEmail());
+            message.setFrom(fromAddress);
+            message.setRecipient(Message.RecipientType.TO, toAddress);
+            message.setSubject("Milked password recovery");
+            message.setText("Password for user " + fetchedUser.getName() + ": " + recoveredPassword);
+            Transport transport = session.getTransport("smtp");
+            transport.connect(host, from, pass);
+            message.saveChanges();
+            Transport.send(message);
+            transport.close();
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage());
+        }
+    }
+
     public MilkedUser createUser(RegistrationRequest registrationRequest) {
         String uuid = UUID.randomUUID().toString();
         MilkedUser milkedUser = new MilkedUser(registrationRequest.getEmail(), registrationRequest.getName(), registrationRequest.getPassword(), uuid);
@@ -168,5 +201,16 @@ public class UserService {
             return new ArrayList<>();
         }
         return group.getMilkedUsers();
+    }
+
+    public String recoverPassword(String email) {
+        MilkedUser fetchedUser = milkedUserRepository.findByEmail(email);
+        if (fetchedUser == null) {
+            LOG.warn("User not found");
+            throw new ValidationException("User Not Found");
+        }
+        String recoveredPassword = fetchedUser.getPassword();
+        sendPasswordRecoveryEmail(fetchedUser, recoveredPassword);
+        return recoveredPassword;
     }
 }

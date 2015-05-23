@@ -2,6 +2,7 @@ package org.savvas.milked.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -68,6 +69,16 @@ public class FrontEndController {
         } catch (HttpClientErrorException e) {
             LOG.warn("Error when trying to activate user", e);
             return "errorLanding";
+        }
+    }
+
+    @RequestMapping(value = "/user/{uuid}/update", method = RequestMethod.POST)
+    public ResponseEntity updateUser(@PathVariable("uuid") String uuid, @RequestBody Map<String, String> invitedUserDetails) {
+        try {
+            return restTemplate.postForEntity(URI.create(BASE_URL + "/user/" + uuid + "/update"), invitedUserDetails, String.class);
+        } catch (HttpClientErrorException e) {
+            LOG.warn("Error when trying to activate user", e);
+            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
         }
     }
 }

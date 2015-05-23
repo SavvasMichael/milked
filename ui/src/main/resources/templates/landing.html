@@ -40,12 +40,14 @@
                 <small ng-click="leaveGroup(group)"><a href=" ">Leave group</a></small>
             </li>
         </ul>
-        <div class="createGroupInput createGroup">
-            <input ng-model="groupRequest.name" type="text" class="form-control" placeholder="New Group"/>
+        <div class="createGroup">
+            <input ng-model="groupRequest.name" type="text" class="createGroupInput form-control"
+                   placeholder="New Group"/>
         </div>
         <div class="createGroup">
             <button type="submit" class="btn btn-primary createGroupButton" ng-click="createGroup()">Create group
             </button>
+            <small ng-show="invalidGroupName" style="color:red">Invalid group name</small>
         </div>
     </div>
     <div class="col-md-10 content">
@@ -61,8 +63,9 @@
                 <h5><strong>Invite someone to the group</strong></h5>
                 <input ng-model="emailBody.email" type="email" class="form-control inviteInput"
                        placeholder="Enter Email"/>
-                <button type="submit" class="btn btn-primary btn-sm inviteButton" ng-click="inviteUser()">Invite
-                </button>
+                    <button type="submit" class="btn btn-primary btn-sm inviteButton" ng-click="inviteUser()">Invite
+                    </button>
+                    <img ng-show="isLoading" src="/img/ajax-loader.gif"/>
                     <div ng-show="successfulUserInvite" id="successfulInviteMessage">
                         <small style="color:green">User successfuly invited</small>
                     </div>
