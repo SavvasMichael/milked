@@ -2,7 +2,6 @@ package org.savvas.milked.service;
 
 import org.savvas.milked.controller.error.ValidationException;
 import org.savvas.milked.controller.request.RegistrationRequest;
-import org.savvas.milked.controller.request.UpdateUserRequest;
 import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.domain.MilkedUserRepository;
 import org.savvas.milked.domain.MilkingGroup;
@@ -14,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -52,10 +53,23 @@ public class UserService {
             Address toAddress = new InternetAddress(user.getEmail());
             message.setFrom(fromAddress);
             message.setRecipient(Message.RecipientType.TO, toAddress);
-            message.setSubject("Welcome to milked, " + user.getName() + " !");
-            message.setText("Activation link: http://localhost:7070/activation/" + user.getUuid());
+
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
+
+            MimeBodyPart textPart = new MimeBodyPart();
+            String textContent = "Hi dude";
+            textPart.setText(textContent);
+            MimeBodyPart htmlPart = new MimeBodyPart();
+            String htmlContent = "<html><h2 style = color:#4C4CA5>Welcome to milked,  " + user.getName() + ".</h2><br><h4 style = color:#39464A>Activation link: " +
+                    "http://localhost:7070/activation/" + user.getUuid() + "</h4><br><h5 style = color:#39464A>If the above link does not work please copy and paste it in your address bar</h5></html>";
+            htmlPart.setContent(htmlContent, "text/html");
+            Multipart multipart = new MimeMultipart("alternative");
+            multipart.addBodyPart(textPart);
+            multipart.addBodyPart(htmlPart);
+            message.setSubject("milked.io", "utf-8");
+            message.setContent(multipart);
+
             message.saveChanges();
             Transport.send(message);
             transport.close();
@@ -84,10 +98,22 @@ public class UserService {
             Address toAddress = new InternetAddress(user.getEmail());
             message.setFrom(fromAddress);
             message.setRecipient(Message.RecipientType.TO, toAddress);
-            message.setSubject("You are invited to join a group at milked!");
-            message.setText("A friend has invited you to join a group. If you wish to join click: http://localhost:7070/existing-user/" + user.getId() + "/group/" + groupId + "/accept");
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
+
+            MimeBodyPart textPart = new MimeBodyPart();
+            String textContent = "Content";
+            textPart.setText(textContent);
+            MimeBodyPart htmlPart = new MimeBodyPart();
+            String htmlContent = "<html><h2 style = color:#4C4CA5>You are invited to join a group at milked, " + user.getName() + ".</h2><br><h4 style = color:#39464A>If you wish to join click: " +
+                    "http://localhost:7070/existing-user/" + user.getId() + "/group/" + groupId + "/accept" + "</h4><br><h5 style = color:#39464A>If the above link does not work please copy and paste it in your address bar</h5></html>";
+            htmlPart.setContent(htmlContent, "text/html");
+            Multipart multipart = new MimeMultipart("alternative");
+            multipart.addBodyPart(textPart);
+            multipart.addBodyPart(htmlPart);
+            message.setSubject("milked.io", "utf-8");
+            message.setContent(multipart);
+
             message.saveChanges();
             Transport.send(message);
             transport.close();
@@ -97,6 +123,7 @@ public class UserService {
     }
 
     public void sendInvitationEmailForAnonymous(MilkedUser user, Long groupId) {
+        MilkingGroup invitingGroup = milkingGroupRepository.findOne(groupId);
         try {
             String host = "smtp.gmail.com";
             String from = "savvas.a.michael@gmail.com";
@@ -116,10 +143,22 @@ public class UserService {
             Address toAddress = new InternetAddress(user.getEmail());
             message.setFrom(fromAddress);
             message.setRecipient(Message.RecipientType.TO, toAddress);
-            message.setSubject("You are invited to join milked!");
-            message.setText("A friend has invited you to join a group. If you wish to join click: http://localhost:7070/user/" + user.getUuid() + "/group/" + groupId + "/accept");
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
+
+            MimeBodyPart textPart = new MimeBodyPart();
+            String textContent = "Content";
+            textPart.setText(textContent);
+            MimeBodyPart htmlPart = new MimeBodyPart();
+            String htmlContent = "<html><h2 style = color:#4C4CA5>A Friend has invited you to join their group called " + invitingGroup.getName() + ".</h2><br><h4 style = color:#39464A>If you wish to join click: " +
+                    "http://localhost:7070/user/" + user.getUuid() + "/group/" + groupId + "/accept" + "</h4><br><h5 style = color:#39464A>If the above link does not work please copy and paste it in your address bar</h5></html>";
+            htmlPart.setContent(htmlContent, "text/html");
+            Multipart multipart = new MimeMultipart("alternative");
+            multipart.addBodyPart(textPart);
+            multipart.addBodyPart(htmlPart);
+            message.setSubject("milked.io", "utf-8");
+            message.setContent(multipart);
+
             message.saveChanges();
             Transport.send(message);
             transport.close();
@@ -148,10 +187,22 @@ public class UserService {
             Address toAddress = new InternetAddress(fetchedUser.getEmail());
             message.setFrom(fromAddress);
             message.setRecipient(Message.RecipientType.TO, toAddress);
-            message.setSubject("Milked password recovery");
-            message.setText("Password for user " + fetchedUser.getName() + ": " + recoveredPassword);
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
+
+            MimeBodyPart textPart = new MimeBodyPart();
+            String textContent = "Content";
+            textPart.setText(textContent);
+            MimeBodyPart htmlPart = new MimeBodyPart();
+            String htmlContent = "<html><h2 style = color:#4C4CA5>Milked password recovery" + "</h2><br><h4 style = color:#39464A>Password for user " +
+                    fetchedUser.getName() + ": " + recoveredPassword + "</h4></html>";
+            htmlPart.setContent(htmlContent, "text/html");
+            Multipart multipart = new MimeMultipart("alternative");
+            multipart.addBodyPart(textPart);
+            multipart.addBodyPart(htmlPart);
+            message.setSubject("milked.io", "utf-8");
+            message.setContent(multipart);
+
             message.saveChanges();
             Transport.send(message);
             transport.close();
