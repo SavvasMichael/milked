@@ -39,7 +39,7 @@ public class MilkedUser {
     }
 
     public String getEmail() {
-        return email;
+        return email.toLowerCase();
     }
 
     public String getName() {

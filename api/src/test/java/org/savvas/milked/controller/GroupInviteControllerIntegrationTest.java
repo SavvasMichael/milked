@@ -96,7 +96,7 @@ public class GroupInviteControllerIntegrationTest {
         ResponseEntity<MilkingGroup> acceptInvitationResponse = rest.getForEntity(URI.create(acceptInvitationUrl), MilkingGroup.class);
 
         //then
-        GroupInvite[] invites = rest.getForEntity(baseUrl + "/user/" + friend.getId() + "/group/invite", GroupInvite[].class).getBody();
+        GroupInvite[] invites = rest.getForEntity(baseUrl + "/user/" + friend.getUuid() + "/group/invite", GroupInvite[].class).getBody();
         assertThat(acceptInvitationResponse.getStatusCode().value()).isEqualTo(200);
         MilkingGroup group = acceptInvitationResponse.getBody();
         List<MilkedUser> fetchedMilkingUsers = group.getMilkedUsers();
@@ -145,7 +145,17 @@ public class GroupInviteControllerIntegrationTest {
         //then
         assertEquals(201, createGroupUserResponse.getStatusCode().value());
         assertThat(invites).isNotEmpty();
-
     }
 
+    @Test
+    public void invitingAMemberReturnsErrorResponseCode() throws UnsupportedEncodingException {
+        //given
+        MilkedUser user = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Savvas", "pass");
+        MilkingGroup group = givenTheMilkingGroup(rest, baseUrl, user.getId(), "SavvasGroup");
+        String inviteUrl = baseUrl + "/user/" + user.getId() + "/group/invite";
+        //when
+        ResponseEntity<MilkedUser> groupUsersResponse = rest.postForEntity(URI.create(inviteUrl), null, MilkedUser.class);
+        //then
+        assertEquals("Unexpected Response Code", 405, groupUsersResponse.getStatusCode().value());
+    }
 }

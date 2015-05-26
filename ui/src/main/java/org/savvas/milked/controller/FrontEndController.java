@@ -61,10 +61,10 @@ public class FrontEndController {
         }
     }
 
-    @RequestMapping(value = "/existing-user/{userId}/group/{groupId}/accept", method = RequestMethod.GET)
-    public String acceptGroupInvite(@PathVariable("userId") String userId, @PathVariable("groupId") Long groupId) {
+    @RequestMapping(value = "/existing-user/{uuid}/group/{groupId}/accept", method = RequestMethod.GET)
+    public String acceptGroupInvite(@PathVariable("uuid") String uuid, @PathVariable("groupId") Long groupId) {
         try {
-            restTemplate.getForEntity(URI.create(BASE_URL + "/existing-user/" + userId + "/group/" + groupId + "/accept"), String.class);
+            restTemplate.getForEntity(URI.create(BASE_URL + "/existing-user/" + uuid + "/group/" + groupId + "/accept"), String.class);
             return "landing";
         } catch (HttpClientErrorException e) {
             LOG.warn("Error when trying to activate user", e);
@@ -73,12 +73,14 @@ public class FrontEndController {
     }
 
     @RequestMapping(value = "/user/{uuid}/update", method = RequestMethod.POST)
-    public ResponseEntity updateUser(@PathVariable("uuid") String uuid, @RequestBody Map<String, String> invitedUserDetails) {
+    public String updateUser(@PathVariable("uuid") String uuid, @RequestBody Map<String, String> invitedUserDetails) {
         try {
-            return restTemplate.postForEntity(URI.create(BASE_URL + "/user/" + uuid + "/update"), invitedUserDetails, String.class);
+            restTemplate.postForEntity(URI.create(BASE_URL + "/user/" + uuid + "/update"), invitedUserDetails, String.class);
+            return "landing";
         } catch (HttpClientErrorException e) {
             LOG.warn("Error when trying to activate user", e);
-            return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+            ResponseEntity.badRequest().body(e.getResponseBodyAsString());
+            return "errorLanding";
         }
     }
 }

@@ -3,7 +3,7 @@
     background-size: cover;
 }
 .genericWrapper{
-    background-image: url("../img/ZenBG3.png");
+    background-image: url("/img/ZenBG3.png");
     background-size: cover;
 }
 body h3, body h4{
@@ -13,8 +13,19 @@ body h3, body h4{
     background-image: url("/img/ZenBG3.png");
     background-size: cover;
 }
+nav{
+    height:5em;
+}
 html .navbar-default{
 	background-color:#337AB7;
+}
+html img{
+    margin-top: 0.8em;
+    margin-left: 3em;
+}
+.loginImage{
+    margin-top: 1em;
+    margin-left: 36em;
 }
 .welcomeMessage{
 	color: white;
@@ -35,6 +46,16 @@ html .navbar-default{
 	margin-left: 7em;
 	height: 2.5em;
 	margin-top: -0.8em;
+}
+.logOutButton{
+      margin-right: 3em;
+      background-color: white;
+      color: #337ab7;
+      margin-top: -1em;
+}
+html .container-fluid{
+    padding-right:0;
+    padding-left:0;
 }
 .signup{
     padding-top: 1em;
@@ -151,6 +172,10 @@ html body .milkDescriptionInput{
 }
 .milkButton{
     margin-left:1em;
+}
+.registerSpinner{
+    margin-top: -5em;
+    margin-left: 3em;
 }
 
 

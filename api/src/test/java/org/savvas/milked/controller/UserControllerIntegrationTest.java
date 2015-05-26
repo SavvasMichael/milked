@@ -3,6 +3,7 @@ package org.savvas.milked.controller;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.savvas.milked.MilkedApiApplication;
+import org.savvas.milked.controller.request.EmailBodyRequest;
 import org.savvas.milked.controller.request.LeaveGroupRequest;
 import org.savvas.milked.controller.request.UpdateUserRequest;
 import org.savvas.milked.domain.MilkedUser;
@@ -107,9 +108,10 @@ public class UserControllerIntegrationTest {
         //given
         String baseUrl = "http://localhost:" + port;
         MilkedUser registeredUser = givenTheUserIsRegisteredAndActivated(rest, baseUrl, "savvas", "12345");
-        String passwordRecoveryUrl = baseUrl + "/user/" + registeredUser.getEmail() + "/forgot-password";
+        String passwordRecoveryUrl = baseUrl + "/user/forgot-password";
+        EmailBodyRequest request = new EmailBodyRequest(registeredUser.getEmail());
         //when
-        String password = rest.postForEntity(URI.create(passwordRecoveryUrl), null, String.class).getBody();
+        String password = rest.postForEntity(URI.create(passwordRecoveryUrl), request, String.class).getBody();
         //then
         assertEquals("Unexpected Password", "12345", password);
     }

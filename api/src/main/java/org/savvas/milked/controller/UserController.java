@@ -2,6 +2,7 @@ package org.savvas.milked.controller;
 
 import org.hibernate.validator.constraints.Email;
 import org.savvas.milked.controller.error.ValidationException;
+import org.savvas.milked.controller.request.EmailBodyRequest;
 import org.savvas.milked.controller.request.UpdateUserRequest;
 import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.domain.MilkingGroup;
@@ -53,17 +54,22 @@ public class UserController {
     @RequestMapping(value = "/user/{uuid}/update", method = RequestMethod.POST)
     public ResponseEntity<MilkedUser> updateUserDetails(@PathVariable("uuid") String uuid, @RequestBody UpdateUserRequest updateUserRequest) {
         if (updateUserRequest.getName().isEmpty() || updateUserRequest.getPassword().isEmpty()) {
-            throw new ValidationException("Invalid name or password");
+            throw new ValidationException("Inval    id name or password");
         }
         MilkedUser updatedUser = updateUserService.updateUserDetails(uuid, updateUserRequest);
         return ResponseEntity.ok(updatedUser);
     }
 
-    @RequestMapping(value = "/user/{email}/forgot-password", method = RequestMethod.POST)
-    public String recoverPassword(@PathVariable("email") @Email String email) {
-        if (email.isEmpty()) {
-            throw new ValidationException("Invalid Email");
-        }
-        return userService.recoverPassword(email);
+    @RequestMapping(value = "/user/forgot-password", method = RequestMethod.POST)
+    public String recoverPassword(@RequestBody @Valid EmailBodyRequest request) {
+        return userService.recoverPassword(request.getEmail());
     }
+//    @RequestMapping(value = "/user/{email}/change-password/{password}", method = RequestMethod.POST)
+//    public ResponseEntity changePassword(@PathVariable("email") @Email String email, @PathVariable("password") String password){
+//        if (email.isEmpty()) {
+//            throw new ValidationException("Invalid Email");
+//        }
+//        userService.changePassword(email, password);
+//        return ResponseEntity.ok().build();
+//    }
 }

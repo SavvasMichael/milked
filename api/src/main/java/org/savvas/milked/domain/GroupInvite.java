@@ -13,13 +13,15 @@ public class GroupInvite {
     private Long id;
     private Long groupId;
     private Long userId;
+    private String uuid;
 
     GroupInvite() {
     }
 
-    public GroupInvite(Long groupId, Long userId) {
+    public GroupInvite(Long groupId, Long userId, String uuid) {
         this.groupId = groupId;
         this.userId = userId;
+        this.uuid = uuid;
     }
 
     public Long getId() {
@@ -32,6 +34,10 @@ public class GroupInvite {
 
     public Long getUserId() {
         return userId;
+    }
+
+    public String getUuid() {
+        return uuid;
     }
 
 }

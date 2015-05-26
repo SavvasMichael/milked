@@ -11,8 +11,8 @@
     <meta charset="utf-8"/>
     <title>Milked</title>
 </head>
-<body ng-controller="GroupController">
-<div class="container-fluid wrapper">
+<body ng-controller="GroupController" class="genericWrapper">
+<div class="container-fluid">
     <nav class="navbar navbar-default">
         <div class="container-fluid nav-bar">
             <div class="navbar-header">
@@ -24,7 +24,7 @@
                 <ul>
                     <li>
                         <form method="post" th:action="@{/logout}">
-                            <button type="submit" class="btn btn-primary loginButton">Log Out</button>
+                            <button type="submit" class="btn btn-primary logOutButton">Log out</button>
                         </form>
                     </li>
                 </ul>
@@ -33,7 +33,7 @@
     </nav>
     <div class="col-md-2 groupMenu">
         <ul>
-            <li ng-repeat="group in groups"><a ng-click="getGroupDetails(group.id)">
+            <li ng-repeat="group in groups"><a ng-click="getGroupDetails(group)">
                 <strong>{{ group.name }}</strong></a><br></br>
                 <small>Group members: {{ group.milkedUsers.length }}</small>
                 <br></br>
@@ -53,9 +53,9 @@
     <div class="col-md-10 content">
         <div class="row headerRow">
             <div class="col-md-4 col-md-offset-1">
-                <h3><strong>CIRRUS
+                <h3 ng-show="hasGroupId"><strong>{{ currentGroup.name }}
                 </strong>
-                    <small><strong>-You owe 52.30-</strong></small>
+                    <small><strong>You owe {{ groupDetails.loggedInUser.balance }} pounds</strong></small>
                 </h3>
             </div>
             <div class="col-md-5 col-md-offset-2 inviteWrapper">
@@ -70,7 +70,7 @@
                         <small style="color:green">User successfuly invited</small>
                     </div>
                     <div ng-show="unsuccessfulUserInvite">
-                        <small style="color:red">Invalid Email</small>
+                        <small style="color:red">Invalid Email or user already a member</small>
                     </div>
                 </div>
             </div>
@@ -109,15 +109,6 @@
                     <tr>
                         <td>Irini</td>
                         <td>12.32</td>
-                    </tr>
-                    <tr>
-                        <td>Helena</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>Dud<span class="glyphicon glyphicon-thumbs-down looserboardGlyph" aria-hidden="true"></span>
-                        </td>
-                        <td>-12</td>
                     </tr>
                     </tbody>
                 </table>

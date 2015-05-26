@@ -5,6 +5,7 @@
      milked.controller("GroupController", function ($http, $scope, $log, $rootScope) {
 
                 $scope.currentGroupId = -1;
+                $scope.currentGroup = {};
                 $scope.groupDetails = [];
                 $scope.groupRequest = {};
                 $scope.groups = [];
@@ -49,8 +50,8 @@
                     $scope.getGroups();
                 });
 
-                $scope.getGroupDetails = function(groupId) {
-                                $http.get(BASE_URL + "/group/" + groupId +"/users").
+                $scope.getGroupDetails = function(group) {
+                                $http.get(BASE_URL + "/group/" + group.id +"/users").
                                     success(function (data, status, headers, config) {
                                     $rootScope.$broadcast("loaded-group");
                                     $scope.hasGroupId = true;
@@ -58,7 +59,8 @@
                                         console.log("Data is null");
                                     }
                                         $scope.groupDetails = data;
-                                        $scope.currentGroupId = groupId;
+                                        $scope.currentGroupId = group.id;
+                                        $scope.currentGroup = group;
                                         console.log(data);
                                     }).error(function(data, status, headers, config) {
                                         $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
@@ -136,8 +138,21 @@
                                     $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                             });
                }
+
+               $scope.sortGroupMembers = function(){
+                            console.log($scope.groupDetails);
+                            $scope.sortedUsers = {};
+                            for($scope.milkedUser in $scope.groupDetails.milkedUsers){
+                                console.log($scope.milkedUser.name);
+                                $scope.sortedUsers[$scope.milkedUser.name] = $scope.milkedUser.balance;
+                            }
+                            console.log($scope.sortedUsers);
+//                            $scope.sortedUsers.sort();
+               }
                $scope.$on("loaded-group", function(event) {
                                     $scope.getMilkingTransactions();
+                                    $scope.sortGroupMembers();
+
                                });
                $scope.$on("successful-transaction", function(event) {
                             $scope.getMilkingTransactions();

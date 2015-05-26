@@ -16,7 +16,7 @@
         <div class="container-fluid nav-bar">
             <div class="navbar-header">
                 <a class="navbar-logo" href="#">
-                    <img src="/img/milked.png"/>
+                    <img class="loginImage" src="/img/milked.png"/>
                 </a>
             </div>
             <div class="navbar-right menuItems">
@@ -28,7 +28,7 @@
             <h1><strong>Welcome to Milked.</strong></h1>
 
             <p>Milked allows you to create or join groups with friends and family to keep track of money going around
-                daily between group members</p>
+                daily between members</p>
         </div>
         <div class="col-md-3 col-md-offset-1 loginForm">
             <form th:action="@{/login}" method="post">
@@ -48,7 +48,7 @@
                 <div class="checkbox">
                     <label><input type="checkbox"/> Remember me</label>
                     <button type="submit" class="btn btn-primary loginButton" ng-click="login()">Log in</button>
-                    <small><a href="passwordRecovery.html">Forgot Password?</a></small>
+                    <small><a href="/passwordRecovery.html">Forgot Password?</a></small>
                 </div>
             </form>
         </div>
@@ -76,13 +76,13 @@
                            placeholder="password"/>
                 </div>
                 <div ng-show="hasRegisterErrors" class="errorMessage">
-                    <small><strong>Email has already been registered</strong></small>
+                    <small><strong>Invalid fields or Email has already been registered</strong></small>
                 </div>
                 <div class="signupButton">
                     <button type="submit" class="btn btn-primary signupButton" ng-click="registerUser()">
                         Sign Up for Milked
-                        <img ng-show="registrationIsLoading" src="/img/ajax-loader-small.gif"/>
                     </button>
+                    <img class="registerSpinner" ng-show="registrationIsLoading" src="/img/ajax-loader-small.gif"/>
                 </div>
             </form>
         </div>

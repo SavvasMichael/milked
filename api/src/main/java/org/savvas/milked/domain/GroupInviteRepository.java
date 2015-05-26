@@ -10,4 +10,6 @@ public interface GroupInviteRepository extends CrudRepository<GroupInvite, Long>
     List<GroupInvite> findByUserId(Long id);
 
     GroupInvite findOneByGroupIdAndUserId(Long groupId, Long userId);
+
+    GroupInvite findOneByGroupIdAndUuid(Long groupId, String uuid);
 }

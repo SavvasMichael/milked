@@ -34,7 +34,7 @@
       $scope.recoverPassword = function(){
         $scope.recoveryIsLoading = true;
         $('.passwordRecoveryButton').attr("disabled", true);
-        $http.post(BASE_URL + "/user/" + $scope.emailForRecovery + "/forgot-password")
+        $http.post(BASE_URL + "/user/forgot-password", {email: $scope.emailForRecovery})
             .success(function(data, status, headers, config) {
                 $log.info("Success: " + headers("Location"));
                 $scope.recoveryIsLoading = false;

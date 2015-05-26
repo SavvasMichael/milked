@@ -4,13 +4,15 @@ public class GroupDetails {
 
     private MilkedUser[] milkedUsers;
     private MilkingTransaction[] milkingTransactions;
+    private MilkedUser loggedInUser;
 
     public GroupDetails() {
     }
 
-    public GroupDetails(MilkedUser[] milkedUsers, MilkingTransaction[] milkingTransactions) {
+    public GroupDetails(MilkedUser[] milkedUsers, MilkingTransaction[] milkingTransactions, MilkedUser loggedInUser) {
         this.milkedUsers = milkedUsers;
         this.milkingTransactions = milkingTransactions;
+        this.loggedInUser = loggedInUser;
     }
 
     public MilkedUser[] getMilkedUsers() {
@@ -19,5 +21,9 @@ public class GroupDetails {
 
     public MilkingTransaction[] getMilkingTransactions() {
         return milkingTransactions;
+    }
+
+    public MilkedUser getLoggedInUser() {
+        return loggedInUser;
     }
 }

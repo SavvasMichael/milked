@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.security.Principal;
 import java.util.HashMap;
@@ -74,11 +75,18 @@ public class FrontEndRestController {
         Authentication authentication = (Authentication) principal;
         GrantedAuthority authority = authentication.getAuthorities().iterator().next();
         String userId = authority.getAuthority();
+        Long loggedInUserId = Long.valueOf(userId);
         try {
             MilkedUser[] milkedUsers = restTemplate.getForEntity(URI.create(BASE_URL + "/group/" + groupId + "/users"), MilkedUser[].class).getBody();
+            MilkedUser loggedInUser = null;
+            for (MilkedUser user : milkedUsers) {
+                if (loggedInUserId.equals(user.getId())) {
+                    loggedInUser = user;
+                }
+            }
             MilkingTransaction[] milkingTransactions = restTemplate.getForEntity(URI.create(BASE_URL + "/group/" + groupId + "/milk"), MilkingTransaction[].class).getBody();
             balanceCalculator.calculateBalances(milkedUsers, milkingTransactions);
-            return ResponseEntity.ok().body(new GroupDetails(milkedUsers, milkingTransactions));
+            return ResponseEntity.ok().body(new GroupDetails(milkedUsers, milkingTransactions, loggedInUser));
         } catch (HttpClientErrorException e) {
             LOG.warn("Error when trying to fetch group members", e);
             return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
@@ -124,15 +132,14 @@ public class FrontEndRestController {
             return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
         }
     }
-
     @RequestMapping(value = "/group/{groupId}/milked", method = RequestMethod.POST)
-    public ResponseEntity milked(@RequestBody Map milkRequest, @PathVariable("groupId") Long groupId, Principal principal) {
+    public ResponseEntity milked(@RequestBody Map<String, String> milkRequest, @PathVariable("groupId") Long groupId, Principal principal) {
         Authentication authentication = (Authentication) principal;
         GrantedAuthority authority = authentication.getAuthorities().iterator().next();
         String milkeeId = authority.getAuthority();
         milkRequest.put("milkeeId", milkeeId);
         try {
-            return restTemplate.postForEntity(URI.create(BASE_URL + "/group/" + groupId + "/milk"), milkRequest, Map.class);
+            return restTemplate.postForEntity(URI.create(BASE_URL + "/group/" + groupId + "/milk"), milkRequest, String.class);
         } catch (HttpClientErrorException e) {
             LOG.warn("Error when processing milking transaction", e);
             return ResponseEntity.badRequest().body(e.getResponseBodyAsString());
@@ -149,10 +156,10 @@ public class FrontEndRestController {
         }
     }
 
-    @RequestMapping(value = "/user/{email}/forgot-password", method = RequestMethod.POST)
-    public ResponseEntity recoverPassword(@PathVariable("email") String email) {
+    @RequestMapping(value = "/user/forgot-password", method = RequestMethod.POST)
+    public ResponseEntity recoverPassword(@RequestBody Map<String, String> emailBody) {
         try {
-            return restTemplate.postForEntity(URI.create(BASE_URL + "/user/" + email + "/forgot-password"), null, String.class);
+            return restTemplate.postForEntity(URI.create(BASE_URL + "/user/forgot-password"), emailBody, String.class);
         } catch (HttpClientErrorException e) {
             LOG.warn("Error when recovering password", e);
             return ResponseEntity.badRequest().body(e.getResponseBodyAsString());

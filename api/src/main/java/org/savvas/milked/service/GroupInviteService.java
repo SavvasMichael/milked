@@ -37,26 +37,32 @@ public class GroupInviteService {
 
     public MilkedUser inviteGroupUser(Long groupId, String email) {
         String randomPass = "pass" + Math.random();
+        if (email.isEmpty() || email == null) {
+            throw new ValidationException("Empty or null email");
+        }
         MilkingGroup fetchedGroup = milkingGroupRepository.findById(groupId);
         MilkedUser fetchedUser = milkedUserRepository.findByEmail(email);
         if (fetchedUser != null) {
+            if (fetchedGroup.getMilkedUsers().contains(fetchedUser)) {
+                throw new ValidationException("User is already a member");
+            }
             userService.sendInvitationEmail(fetchedUser, groupId);
         }
         if (fetchedUser == null) {
             RegistrationRequest registrationRequest = new RegistrationRequest(email, "", randomPass);
             fetchedUser = userService.createInvitedUser(registrationRequest, groupId);
         }
-        GroupInvite groupInvite = new GroupInvite(fetchedGroup.getId(), fetchedUser.getId());
+        GroupInvite groupInvite = new GroupInvite(fetchedGroup.getId(), fetchedUser.getId(), fetchedUser.getUuid());
         groupInviteRepository.save(groupInvite);
         return fetchedUser;
     }
 
-    public MilkingGroup acceptGroupInvite(Long userId, Long groupId) {
+    public MilkingGroup acceptGroupInvite(String uuid, Long groupId) {
         MilkingGroup group = milkingGroupRepository.findOne(groupId);
-        MilkedUser user = milkedUserRepository.findOne(userId);
+        MilkedUser user = milkedUserRepository.findByUuid(uuid);
         group.addUserToGroup(user);
         milkingGroupRepository.save(group);
-        GroupInvite invite = groupInviteRepository.findOneByGroupIdAndUserId(groupId, userId);
+        GroupInvite invite = groupInviteRepository.findOneByGroupIdAndUserId(groupId, user.getId());
         groupInviteRepository.delete(invite);
         return group;
     }

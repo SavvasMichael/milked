@@ -28,7 +28,7 @@
             <h1><strong>Welcome to Milked.</strong></h1>
 
             <p>Milked allows you to create or join groups with friends and family to keep track of money going around
-                daily between group members</p>
+                daily between members</p>
         </div>
     </div>
     <div class="signup">
@@ -53,6 +53,9 @@
                     <button type="submit" class="btn btn-primary signupButton" ng-click="updateNewUserDetails()">
                         Submit Details
                     </button>
+                    <small ng-show="successfulUserUpdate" style="color:green">Successful update, click <a
+                            href="/">here</a> to proceed
+                    </small>
                 </div>
             </form>
         </div>

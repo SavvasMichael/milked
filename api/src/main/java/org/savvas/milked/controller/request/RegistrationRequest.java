@@ -24,7 +24,7 @@ public class RegistrationRequest {
     }
 
     public String getEmail() {
-        return email;
+        return email.toLowerCase();
     }
 
     public String getName() {

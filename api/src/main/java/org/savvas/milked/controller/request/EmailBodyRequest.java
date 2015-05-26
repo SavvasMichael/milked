@@ -4,22 +4,20 @@ package org.savvas.milked.controller.request;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class LoginRequest {
+public class EmailBodyRequest {
     @Email
     @NotEmpty
     private String email;
-    @NotEmpty
-    private String password;
-    LoginRequest(){}
-    public LoginRequest(String email, String password){
-        this.email = email;
-        this.password = password;
+
+    EmailBodyRequest() {
     }
+
+    public EmailBodyRequest(String email) {
+        this.email = email;
+    }
+
     public String getEmail() {
         return email.toLowerCase();
-    }
-    public String getPassword() {
-        return password;
     }
 
 }

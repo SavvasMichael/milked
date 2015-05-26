@@ -1,7 +1,7 @@
 package org.savvas.milked.controller;
 
 import org.savvas.milked.controller.error.ValidationException;
-import org.savvas.milked.controller.request.UpdateUserRequest;
+import org.savvas.milked.controller.request.EmailBodyRequest;
 import org.savvas.milked.domain.GroupInvite;
 import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.domain.MilkedUserRepository;
@@ -12,16 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class GroupInviteController {
@@ -38,9 +34,9 @@ public class GroupInviteController {
     }
 
     @RequestMapping(value = "/group/{groupId}/invite", method = RequestMethod.POST)
-    public ResponseEntity inviteUser(@RequestBody Map<String, String> emailBody, @PathVariable("groupId") Long groupId) throws UnsupportedEncodingException {
+    public ResponseEntity inviteUser(@Valid @RequestBody EmailBodyRequest request, @PathVariable("groupId") Long groupId) throws UnsupportedEncodingException {
         String createdUrl = "";
-        String email = emailBody.get("email");
+        String email = request.getEmail();
         MilkedUser user = groupInviteService.inviteGroupUser(groupId, email);
         if ("".equals(user.getName())) {
             createdUrl = "/user/" + user.getId() + "/group/" + groupId;
@@ -55,9 +51,9 @@ public class GroupInviteController {
         return groupInviteService.getGroupInvites(userId);
     }
 
-    @RequestMapping(value = "/existing-user/{userId}/group/{groupId}/accept", method = RequestMethod.GET)
-    public ResponseEntity acceptGroupInvite(@PathVariable("userId") Long userId, @PathVariable("groupId") Long groupId) {
-        MilkingGroup group = groupInviteService.acceptGroupInvite(userId, groupId);
+    @RequestMapping(value = "/existing-user/{uuid}/group/{groupId}/accept", method = RequestMethod.GET)
+    public ResponseEntity acceptGroupInvite(@PathVariable("uuid") String uuid, @PathVariable("groupId") Long groupId) {
+        MilkingGroup group = groupInviteService.acceptGroupInvite(uuid, groupId);
         return ResponseEntity.ok(group);
     }
 
