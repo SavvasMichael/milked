@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
 import java.net.URI;
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -140,8 +138,13 @@ public class FrontEndRestController {
         milkRequest.put("milkeeId", milkeeId);
         String amount = milkRequest.get("amount");
         for (int i = 0; i < amount.length(); i++) {
-            if (amount.charAt(i) == ',') {
-                throw new IllegalArgumentException();
+            if (amount.charAt(i) == '.') {
+                float floatAmount = Float.valueOf(amount);
+                floatAmount = floatAmount * 100;
+                int intAmount = (int) floatAmount;
+                Math.round(intAmount);
+                String finalAmount = String.valueOf(intAmount);
+                milkRequest.put("amount", finalAmount);
             }
         }
         try {

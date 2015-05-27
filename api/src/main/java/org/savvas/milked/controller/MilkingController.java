@@ -9,7 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 public class MilkingController {
@@ -26,6 +30,10 @@ public class MilkingController {
         if (milkingTransactionRequest.getMilkeeId() == milkingTransactionRequest.getMilkerId()) {
             throw new ValidationException("Same milker and milkee ids");
         }
+        Integer amount = milkingTransactionRequest.getAmount();
+        DecimalFormat formatter = new DecimalFormat("##,##");
+        String formattedNumber = formatter.format(amount);
+        milkingTransactionRequest.setAmount(formattedNumber);
         Long transactionId = milkingService.createMilkingTransaction(milkingTransactionRequest, groupId);
         URI transactionLocationURI = URI.create("/milk/" + groupId + "/" + transactionId);
         return ResponseEntity.created(transactionLocationURI).build();
