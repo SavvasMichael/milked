@@ -138,21 +138,8 @@
                                     $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                             });
                }
-
-               $scope.sortGroupMembers = function(){
-                            console.log($scope.groupDetails);
-                            $scope.sortedUsers = {};
-                            for($scope.milkedUser in $scope.groupDetails.milkedUsers){
-                                console.log($scope.milkedUser.name);
-                                $scope.sortedUsers[$scope.milkedUser.name] = $scope.milkedUser.balance;
-                            }
-                            console.log($scope.sortedUsers);
-//                            $scope.sortedUsers.sort();
-               }
                $scope.$on("loaded-group", function(event) {
                                     $scope.getMilkingTransactions();
-                                    $scope.sortGroupMembers();
-
                                });
                $scope.$on("successful-transaction", function(event) {
                             $scope.getMilkingTransactions();

@@ -138,6 +138,12 @@ public class FrontEndRestController {
         GrantedAuthority authority = authentication.getAuthorities().iterator().next();
         String milkeeId = authority.getAuthority();
         milkRequest.put("milkeeId", milkeeId);
+        String amount = milkRequest.get("amount");
+        for (int i = 0; i < amount.length(); i++) {
+            if (amount.charAt(i) == ',') {
+                throw new IllegalArgumentException();
+            }
+        }
         try {
             return restTemplate.postForEntity(URI.create(BASE_URL + "/group/" + groupId + "/milk"), milkRequest, String.class);
         } catch (HttpClientErrorException e) {

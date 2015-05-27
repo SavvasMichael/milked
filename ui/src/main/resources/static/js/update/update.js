@@ -13,6 +13,7 @@
                     var uuid = $("#uuid").val();
                     $http.post(BASE_URL + "/user/" + uuid +"/update", $scope.invitedUserDetails)
                    .success(function (data, status, headers, config) {
+                           $(".signupButton").attr("disabled", true);
                            console.log("success");
                            $scope.updateNewUserDetailsError = false;
                            $scope.successfulUserUpdate = true;

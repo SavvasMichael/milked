@@ -49,7 +49,7 @@ public class MilkedUser {
         return uuid;
     }
 
-    public int getBalance() {
+    public Integer getBalance() {
         return balance;
     }
 

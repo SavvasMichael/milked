@@ -88,7 +88,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="milkedUser in groupDetails.milkedUsers">
+                    <tr ng-repeat="milkedUser in groupDetails.topThree">
                         <td>{{ milkedUser.name }}<span class="leaderboardGlyph"
                                         aria-hidden="true"></span></td>
                         <td>{{ milkedUser.balance }}</td>
@@ -106,9 +106,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>Irini</td>
-                        <td>12.32</td>
+                    <tr ng-repeat="milkedUser in groupDetails.bottomThree">
+                        <td>{{ milkedUser.name }}</td>
+                        <td>{{ milkedUser.balance }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -145,9 +145,8 @@
                                 <div ng-show="transactionOk">
                                     <small style="color:green">Transaction successful</small>
                                 </div>
-                                <li ng-repeat="milkedUser in groupDetails.milkedUsers" class="milkerAction"><a href="#">
+                                <li ng-repeat="milkedUser in groupDetails.milkedUsers" class="milkerAction">
                                     {{milkedUser.name}}
-                                </a>
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm milkButton"
                                                 ng-click="milk(milkedUser.id)">Milk

@@ -14,8 +14,8 @@ public class BalanceCalculatorTest {
         MilkedUser milkee = new MilkedUser(1);
         MilkedUser milker2 = new MilkedUser(4);
         MilkedUser milkee2 = new MilkedUser(15);
-        int txAmount = 100;
-        int txAmount2 = 200;
+        Integer txAmount = 100;
+        Integer txAmount2 = 200;
         MilkingTransaction milkingTransaction = new MilkingTransaction(-1L, milker, milkee, txAmount, "");
         MilkingTransaction milkingTransaction2 = new MilkingTransaction(-2L, milker2, milkee2, txAmount2, "");
         MilkedUser[] milkedUsers = {milker, milkee, milker2, milkee2};
@@ -25,9 +25,9 @@ public class BalanceCalculatorTest {
         balanceCalculator.calculateBalances(milkedUsers, milkingTransactions);
 
         // Then
-        assertEquals("Unexpected milker balance.", -txAmount, milker.getBalance());
+        assertEquals("Unexpected milker balance.", (int) -txAmount, (int) milker.getBalance());
         assertEquals("Unexpected milker balance.", txAmount, milkee.getBalance());
-        assertEquals("Unexpected milker balance.", -txAmount2, milker2.getBalance());
+        assertEquals("Unexpected milker balance.", (int) -txAmount2, (int) milker2.getBalance());
         assertEquals("Unexpected milker balance.", txAmount2, milkee2.getBalance());
     }
 
@@ -49,7 +49,7 @@ public class BalanceCalculatorTest {
         balanceCalculator.calculateBalances(milkedUsers, milkingTransactions);
 
         //then
-        assertEquals("Unexpected Milker Balance", -30, milker.getBalance());
-        assertEquals("Unexpected Milkee Balance", 30, milkee.getBalance());
+        assertEquals("Unexpected Milker Balance", -30, (int) milker.getBalance());
+        assertEquals("Unexpected Milkee Balance", 30, (int) milkee.getBalance());
     }
 }

@@ -10,7 +10,7 @@
     <meta charset="utf-8"/>
     <title>Milked</title>
 </head>
-<body class="homeWrapper">
+<body class="homeWrapper" ng-controller="UpdateController">
 <div class="container-fluid">
     <nav class="navbar navbar-default">
         <div class="container-fluid nav-bar">
@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="signup">
-        <div class="col-md-3 col-md-offset-1 signupForm" ng-controller="UpdateController">
+        <div class="col-md-3 col-md-offset-1 signupForm">
             <form ng-show="!hasRegistered" role="form" class="signupFormInner">
                 <div class="formHeader">
                     <h4>Finish your registration</h4>

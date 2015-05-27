@@ -38,4 +38,8 @@ public class MilkingTransactionRequest {
     public String getDescription() {
         return description;
     }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
 }
