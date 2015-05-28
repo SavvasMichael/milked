@@ -139,9 +139,9 @@
               });
              }
                $scope.milked = function(userId){
-              $scope.milkingTransactionRequest.milkerId = userId;
-              $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/milked", $scope.milkingTransactionRequest)
-             .success(function (data, status, headers, config) {
+               $scope.milkingTransactionRequest.milkerId = userId;
+               $http.post(BASE_URL + "/group/" + $scope.currentGroupId + "/milked", $scope.milkingTransactionRequest)
+               .success(function (data, status, headers, config) {
                      console.log("Success");
                      $scope.transactionOk = true;
                      $scope.selfMilk = false;
@@ -152,18 +152,17 @@
                      $scope.transactionOk = false;
              });
             }
-
                $scope.getMilkingTransactions = function(){
-            $http.get(BASE_URL + "/group/" + $scope.currentGroupId + "/milk")
-            .success(function (data, status, headers, config) {
+               $http.get(BASE_URL + "/group/" + $scope.currentGroupId + "/milk")
+               .success(function (data, status, headers, config) {
                     $scope.milkingTransactions = data;
                     console.log("Success");
-            }).error(function(data, status, headers, config){
+               }).error(function(data, status, headers, config){
                     $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
-            });
+               });
                }
                $scope.$on("loaded-group", function(event) {
-                                    $scope.getMilkingTransactions();
+                            $scope.getMilkingTransactions();
                                });
                $scope.$on("successful-transaction", function(event) {
                             $scope.getMilkingTransactions();
