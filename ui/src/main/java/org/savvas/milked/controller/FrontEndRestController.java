@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.security.Principal;
 import java.util.List;
@@ -118,11 +119,23 @@ public class FrontEndRestController {
     }
 
     @RequestMapping(value = "/group/{groupId}/milk", method = RequestMethod.POST)
-    public ResponseEntity milk(@RequestBody Map milkRequest, @PathVariable("groupId") Long groupId, Principal principal) {
+    public ResponseEntity milk(@RequestBody Map<String, String> milkRequest, @PathVariable("groupId") Long groupId, Principal principal) {
         Authentication authentication = (Authentication) principal;
         GrantedAuthority authority = authentication.getAuthorities().iterator().next();
         String milkerId = authority.getAuthority();
+        if (!milkRequest.containsKey("amount") || !milkRequest.containsKey("description")) {
+            return ResponseEntity.badRequest().build();
+        }
         milkRequest.put("milkerId", milkerId);
+        String amount = milkRequest.get("amount");
+        for (int i = 0; i < amount.length(); i++) {
+            float floatAmount = Float.valueOf(amount);
+            floatAmount = floatAmount * 100;
+            int intAmount = (int) floatAmount;
+            Math.round(intAmount);
+            String finalAmount = String.valueOf(intAmount);
+            milkRequest.put("amount", finalAmount);
+        }
         try {
             return restTemplate.postForEntity(URI.create(BASE_URL + "/group/" + groupId + "/milk"), milkRequest, Map.class);
         } catch (HttpClientErrorException e) {
@@ -135,17 +148,18 @@ public class FrontEndRestController {
         Authentication authentication = (Authentication) principal;
         GrantedAuthority authority = authentication.getAuthorities().iterator().next();
         String milkeeId = authority.getAuthority();
+        if (!milkRequest.containsKey("amount") || !milkRequest.containsKey("description")) {
+            return ResponseEntity.badRequest().build();
+        }
         milkRequest.put("milkeeId", milkeeId);
         String amount = milkRequest.get("amount");
         for (int i = 0; i < amount.length(); i++) {
-            if (amount.charAt(i) == '.') {
                 float floatAmount = Float.valueOf(amount);
                 floatAmount = floatAmount * 100;
                 int intAmount = (int) floatAmount;
                 Math.round(intAmount);
                 String finalAmount = String.valueOf(intAmount);
                 milkRequest.put("amount", finalAmount);
-            }
         }
         try {
             return restTemplate.postForEntity(URI.create(BASE_URL + "/group/" + groupId + "/milk"), milkRequest, String.class);

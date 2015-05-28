@@ -1,11 +1,19 @@
 package org.savvas.milked.controller.request;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+
 public class MilkingTransactionRequest {
 
     private Long milkerId;
     private Long milkeeId;
     private Long groupId;
+    @NotEmpty
+    @NotNull
     private Integer amount;
+    @NotEmpty
+    @NotNull
     private String description;
 
     MilkingTransactionRequest() {

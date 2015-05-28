@@ -55,7 +55,10 @@
             <div class="col-md-4 col-md-offset-1">
                 <h3 ng-show="hasGroupId"><strong>{{ currentGroup.name }}
                 </strong>
-                    <small><strong>You owe {{ groupDetails.loggedInUser.balance }} pounds</strong></small>
+                    <small ng-show="moreThan0"><strong>You <i>owe</i> {{ toDecimal(groupDetails.loggedInUser.balance) }}
+                        pounds</strong></small>
+                    <small ng-show="lessThan0"><strong>You are <i>down by</i> {{
+                        toDecimal(groupDetails.loggedInUser.balance) }} pounds</strong></small>
                 </h3>
             </div>
             <div class="col-md-5 col-md-offset-2 inviteWrapper">
@@ -91,7 +94,7 @@
                     <tr ng-repeat="milkedUser in groupDetails.topThree">
                         <td>{{ milkedUser.name }}<span class="leaderboardGlyph"
                                         aria-hidden="true"></span></td>
-                        <td>{{ milkedUser.balance }}</td>
+                        <td>{{ toDecimal(milkedUser.balance) }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -108,7 +111,7 @@
                     <tbody>
                     <tr ng-repeat="milkedUser in groupDetails.bottomThree">
                         <td>{{ milkedUser.name }}</td>
-                        <td>{{ milkedUser.balance }}</td>
+                        <td>{{ toDecimal(milkedUser.balance) }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -140,7 +143,9 @@
                             </div>
                             <ul class="milkerAction">
                                 <div ng-show="selfMilk">
-                                    <small style="color:red">You can't attempt a transaction with yourself</small>
+                                    <small style="color:red">You attempted a transaction with yourself or left a field
+                                        empty
+                                    </small>
                                 </div>
                                 <div ng-show="transactionOk">
                                     <small style="color:green">Transaction successful</small>
@@ -171,7 +176,8 @@
                                 <tr ng-repeat="milkingTransaction in milkingTransactions">
                                     <td>{{milkingTransaction.createDate}}</td>
                                     <td>{{milkingTransaction.milker.name}} milked {{milkingTransaction.milkee.name}}
-                                        {{milkingTransaction.amount}} for a {{milkingTransaction.description}}
+                                        {{toDecimal(milkingTransaction.amount)}} for a
+                                        {{milkingTransaction.description}}
                                     </td>
                                 </tr>
                                 </tbody>
