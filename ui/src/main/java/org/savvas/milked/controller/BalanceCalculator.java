@@ -1,7 +1,6 @@
 package org.savvas.milked.controller;
 
 import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
 

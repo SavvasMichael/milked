@@ -26,18 +26,8 @@
                 $scope.lessThan0 = false;
 
                 $scope.toDecimal = function(amount){
-                    $scope.balance = amount + "";
-                    if($scope.balance.length < 4){
-                        $scope.firstTwoDecimals = $scope.balance.substring(0,1);
-                        $scope.lastTwoDecimals = $scope.balance.substring(1,3);
-                        $scope.formattedAmount = $scope.firstTwoDecimals + "." + $scope.lastTwoDecimals;
-                    }
-                    if($scope.balance.length > 3){
-                        $scope.firstTwoDecimals = $scope.balance.substring(0, 2);
-                        $scope.lastTwoDecimals = $scope.balance.substring(2, 4);
-                        $scope.formattedAmount = $scope.firstTwoDecimals + "." + $scope.lastTwoDecimals;
-                    }
-                    return $scope.formattedAmount;
+                    var finalAmount = amount/100;
+                    return finalAmount.toFixed(2);
                 }
 
                 $scope.createGroup = function() {

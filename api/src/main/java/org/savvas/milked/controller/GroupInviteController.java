@@ -65,8 +65,8 @@ public class GroupInviteController {
         }
         fetchedMilkedUser.setActivated(true);
         LOG.warn("Activated the user " + fetchedMilkedUser.getName());
-        MilkedUser savedMilkedUser = milkedUserRepository.save(fetchedMilkedUser);
         MilkingGroup group = groupInviteService.acceptGroupInviteForAnonymous(uuid, groupId);
+        MilkedUser savedMilkedUser = milkedUserRepository.save(fetchedMilkedUser);
         MilkedUser user = milkedUserRepository.findByUuid(uuid);
         return ResponseEntity.ok(group);
     }

@@ -23,7 +23,7 @@ public class MilkingTransaction {
         this.milkee = milkee;
         this.amount = amount;
         this.description = description;
-        this.createDate = new Date();
+        this.createDate = new Date(createDate.getTime());
     }
 
     public Long getId() {
