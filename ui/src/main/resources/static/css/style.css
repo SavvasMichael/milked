@@ -48,6 +48,9 @@ html .navbar-default{
 	background-color: white;
 	border-radius: 0.7em;
 }
+.formHeader{
+    color: #507374;
+}
 .loginFormInner{
 	padding-top: 0.8em;
 }
@@ -111,8 +114,8 @@ html .container-fluid{
     margin-top: 1em;
 }
 .groupMenu li{
-    border-bottom: 0.1em solid lightgrey;
-    border-right: 0.1em solid lightgrey;
+    border-bottom: 0.1em solid grey;
+    border-right: 0.1em solid grey;
     display:block;
     padding: 1em;
 }
@@ -148,16 +151,17 @@ html .inviteInput{
     padding-top: 2em;
     margin-bottom:0.5em;
 }
-.leaderboardGlyph{
-    margin-left: 0.5em;
+.glyphicon-upload{
+    margin-right: 0.5em;
     color: green;
 }
-.looserboardGlyph{
-    margin-left: 0.5em;
+.glyphicon-download{
+    margin-right: 0.5em;
     color: red;
 }
 html .table thead tr th{
     border-bottom: none;
+    border-top: none;
 }
 html .table tbody tr td{
     border-top: none;

@@ -36,7 +36,7 @@ public class UserService {
     public void sendRegistrationEmail(MilkedUser user) {
         try {
             String host = "smtp.gmail.com";
-            String from = "savvas.a.michael@gmail.com";
+            String from = "milkedmailer@gmail.com";
             String pass = "pass";
             Properties props = System.getProperties();
             props.put("mail.smtp.starttls.enable", "true");
@@ -47,7 +47,7 @@ public class UserService {
             props.put("mail.smtp.auth", "true");
             props.put("mail.debug", "true");
 
-            Session session = Session.getInstance(props, new GMailAuthenticator("savvas.a.michael@gmail.com", "cstrike54321"));
+            Session session = Session.getInstance(props, new GMailAuthenticator("milkedmailer@gmail.com", "milkedmailer123"));
             MimeMessage message = new MimeMessage(session);
             Address fromAddress = new InternetAddress(from);
             Address toAddress = new InternetAddress(user.getEmail());
@@ -81,7 +81,7 @@ public class UserService {
     public void sendInvitationEmail(MilkedUser user, Long groupId) {
         try {
             String host = "smtp.gmail.com";
-            String from = "savvas.a.michael@gmail.com";
+            String from = "milkedmailer@gmail.com";
             String pass = "pass";
             Properties props = System.getProperties();
             props.put("mail.smtp.starttls.enable", "true");
@@ -92,7 +92,7 @@ public class UserService {
             props.put("mail.smtp.auth", "true");
             props.put("mail.debug", "true");
 
-            Session session = Session.getInstance(props, new GMailAuthenticator("savvas.a.michael@gmail.com", "cstrike54321"));
+            Session session = Session.getInstance(props, new GMailAuthenticator("milkedmailer@gmail.com", "milkedmailer123"));
             MimeMessage message = new MimeMessage(session);
             Address fromAddress = new InternetAddress(from);
             Address toAddress = new InternetAddress(user.getEmail());
@@ -126,7 +126,7 @@ public class UserService {
         MilkingGroup invitingGroup = milkingGroupRepository.findOne(groupId);
         try {
             String host = "smtp.gmail.com";
-            String from = "savvas.a.michael@gmail.com";
+            String from = "milkedmailer@gmail.com";
             String pass = "pass";
             Properties props = System.getProperties();
             props.put("mail.smtp.starttls.enable", "true");
@@ -137,7 +137,7 @@ public class UserService {
             props.put("mail.smtp.auth", "true");
             props.put("mail.debug", "true");
 
-            Session session = Session.getInstance(props, new GMailAuthenticator("savvas.a.michael@gmail.com", "cstrike54321"));
+            Session session = Session.getInstance(props, new GMailAuthenticator("milkedmailer@gmail.com", "milkedmailer123"));
             MimeMessage message = new MimeMessage(session);
             Address fromAddress = new InternetAddress(from);
             Address toAddress = new InternetAddress(user.getEmail());
@@ -170,7 +170,7 @@ public class UserService {
     public void sendPasswordRecoveryEmail(MilkedUser fetchedUser, String recoveredPassword) {
         try {
             String host = "smtp.gmail.com";
-            String from = "savvas.a.michael@gmail.com";
+            String from = "milkedmailer@gmail.com";
             String pass = "pass";
             Properties props = System.getProperties();
             props.put("mail.smtp.starttls.enable", "true");
@@ -181,7 +181,7 @@ public class UserService {
             props.put("mail.smtp.auth", "true");
             props.put("mail.debug", "true");
 
-            Session session = Session.getInstance(props, new GMailAuthenticator("savvas.a.michael@gmail.com", "cstrike54321"));
+            Session session = Session.getInstance(props, new GMailAuthenticator("milkedmailer@gmail.com", "milkedmailer123"));
             MimeMessage message = new MimeMessage(session);
             Address fromAddress = new InternetAddress(from);
             Address toAddress = new InternetAddress(fetchedUser.getEmail());

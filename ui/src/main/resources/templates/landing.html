@@ -56,12 +56,13 @@
     <div class="col-md-10 content">
         <div class="row headerRow">
             <div class="col-md-4 col-md-offset-1">
-                <h3 ng-show="hasGroupId"><strong>{{ currentGroup.name }}
+                <h3 ng-show="hasGroupId"><strong>{{ currentGroup.name | uppercase }}
                 </strong>
-                    <small ng-show="moreThan0"><strong>You <i>owe</i> {{ toDecimal(groupDetails.loggedInUser.balance) }}
-                        pounds</strong></small>
-                    <small ng-show="lessThan0"><strong>You are <i>down by</i> {{
-                        toDecimal(groupDetails.loggedInUser.balance) }} pounds</strong></small>
+                    <small ng-show="moreThan0"><strong>You <i>owe</i> &pound; {{
+                        toDecimal(groupDetails.loggedInUser.balance) }}
+                    </strong></small>
+                    <small ng-show="lessThan0"><strong>You are <i>owed</i> &pound; {{
+                        removeNegative(toDecimal(groupDetails.loggedInUser.balance)) }} </strong></small>
                 </h3>
             </div>
             <div class="col-md-5 col-md-offset-2 inviteWrapper">
@@ -85,7 +86,7 @@
             <h4>Leader Boards</h4>
 
             <div class="col-md-5 leaderTableWrapper">
-                <table class="table">
+                <table class="table table-condensed">
                     <thead>
                     <th>Top 3</th>
                     <tr>
@@ -95,7 +96,8 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="milkedUser in groupDetails.topThree">
-                        <td>{{ milkedUser.name }}<span class="leaderboardGlyph"
+                        <td><span class="glyphicon glyphicon-upload" aria-hidden="true"></span>{{ milkedUser.name
+                            }}<span class="leaderboardGlyph"
                                         aria-hidden="true"></span></td>
                         <td>{{ toDecimal(milkedUser.balance) }}</td>
                     </tr>
@@ -103,7 +105,7 @@
                 </table>
             </div>
             <div class="col-md-5 col-md-offset-1 looserTableWrapper">
-                <table class="table">
+                <table class="table table-condensed">
                     <thead>
                     <th>Bottom 3</th>
                     <tr>
@@ -113,7 +115,8 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="milkedUser in groupDetails.bottomThree">
-                        <td>{{ milkedUser.name }}</td>
+                        <td><span class="glyphicon glyphicon-download" aria-hidden="true"></span>{{ milkedUser.name }}
+                        </td>
                         <td>{{ toDecimal(milkedUser.balance) }}</td>
                     </tr>
                     </tbody>
@@ -133,7 +136,7 @@
                                     <label class="sr-only">I.e: 4.50 or 4</label>
 
                                     <div class="input-group">
-                                        <div class="input-group-addon">Pound</div>
+                                        <div class="input-group-addon">&pound;</div>
                                         <input type="text" class="form-control milkInput" placeholder="Amount"
                                                ng-model="milkingTransactionRequest.amount"/>
                                     </div>
@@ -153,7 +156,8 @@
                                 <div ng-show="transactionOk">
                                     <small class="smallGreen">Transaction successful</small>
                                 </div>
-                                <li ng-repeat="milkedUser in groupDetails.milkedUsers" class="milkerAction">
+                                <li ng-repeat="milkedUser in groupDetails.milkedUsers | orderBy:'name' "
+                                    class="milkerAction">
                                     {{milkedUser.name}}
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary btn-sm milkButton"

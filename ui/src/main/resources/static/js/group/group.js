@@ -29,6 +29,14 @@
                     var finalAmount = amount/100;
                     return finalAmount.toFixed(2);
                 }
+                $scope.removeNegative = function(amount){
+                    var original = amount + "";
+                    var positiveAmount = "";
+                    for (var i = 1; i < original.length; i++){
+                        positiveAmount += original.charAt(i);
+                    }
+                    return positiveAmount;
+                }
 
                 $scope.createGroup = function() {
                     $http.post(BASE_URL + "/group", $scope.groupRequest).

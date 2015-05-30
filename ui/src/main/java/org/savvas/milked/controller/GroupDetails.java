@@ -30,7 +30,7 @@ public class GroupDetails {
                 return o1.getBalance().compareTo(o2.getBalance());
             }
         });
-        for (int i = 0; i <= Math.min(3, milkedUsers.length - 1); i++) {
+        for (int i = 0; i <= Math.min(2, milkedUsers.length - 1); i++) {
             bottomThree.add(milkedUsers[i]);
         }
         for (int i = milkedUsers.length - 1; i >= milkedUsers.length - Math.min(3, milkedUsers.length); i--) {
