@@ -1,19 +1,19 @@
 .homeWrapper{
-	background-image: url("http://www.roncorso.com/data/photos/76_1blue_martini_couples.jpg");
+	background-image: url("/img/milked.jpg");
     background-size: cover;
 }
 img {
     max-width: 100%;
 }
 .genericWrapper{
-    background-image: url("/img/ZenBG3.png");
+    background-image: url("/img/ZenBG.png");
     background-size: cover;
 }
 body h3, body h4{
     padding: 0.2em;
 }
 .wrapper{
-    background-image: url("/img/ZenBG3.png");
+    background-image: url("/img/ZenBG.png");
     background-size: cover;
 }
 nav{
@@ -25,6 +25,12 @@ html .navbar-default{
 .cow{
     margin-top: 0.8em;
     margin-left: 3em;
+}
+.smallGreen{
+    color: green;
+}
+.smallRed{
+    color: red;
 }
 .loginImage{
     margin-top: 1em;
@@ -110,6 +116,9 @@ html .container-fluid{
     display:block;
     padding: 1em;
 }
+.groupName:hover{
+    cursor: pointer;
+}
 .groupMenu li a{
     color:black;
 }
@@ -180,9 +189,7 @@ html body .milkDescriptionInput{
     margin-top: -5em;
     margin-left: 2em;
 }
-@media screen and (max-width: 768px) {
-    .container-fluid { width:100%; }
-}
+
 
 
 

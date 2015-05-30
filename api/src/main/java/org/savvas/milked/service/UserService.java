@@ -264,12 +264,4 @@ public class UserService {
         sendPasswordRecoveryEmail(fetchedUser, recoveredPassword);
         return recoveredPassword;
     }
-//    public void changePassword(String email, String password) {
-//        MilkedUser fetchedUser = milkedUserRepository.findByEmail(email);
-//        if(fetchedUser == null){
-//            LOG.warn("User not found");
-//            throw new ValidationException("User Not Found");
-//        }
-//        fetchedUser.setPassword(password);
-//    }
 }

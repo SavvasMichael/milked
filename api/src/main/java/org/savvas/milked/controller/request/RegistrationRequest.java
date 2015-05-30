@@ -2,11 +2,15 @@ package org.savvas.milked.controller.request;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.http.ResponseEntity;
+
+import javax.validation.constraints.NotNull;
 
 public class RegistrationRequest {
 
     @NotEmpty
     @Email
+    @NotNull
     private String email;
     @NotEmpty
     private String name;
@@ -24,6 +28,9 @@ public class RegistrationRequest {
     }
 
     public String getEmail() {
+        if (email == null) {
+            return "";
+        }
         return email.toLowerCase();
     }
 

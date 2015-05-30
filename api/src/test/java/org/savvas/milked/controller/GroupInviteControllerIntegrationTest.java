@@ -96,7 +96,7 @@ public class GroupInviteControllerIntegrationTest {
         ResponseEntity<MilkingGroup> acceptInvitationResponse = rest.getForEntity(URI.create(acceptInvitationUrl), MilkingGroup.class);
 
         //then
-        GroupInvite[] invites = rest.getForEntity(baseUrl + "/user/" + friend.getUuid() + "/group/invite", GroupInvite[].class).getBody();
+        GroupInvite[] invites = rest.getForEntity(baseUrl + "/user/" + friend.getId() + "/group/invite", GroupInvite[].class).getBody();
         assertThat(acceptInvitationResponse.getStatusCode().value()).isEqualTo(200);
         MilkingGroup group = acceptInvitationResponse.getBody();
         List<MilkedUser> fetchedMilkingUsers = group.getMilkedUsers();

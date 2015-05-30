@@ -3,9 +3,12 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" ng-app="milked">
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script src="/js/group/group.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta charset="utf-8"/>
@@ -16,7 +19,7 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid nav-bar">
             <div class="navbar-header">
-                <a class="navbar-logo" href="#">
+                <a class="navbar-logo">
                     <img class="cow" src="/img/milked.png"/>
                 </a>
             </div>
@@ -34,7 +37,7 @@
     <div class="col-md-2 groupMenu">
         <ul>
             <li ng-repeat="group in groups"><a ng-click="getGroupDetails(group)">
-                <strong>{{ group.name }}</strong></a><br></br>
+                <strong class="groupName">{{ group.name }}</strong></a><br></br>
                 <small>Group members: {{ group.milkedUsers.length }}</small>
                 <br></br>
                 <small ng-click="leaveGroup(group)"><a href=" ">Leave group</a></small>
@@ -47,7 +50,7 @@
         <div class="createGroup">
             <button type="submit" class="btn btn-primary createGroupButton" ng-click="createGroup()">Create group
             </button>
-            <small ng-show="invalidGroupName" style="color:red">Invalid group name</small>
+            <small ng-show="invalidGroupName" class="smallRed">Invalid group name</small>
         </div>
     </div>
     <div class="col-md-10 content">
@@ -70,15 +73,15 @@
                     </button>
                     <img ng-show="isLoading" src="/img/ajax-loader.gif"/>
                     <div ng-show="successfulUserInvite" id="successfulInviteMessage">
-                        <small style="color:green">User successfuly invited</small>
+                        <small class="smallGreen">User successfuly invited</small>
                     </div>
                     <div ng-show="unsuccessfulUserInvite">
-                        <small style="color:red">Invalid Email or user already a member</small>
+                        <small class="smallRed">Invalid Email or user already a member</small>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-12 tableWrapper">
+        <div ng-show="hasGroupId" class="col-md-12 tableWrapper">
             <h4>Leader Boards</h4>
 
             <div class="col-md-5 leaderTableWrapper">
@@ -143,12 +146,12 @@
                             </div>
                             <ul class="milkerAction">
                                 <div ng-show="selfMilk">
-                                    <small style="color:red">You attempted a transaction with yourself or left a field
+                                    <small class="smallRed">You attempted a transaction with yourself or left a field
                                         empty
                                     </small>
                                 </div>
                                 <div ng-show="transactionOk">
-                                    <small style="color:green">Transaction successful</small>
+                                    <small class="smallGreen">Transaction successful</small>
                                 </div>
                                 <li ng-repeat="milkedUser in groupDetails.milkedUsers" class="milkerAction">
                                     {{milkedUser.name}}
@@ -173,6 +176,7 @@
                         <div class="panel-body">
                             <table class="table">
                                 <tbody>
+
                                 <tr ng-repeat="milkingTransaction in milkingTransactions">
                                     <td>{{milkingTransaction.createDate}}</td>
                                     <td>{{milkingTransaction.milker.name}} milked {{milkingTransaction.milkee.name}}
@@ -184,12 +188,6 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <nav>
-                                <ul class="pager">
-                                    <li><a href="#">Previous</a></li>
-                                    <li><a href="#">Next</a></li>
-                                </ul>
-                            </nav>
                         </div>
                     </div>
                 </div>

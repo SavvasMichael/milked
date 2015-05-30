@@ -15,7 +15,7 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid nav-bar">
             <div class="navbar-header">
-                <a class="navbar-logo" href="#">
+                <a class="navbar-logo">
                     <img class="cow" src="/img/milked.png"/>
                 </a>
             </div>
@@ -46,14 +46,14 @@
                            placeholder="password"/>
                 </div>
                 <div ng-show="updateNewUserDetailsError">
-                    <small style="color:red"><strong>Invalid name or Password</strong></small>
+                    <small class="smallRed"><strong>Invalid name or Password</strong></small>
                 </div>
                 <input type="hidden" th:value="${uuid}" id="uuid"/>
                 <div class="signupButton">
                     <button type="submit" class="btn btn-primary signupButton" ng-click="updateNewUserDetails()">
                         Submit Details
                     </button>
-                    <small ng-show="successfulUserUpdate" style="color:green">Successful update, click <a
+                    <small ng-show="successfulUserUpdate" class="smallGreen">Successful update, click <a
                             href="/">here</a> to proceed
                     </small>
                 </div>

@@ -61,9 +61,6 @@
                     success(function (data, status, headers, config) {
                     $rootScope.$broadcast("loaded-group");
                     $scope.hasGroupId = true;
-                    if(data == null){
-                        console.log("Data is null");
-                    }
                         $scope.groupDetails = data;
                         $scope.currentGroupId = group.id;
                         $scope.currentGroup = group;
@@ -80,6 +77,29 @@
                         $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                     });
                         }
+
+                        $scope.getGroupDetailsAfterMilk = function(currentGroupId, group) {
+                  $http.get(BASE_URL + "/group/" + currentGroupId +"/users").
+                    success(function (data, status, headers, config) {
+                    $rootScope.$broadcast("loaded-group");
+                    $scope.hasGroupId = true;
+                        $scope.groupDetails = data;
+                        $scope.currentGroupId = $scope.currentGroupId;
+                        $scope.currentGroup = group;
+                    if($scope.groupDetails.loggedInUser.balance >= 0){
+                        $scope.moreThan0 = true;
+                        $scope.lessThan0 = false;
+                    }
+                    if($scope.groupDetails.loggedInUser.balance < 0){
+                        $scope.lessThan0 = true;
+                        $scope.moreThan0 = false;
+                    }
+                        console.log(data);
+                    }).error(function(data, status, headers, config) {
+                        $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
+                    });
+                        }
+
 
                 $scope.leaveGroup = function(group) {
                     if(confirm("Are you sure you want to leave the group " + group.name + "?")){
@@ -155,6 +175,7 @@
                             $scope.getMilkingTransactions();
                                });
                $scope.$on("successful-transaction", function(event) {
+                            $scope.getGroupDetailsAfterMilk($scope.currentGroupId);
                             $scope.getMilkingTransactions();
                });
                 $scope.getGroups();
