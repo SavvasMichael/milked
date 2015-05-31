@@ -58,7 +58,7 @@ public class UserService {
             transport.connect(host, from, pass);
 
             MimeBodyPart textPart = new MimeBodyPart();
-            String textContent = "Hi dude";
+            String textContent = "Content";
             textPart.setText(textContent);
             MimeBodyPart htmlPart = new MimeBodyPart();
             String htmlContent = "<html><h2 style = color:#4C4CA5>Welcome to milked,  " + user.getName() + ".</h2><br><h4 style = color:#39464A>Activation link: " +
