@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public Collection<GrantedAuthority> attemptAuthentication(String email, String password) throws RemoteAuthenticationException {
                 ArrayList grants = new ArrayList();
-                String loginUrl = "http://localhost:8080/login";
+                String loginUrl = "http://api.milked.io/login";
                 Map loginRequest = new HashMap();
                 loginRequest.put("email", email);
                 loginRequest.put("password", password);

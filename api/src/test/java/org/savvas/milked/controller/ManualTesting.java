@@ -11,7 +11,7 @@ public class ManualTesting {
     public static void main(String[] args) throws UnsupportedEncodingException {
 
         RestTemplate rest = new RestTemplate();
-        String baseUrl = "http://localhost:8080";
+        String baseUrl = "http://api.milked.io";
         MilkedUser user1 = MilkedTestUtils.givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Savvas Michael", "pass");
         MilkedUser user2 = MilkedTestUtils.givenTheUserIsRegisteredAndActivated(rest, baseUrl, "Joe", "pass");
         MilkedTestUtils.givenTheMilkingGroup(rest, baseUrl, 1l, "Savvasgroup");

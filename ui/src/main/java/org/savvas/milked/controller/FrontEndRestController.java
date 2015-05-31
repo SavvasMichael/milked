@@ -19,7 +19,7 @@ import java.util.Map;
 public class FrontEndRestController {
 
     private static final Logger LOG = LoggerFactory.getLogger(FrontEndRestController.class);
-    private static final String BASE_URL = "http://localhost:8080";
+    private static final String BASE_URL = "http://api.milked.io";
     private final RestTemplate restTemplate = new RestTemplate();
     private final BalanceCalculator balanceCalculator;
     private static final String EMAIL_PATTERN =

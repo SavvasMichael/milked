@@ -62,7 +62,7 @@ public class UserService {
             textPart.setText(textContent);
             MimeBodyPart htmlPart = new MimeBodyPart();
             String htmlContent = "<html><h2 style = color:#4C4CA5>Welcome to milked,  " + user.getName() + ".</h2><br><h4 style = color:#39464A>Activation link: " +
-                    "http://localhost:7070/activation/" + user.getUuid() + "</h4><br><h5 style = color:#39464A>If the above link does not work please copy and paste it in your address bar</h5></html>";
+                    "http://ui.milked.io/activation/" + user.getUuid() + "</h4><br><h5 style = color:#39464A>If the above link does not work please copy and paste it in your address bar</h5></html>";
             htmlPart.setContent(htmlContent, "text/html");
             Multipart multipart = new MimeMultipart("alternative");
             multipart.addBodyPart(textPart);
@@ -106,7 +106,7 @@ public class UserService {
             textPart.setText(textContent);
             MimeBodyPart htmlPart = new MimeBodyPart();
             String htmlContent = "<html><h2 style = color:#4C4CA5>You are invited to join a group at milked, " + user.getName() + ".</h2><br><h4 style = color:#39464A>If you wish to join click: " +
-                    "http://localhost:7070/existing-user/" + user.getUuid() + "/group/" + groupId + "/accept" + "</h4><br><h5 style = color:#39464A>If the above link does not work please copy and paste it in your address bar</h5></html>";
+                    "http://ui.milked.io/existing-user/" + user.getUuid() + "/group/" + groupId + "/accept" + "</h4><br><h5 style = color:#39464A>If the above link does not work please copy and paste it in your address bar</h5></html>";
             htmlPart.setContent(htmlContent, "text/html");
             Multipart multipart = new MimeMultipart("alternative");
             multipart.addBodyPart(textPart);
@@ -151,7 +151,7 @@ public class UserService {
             textPart.setText(textContent);
             MimeBodyPart htmlPart = new MimeBodyPart();
             String htmlContent = "<html><h2 style = color:#4C4CA5>A Friend has invited you to join their group called " + invitingGroup.getName() + ".</h2><br><h4 style = color:#39464A>If you wish to join click: " +
-                    "http://localhost:7070/user/" + user.getUuid() + "/group/" + groupId + "/accept" + "</h4><br><h5 style = color:#39464A>If the above link does not work please copy and paste it in your address bar</h5></html>";
+                    "http://ui.milked.io/user/" + user.getUuid() + "/group/" + groupId + "/accept" + "</h4><br><h5 style = color:#39464A>If the above link does not work please copy and paste it in your address bar</h5></html>";
             htmlPart.setContent(htmlContent, "text/html");
             Multipart multipart = new MimeMultipart("alternative");
             multipart.addBodyPart(textPart);

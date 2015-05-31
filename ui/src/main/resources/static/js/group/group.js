@@ -1,5 +1,5 @@
 (function () {
-    var BASE_URL = "http://localhost:7070";
+    var BASE_URL = "http://ui.milked.io";
     var milked = angular.module('milked', []);
 
      milked.controller("GroupController", function ($http, $scope, $log, $rootScope) {
