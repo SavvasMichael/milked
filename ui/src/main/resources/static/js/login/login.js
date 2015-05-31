@@ -1,5 +1,5 @@
 (function () {
-    var BASE_URL = "http://ui.milked.io";
+    var BASE_URL = "http://milked.io";
     var milked = angular.module('milked', []);
 milked.controller("LoginController", function ($http, $scope, $log) {
 
