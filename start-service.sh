@@ -26,7 +26,7 @@ git reset --hard HEAD
 git pull
 git checkout $APP_VERSION
 
-rm build/libs/*.jar || true
+rm target/*.jar || true
 mvn clean package -DskipTests
 
 screen -X -S $APP_NAME quit || true
