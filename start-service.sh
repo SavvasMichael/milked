@@ -1,5 +1,5 @@
 #!/bin/bash
-. /home/ubuntu/.bashrc
+source /home/ubuntu/.bashrc
 
 APP_NAME=`ec2-describe-tags --region eu-west-1 \
   --filter "resource-type=instance" \
