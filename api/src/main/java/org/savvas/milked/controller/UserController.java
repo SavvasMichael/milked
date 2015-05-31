@@ -1,6 +1,5 @@
 package org.savvas.milked.controller;
 
-import org.hibernate.validator.constraints.Email;
 import org.savvas.milked.controller.error.ValidationException;
 import org.savvas.milked.controller.request.EmailBodyRequest;
 import org.savvas.milked.controller.request.UpdateUserRequest;
@@ -10,11 +9,9 @@ import org.savvas.milked.service.UpdateUserService;
 import org.savvas.milked.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
-
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +20,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.net.URI;
 
 import static org.junit.Assert.*;
-import static org.savvas.milked.controller.MilkedTestUtils.givenTheUserIsRegistered;
-import static org.savvas.milked.controller.MilkedTestUtils.givenTheUserIsRegisteredAndActivated;
-import static org.savvas.milked.controller.MilkedTestUtils.randomEmail;
+import static org.savvas.milked.controller.MilkedTestUtils.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = MilkedApiApplication.class)

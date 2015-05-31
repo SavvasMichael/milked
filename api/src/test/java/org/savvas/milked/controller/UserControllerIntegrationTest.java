@@ -1,28 +1,25 @@
 package org.savvas.milked.controller;
 
-import org.junit.runner.RunWith;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.savvas.milked.MilkedApiApplication;
 import org.savvas.milked.controller.request.EmailBodyRequest;
 import org.savvas.milked.controller.request.LeaveGroupRequest;
-import org.savvas.milked.controller.request.UpdateUserRequest;
 import org.savvas.milked.domain.MilkedUser;
 import org.savvas.milked.domain.MilkingGroup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.savvas.milked.controller.MilkedTestUtils.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)

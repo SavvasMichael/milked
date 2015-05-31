@@ -1,16 +1,12 @@
 package org.savvas.milked.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.savvas.milked.controller.MilkedTestUtils.*;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.savvas.milked.MilkedApiApplication;
 import org.savvas.milked.controller.request.MilkingTransactionRequest;
-import org.savvas.milked.domain.MilkingTransaction;
-import org.savvas.milked.domain.MilkingGroup;
 import org.savvas.milked.domain.MilkedUser;
+import org.savvas.milked.domain.MilkingGroup;
+import org.savvas.milked.domain.MilkingTransaction;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -21,6 +17,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.savvas.milked.controller.MilkedTestUtils.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = MilkedApiApplication.class)
