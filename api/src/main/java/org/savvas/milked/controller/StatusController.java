@@ -23,7 +23,7 @@ public class StatusController {
         this.loginService = loginService;
     }
 
-    @RequestMapping(value = "/status", method = RequestMethod.POST, produces = "text/plain")
+    @RequestMapping(value = "/status", method = RequestMethod.GET, produces = "text/plain")
     public String status(){
         return "ok";
     }
