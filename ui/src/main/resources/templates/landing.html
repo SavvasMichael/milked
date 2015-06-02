@@ -9,7 +9,9 @@
     <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="/js/group/group.js"></script>
+    <script src="/js/pagination/dirPagination.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta charset="utf-8"/>
@@ -158,7 +160,7 @@
                                 <li ng-repeat="milkedUser in groupDetails.milkedUsers | orderBy:'name' "
                                     class="milkerAction">
                                     {{milkedUser.name}}
-                                    <div class="row">
+                                    <div class="milkRow">
                                         <button type="submit" class="btn btn-primary btn-sm milkButton"
                                                 ng-click="milk(milkedUser.id)">Milk
                                         </button>
@@ -179,15 +181,22 @@
                         <div class="panel-body">
                             <table class="table">
                                 <tbody>
-                                <tr ng-repeat="milkingTransaction in milkingTransactions">
+                                <div ng-show="fetchedHistory" class="row">
+                                    <input ng-model="search" id="search" class="col-md-2 form-control paginationFilterInput" placeholder="Start typing to find something"/>
+                                    <input type="number" min="0" max="100" class="col-md-2 form-control paginationSizeInput" ng-model="pageSize" placeholder="Records Per Page"/>
+                                    </div>
+                                <div class = "milkingTransactionsHistory">
+                                <tr dir-paginate="milkingTransaction in milkingTransactions |  filter:search | itemsPerPage: pageSize">
                                     <td>{{toReadableTime(milkingTransaction.createDate)}}</td>
                                     <td>{{milkingTransaction.milker.name}} milked {{milkingTransaction.milkee.name}}
                                         {{toDecimal(milkingTransaction.amount)}} for a
                                         {{milkingTransaction.description}}
                                     </td>
                                 </tr>
+                                </div>
                                 </tbody>
                             </table>
+                            <dir-pagination-controls></dir-pagination-controls>
                         </div>
                     </div>
                 </div>

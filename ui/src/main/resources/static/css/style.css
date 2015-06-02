@@ -193,7 +193,24 @@ html body .milkDescriptionInput{
     margin-top: -5em;
     margin-left: 2em;
 }
-
+.paginationFilterInput{
+    width: 15em;
+}
+.paginationSizeInput{
+    width: 11.1em;
+    margin-left: 0.1em;
+}
+.milkRow{
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.row{
+    margin-right:0;
+    margin-left:0;
+}
+.milkingTransactionsHistory{
+    margin-top: 2em;
+}
 
 
 
