@@ -9,7 +9,6 @@ img {
 .genericWrapper{
     background-image: url("/img/ZenBG.png");
     background-size: cover;
-    overflow: hidden;
 }
 body h3, body h4{
     padding: 0.2em;
@@ -17,7 +16,6 @@ body h3, body h4{
 .wrapper{
     background-image: url("/img/ZenBG.png");
     background-size: cover;
-    overflow: hidden;
 }
 nav{
     height:5em;
