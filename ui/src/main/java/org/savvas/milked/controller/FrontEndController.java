@@ -2,6 +2,7 @@ package org.savvas.milked.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +21,8 @@ public class FrontEndController {
 
     private static final Logger LOG = LoggerFactory.getLogger(FrontEndController.class);
     private static final String BASE_URL = "http://api.milked.io";
-
+//    private static final String BASE_URL = "http://localhost:8080";
     private final RestTemplate restTemplate = new RestTemplate();
-
 
     @RequestMapping(value = "/activation/{uuid}", method = RequestMethod.GET)
     public String activateUser(@PathVariable("uuid") String uuid) {

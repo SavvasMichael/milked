@@ -1,5 +1,6 @@
 (function () {
     var BASE_URL = "http://milked.io";
+//    var BASE_URL = "http://localhost:7070";
     var milked = angular.module('milked', []);
 
      milked.controller("GroupController", function ($http, $scope, $log, $rootScope) {
@@ -25,6 +26,10 @@
                 $scope.moreThan0 = false;
                 $scope.lessThan0 = false;
 
+                $scope.toReadableTime = function(timestamp){
+                    $scope.readableTime = new Date(timestamp);
+                    return $scope.readableTime.getDate() + '/' + $scope.readableTime.getMonth() + '/' + $scope.readableTime.getFullYear();
+                }
                 $scope.toDecimal = function(amount){
                     var finalAmount = amount/100;
                     return finalAmount.toFixed(2);
@@ -86,8 +91,8 @@
                     });
                         }
 
-                        $scope.getGroupDetailsAfterMilk = function(currentGroupId, group) {
-                  $http.get(BASE_URL + "/group/" + currentGroupId +"/users").
+                  $scope.getGroupDetailsAfterMilk = function(currentGroupId, group) {
+                    $http.get(BASE_URL + "/group/" + currentGroupId +"/users").
                     success(function (data, status, headers, config) {
                     $rootScope.$broadcast("loaded-group");
                     $scope.hasGroupId = true;

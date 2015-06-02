@@ -24,7 +24,6 @@ html .navbar-default{
 }
 .cow{
     margin-top: 0.8em;
-    margin-left: 3em;
 }
 .smallGreen{
     color: green;
@@ -60,7 +59,7 @@ html .navbar-default{
 	margin-top: -0.8em;
 }
 .logOutButton{
-      margin-right: 3em;
+      margin-right: 0.5em;
       background-color: white;
       color: #337ab7;
       margin-top: -1em;
@@ -193,7 +192,6 @@ html body .milkDescriptionInput{
     margin-top: -5em;
     margin-left: 2em;
 }
-
 
 
 

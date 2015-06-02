@@ -1,5 +1,6 @@
 (function () {
     var BASE_URL = "http://milked.io";
+//    var BASE_URL = "http://localhost:7070";
     var milked = angular.module('milked', []);
 
      milked.controller("UpdateController", function ($http, $scope, $log, $rootScope) {
