@@ -1,6 +1,7 @@
 .homeWrapper{
 	background-image: url("/img/milked.jpg");
     background-size: cover;
+    overflow: hidden;
 }
 img {
     max-width: 100%;
