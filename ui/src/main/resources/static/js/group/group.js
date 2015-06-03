@@ -4,7 +4,7 @@
     var milked = angular.module('milked', ['angularUtils.directives.dirPagination']);
 
      milked.controller("GroupController", function ($http, $scope, $log, $rootScope) {
-
+                $scope.justLanded = true;
                 $scope.currentGroupId = -1;
                 $scope.currentGroup = {};
                 $scope.groupDetails = [];
@@ -47,7 +47,6 @@
                 $scope.createGroup = function() {
                     $http.post(BASE_URL + "/group", $scope.groupRequest).
                         success(function (data, status, headers, config) {
-                          console.log("Success");
                           $rootScope.$broadcast("created-group");
                           $scope.invalidGroupName = false;
                           $(".createGroupInput").val("");
@@ -69,11 +68,11 @@
                 $scope.$on("created-group", function(event) {
                     $scope.getGroups();
                 });
-
                 $scope.getGroupDetails = function(group) {
                   $http.get(BASE_URL + "/group/" + group.id +"/users").
                     success(function (data, status, headers, config) {
-                    $scope.hasGroupId = true;
+                        $scope.justLanded = false;
+                        $scope.hasGroupId = true;
                         $scope.groupDetails = data;
                         $scope.currentGroupId = group.id;
                         $scope.currentGroup = group;
@@ -85,7 +84,6 @@
                         $scope.lessThan0 = true;
                         $scope.moreThan0 = false;
                     }
-                        console.log(data);
                         $scope.getMilkingTransactions(group.id);
                     }).error(function(data, status, headers, config) {
                         $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
@@ -108,7 +106,6 @@
                         $scope.moreThan0 = false;
                     }
                             $scope.getMilkingTransactions(group.id);
-                        console.log(data);
                     }).error(function(data, status, headers, config) {
                         $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                     });
@@ -119,7 +116,6 @@
                     if(confirm("Are you sure you want to leave the group " + group.name + "?")){
                     $http.post(BASE_URL + "/group/" + group.id + "/leave")
                     .success(function (data, status, headers, config) {
-                            console.log(data);
                     }).error(function(data, status, headers, config){
                             $log.info("Error: status = " + status + ", body = " + JSON.stringify(data));
                     });
@@ -182,7 +178,7 @@
                });
                }
                $scope.$on("successful-transaction", function(event) {
-                            $scope.getGroupDetailsAfterMilk($scope.currentGroupId);
+                            $scope.getGroupDetailsAfterMilk($scope.currentGroupId, $scope.currentGroup);
                             $scope.getMilkingTransactions();
                });
                 $scope.getGroups();

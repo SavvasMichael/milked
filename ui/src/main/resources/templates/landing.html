@@ -125,7 +125,8 @@
                 </table>
             </div>
         </div>
-        <div class="col-md-12 tableWrapper">
+        <div ng-show="justLanded"><h3>Welcome! Click on a group to load details.</h3></div>
+        <div ng-show="hasGroupId" class="col-md-12 tableWrapper">
             <div class="col-md-12">
                 <div class="col-md-3 milkWrapper">
                     <div class="panel panel-primary">
@@ -173,7 +174,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8 historyWrapper">
+                <div ng-show="hasGroupId" class="col-md-8 historyWrapper">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h4>History</h4>
